@@ -4,7 +4,7 @@ namespace MemMemov\Cybe;
 
 class Author
 {
-    public function write()
+    public function write(string $text)
     {
         
     }
