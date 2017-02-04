@@ -4,7 +4,7 @@ namespace MemMemov\Cybe;
 
 class Clauses
 {
-    public function fromText(string $text): array
+    public function fromText(MessageText $messageText): array
     {
         $separator = ')';
         $strings = explode($separator, $text);
