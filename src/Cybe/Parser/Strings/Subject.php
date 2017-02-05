@@ -2,7 +2,9 @@
 
 namespace MemMemov\Cybe\Parser\Strings;
 
-class Subject
+use MemMemov\Cybe\Parser\ISubject;
+
+class Subject implements ISubject
 {
     private $string;
 

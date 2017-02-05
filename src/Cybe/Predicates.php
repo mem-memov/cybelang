@@ -4,7 +4,7 @@ namespace MemMemov\Cybe;
 
 class Predicates
 {
-    public function fromText(Parser\Predicate $predicateText): Predicate
+    public function fromText(Parser\IPredicate $predicateText): Predicate
     {
         return new Predicate();
     }

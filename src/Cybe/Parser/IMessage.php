@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe\Parser;
 
-interface Message
+interface IMessage
 {
     public function clauses(): array;
 }

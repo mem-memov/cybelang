@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe\Parser;
 
-interface Compliment
+interface ISubject
 {
 
 }

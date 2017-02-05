@@ -11,9 +11,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->parser = $this->getMockBuilder(Parser\Messages::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->parser = $this->createMock(Parser\IMessages::class);
 
         $this->messages = $this->getMockBuilder(Messages::class)
             ->disableOriginalConstructor()
@@ -29,9 +27,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
         $text .= 'лекарство.есть(какой:хороший)';
         $text .= 'врач.дать(что:лекарство,кому:больной)';
 
-        $messageText = $this->getMockBuilder(Parser\Message::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $messageText = $this->createMock(Parser\IMessage::class);
 
         $this->parser->expects($this->once())
             ->method('create')

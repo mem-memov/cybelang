@@ -2,6 +2,8 @@
 
 namespace MemMemov\Cybe\Parser\Strings;
 
+use MemMemov\Cybe\Parser\IClause;
+
 class Clauses
 {
     private $predicates;
@@ -18,7 +20,7 @@ class Clauses
         $this->arguments = $arguments;
     }
 
-    public function create(string $string): Clause
+    public function create(string $string): IClause
     {
         return new Clause(
             $this->predicates,

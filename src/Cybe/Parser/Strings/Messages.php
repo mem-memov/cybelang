@@ -2,7 +2,10 @@
 
 namespace MemMemov\Cybe\Parser\Strings;
 
-class Messages
+use MemMemov\Cybe\Parser\IMessages;
+use MemMemov\Cybe\Parser\IMessage;
+
+class Messages implements IMessages
 {
     private $clauses;
 
@@ -11,7 +14,7 @@ class Messages
         $this->clauses = $clauses;
     }
 
-    public function create(string $string): Message
+    public function create(string $string): IMessage
     {
         return new Message(
             $this->clauses,

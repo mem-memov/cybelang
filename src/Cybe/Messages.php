@@ -12,7 +12,7 @@ class Messages
         $this->clauses = $clauses;
     }
 
-    public function fromText(Parser\Message $messageText): Message
+    public function fromText(Parser\IMessage $messageText): Message
     {
         $clauses = [];
         foreach ($messageText->clauses() as $clauseText) {

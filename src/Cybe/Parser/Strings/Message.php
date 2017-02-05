@@ -2,7 +2,9 @@
 
 namespace MemMemov\Cybe\Parser\Strings;
 
-class Message
+use MemMemov\Cybe\Parser\IMessage;
+
+class Message implements IMessage
 {
     private $clauses;
     private $string;

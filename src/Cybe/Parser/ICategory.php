@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe\Parser;
 
-interface Category
+interface ICategory
 {
 
 }

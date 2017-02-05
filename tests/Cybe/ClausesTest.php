@@ -30,15 +30,11 @@ class ClausesTest extends \PHPUnit_Framework_TestCase
     {
         $clauses = new Clauses($this->predicates, $this->subjects, $this->arguments);
 
-        $clauseText = $this->getMockBuilder(Parser\Clause::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $clauseText = $this->createMock(Parser\IClause::class);
 
         // predicate
 
-        $predicateText = $this->getMockBuilder(Parser\Predicate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $predicateText = $this->createMock(Parser\IPredicate::class);
 
         $clauseText->expects($this->once())
             ->method('predicate')
@@ -55,9 +51,7 @@ class ClausesTest extends \PHPUnit_Framework_TestCase
 
         // subject
 
-        $subjectText = $this->getMockBuilder(Parser\Subject::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $subjectText = $this->createMock(Parser\ISubject::class);
 
         $clauseText->expects($this->once())
             ->method('subject')
@@ -74,13 +68,8 @@ class ClausesTest extends \PHPUnit_Framework_TestCase
 
         // arguments
 
-        $argumentText_1 = $this->getMockBuilder(Parser\Argument::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $argumentText_2 = $this->getMockBuilder(Parser\Argument::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $argumentText_1 = $this->createMock(Parser\IArgument::class);
+        $argumentText_2 = $this->createMock(Parser\IArgument::class);
 
         $clauseText->expects($this->once())
             ->method('arguments')

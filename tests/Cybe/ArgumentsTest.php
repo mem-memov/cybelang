@@ -24,13 +24,13 @@ class ArgumentsTest
     {
         $arguments = new Arguments($this->categories, $this->compliments);
 
-        $argumentText = $this->getMockBuilder(Parser\Argument::class)
+        $argumentText = $this->getMockBuilder(Parser\IArgument::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         // category
 
-        $categoryText = $this->getMockBuilder(Parser\Category::class)
+        $categoryText = $this->getMockBuilder(Parser\ICategory::class)
             ->disableOriginalConstructor()
             ->getMock();
 

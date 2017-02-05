@@ -18,15 +18,15 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
     {
         $messages = new Messages($this->clauses);
 
-        $messageText = $this->getMockBuilder(Parser\Message::class)
+        $messageText = $this->getMockBuilder(Parser\IMessage::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $clauseText_1 = $this->getMockBuilder(Parser\Clause::class)
+        $clauseText_1 = $this->getMockBuilder(Parser\IClause::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $clauseText_2 = $this->getMockBuilder(Parser\Clause::class)
+        $clauseText_2 = $this->getMockBuilder(Parser\IClause::class)
             ->disableOriginalConstructor()
             ->getMock();
 

@@ -2,7 +2,11 @@
 
 namespace MemMemov\Cybe\Parser\Strings;
 
-class Argument
+use MemMemov\Cybe\Parser\IArgument;
+use MemMemov\Cybe\Parser\ICategory;
+use MemMemov\Cybe\Parser\ICompliment;
+
+class Argument implements IArgument
 {
     private static $separator = ':';
 
@@ -20,7 +24,7 @@ class Argument
         $this->string = $string;
     }
 
-    public function category(): Category
+    public function category(): ICategory
     {
         $categoryString = strtok($this->string, self::$separator);
 
@@ -29,7 +33,7 @@ class Argument
         return $category;
     }
 
-    public function compliment(): Compliment
+    public function compliment(): ICompliment
     {
         $separatorPosition = strpos($this->string, self::$separator);
 

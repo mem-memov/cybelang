@@ -2,7 +2,11 @@
 
 namespace MemMemov\Cybe\Parser\Strings;
 
-class Clause
+use MemMemov\Cybe\Parser\IClause;
+use MemMemov\Cybe\Parser\IPredicate;
+use MemMemov\Cybe\Parser\ISubject;
+
+class Clause implements IClause
 {
     private $predicates;
     private $subjects;
@@ -21,7 +25,7 @@ class Clause
         $this->string = $string;
     }
 
-    public function predicate(): Predicate
+    public function predicate(): IPredicate
     {
         strtok($this->string, '.');
         $predicateString = strtok('(');
@@ -31,7 +35,7 @@ class Clause
         return $predicate;
     }
 
-    public function subject(): Subject
+    public function subject(): ISubject
     {
         $subjectString = strtok($this->string, '.');
 

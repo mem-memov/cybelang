@@ -2,7 +2,9 @@
 
 namespace MemMemov\Cybe\Parser\Strings;
 
-class Compliment
+use MemMemov\Cybe\Parser\ICompliment;
+
+class Compliment implements ICompliment
 {
     private $string;
 

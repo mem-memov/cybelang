@@ -2,6 +2,8 @@
 
 namespace MemMemov\Cybe\Parser\Strings;
 
+use MemMemov\Cybe\Parser\IClause;
+
 class MessageTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
@@ -34,6 +36,6 @@ class MessageTest extends \PHPUnit_Framework_TestCase
 
         $result = $message->clauses();
 
-        $this->assertContainsOnlyInstancesOf(Clause::class, $result);
+        $this->assertContainsOnlyInstancesOf(IClause::class, $result);
     }
 }

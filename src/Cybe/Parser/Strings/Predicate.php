@@ -2,7 +2,9 @@
 
 namespace MemMemov\Cybe\Parser\Strings;
 
-class Predicate
+use MemMemov\Cybe\Parser\IPredicate;
+
+class Predicate implements IPredicate
 {
     private $string;
 

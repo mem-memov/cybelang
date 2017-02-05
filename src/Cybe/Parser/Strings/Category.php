@@ -2,7 +2,9 @@
 
 namespace MemMemov\Cybe\Parser\Strings;
 
-class Category
+use MemMemov\Cybe\Parser\ICategory;
+
+class Category implements ICategory
 {
     private $string;
 
