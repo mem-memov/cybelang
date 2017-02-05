@@ -1,8 +1,8 @@
 <?php
 
-namespace MemMemov\Cybe\Strings;
+namespace MemMemov\Cybe\Parser;
 
-class Predicate
+class Category
 {
     private $string;
 

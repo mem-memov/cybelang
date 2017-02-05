@@ -1,6 +1,6 @@
 <?php
 
-namespace MemMemov\Cybe\Strings;
+namespace MemMemov\Cybe\Parser;
 
 class Arguments
 {
@@ -9,8 +9,7 @@ class Arguments
 
     public function __construct(
         Categories $categories,
-        Compliments $compliments,
-        string $string
+        Compliments $compliments
     ) {
         $this->categories = $categories;
         $this->compliments = $compliments;

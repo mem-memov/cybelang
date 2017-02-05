@@ -1,6 +1,6 @@
 <?php
 
-namespace MemMemov\Cybe\Strings;
+namespace MemMemov\Cybe\Parser;
 
 class ComplimentsTest extends \PHPUnit_Framework_TestCase
 {
@@ -8,7 +8,9 @@ class ComplimentsTest extends \PHPUnit_Framework_TestCase
     {
         $compliments = new Compliments();
 
-        $compliment = $compliments->create();
+        $string = 'диагноз';
+
+        $compliment = $compliments->create($string);
 
         $this->assertInstanceOf(Compliment::class, $compliment);
     }

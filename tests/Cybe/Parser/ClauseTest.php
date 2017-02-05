@@ -1,6 +1,6 @@
 <?php
 
-namespace MemMemov\Cybe\Strings;
+namespace MemMemov\Cybe\Parser;
 
 class ClauseTest extends \PHPUnit_Framework_TestCase
 {

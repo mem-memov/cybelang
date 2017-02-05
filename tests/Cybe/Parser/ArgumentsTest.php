@@ -1,6 +1,6 @@
 <?php
 
-namespace MemMemov\Cybe\Strings;
+namespace MemMemov\Cybe\Parser;
 
 class ArgumentsTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +24,9 @@ class ArgumentsTest extends \PHPUnit_Framework_TestCase
     {
         $arguments = new Arguments($this->categories, $this->complements);
 
-        $result = $arguments->create();
+        $string = 'что:диагноз';
+
+        $result = $arguments->create($string);
 
         $this->assertInstanceOf(Argument::class, $result);
     }

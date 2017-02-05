@@ -1,6 +1,6 @@
 <?php
 
-namespace MemMemov\Cybe\Strings;
+namespace MemMemov\Cybe\Parser;
 
 class SubjectsTest extends \PHPUnit_Framework_TestCase
 {
@@ -8,7 +8,9 @@ class SubjectsTest extends \PHPUnit_Framework_TestCase
     {
         $subjects = new Subjects();
 
-        $result = $subjects->create();
+        $string = 'врач';
+
+        $result = $subjects->create($string);
 
         $this->assertInstanceOf(Subject::class, $result);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace MemMemov\Cybe\Strings;
+namespace MemMemov\Cybe\Parser;
 
 class PredicatesTest extends \PHPUnit_Framework_TestCase
 {
@@ -8,7 +8,9 @@ class PredicatesTest extends \PHPUnit_Framework_TestCase
     {
         $predicates = new Predicates();
 
-        $result = $predicates->create();
+        $string = 'ставить';
+
+        $result = $predicates->create($string);
 
         $this->assertInstanceOf(Predicate::class, $result);
     }
