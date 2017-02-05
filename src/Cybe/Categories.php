@@ -4,7 +4,7 @@ namespace MemMemov\Cybe;
 
 class Categories
 {
-    public function fromText(Parser\ICategory $categoryText): Category
+    public function fromText(Parser\Category $categoryText): Category
     {
         return new Category();
     }

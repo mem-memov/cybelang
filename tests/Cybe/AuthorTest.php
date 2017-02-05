@@ -6,12 +6,12 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $parser;
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var Messages|\PHPUnit_Framework_MockObject_MockObject */
     protected $messages;
 
     protected function setUp()
     {
-        $this->parser = $this->createMock(Parser\IMessages::class);
+        $this->parser = $this->createMock(Parser\Messages::class);
 
         $this->messages = $this->getMockBuilder(Messages::class)
             ->disableOriginalConstructor()
@@ -27,7 +27,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
         $text .= 'лекарство.есть(какой:хороший)';
         $text .= 'врач.дать(что:лекарство,кому:больной)';
 
-        $messageText = $this->createMock(Parser\IMessage::class);
+        $messageText = $this->createMock(Parser\Message::class);
 
         $this->parser->expects($this->once())
             ->method('create')

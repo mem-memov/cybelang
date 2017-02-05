@@ -4,11 +4,11 @@ namespace MemMemov\Cybe;
 
 class ClausesTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var Predicates|\PHPUnit_Framework_MockObject_MockObject */
     protected $predicates;
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var Subjects|\PHPUnit_Framework_MockObject_MockObject */
     protected $subjects;
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var Arguments|\PHPUnit_Framework_MockObject_MockObject */
     protected $arguments;
 
     protected function setUp()
@@ -30,11 +30,11 @@ class ClausesTest extends \PHPUnit_Framework_TestCase
     {
         $clauses = new Clauses($this->predicates, $this->subjects, $this->arguments);
 
-        $clauseText = $this->createMock(Parser\IClause::class);
+        $clauseText = $this->createMock(Parser\Clause::class);
 
         // predicate
 
-        $predicateText = $this->createMock(Parser\IPredicate::class);
+        $predicateText = $this->createMock(Parser\Predicate::class);
 
         $clauseText->expects($this->once())
             ->method('predicate')
@@ -51,7 +51,7 @@ class ClausesTest extends \PHPUnit_Framework_TestCase
 
         // subject
 
-        $subjectText = $this->createMock(Parser\ISubject::class);
+        $subjectText = $this->createMock(Parser\Subject::class);
 
         $clauseText->expects($this->once())
             ->method('subject')
@@ -68,8 +68,8 @@ class ClausesTest extends \PHPUnit_Framework_TestCase
 
         // arguments
 
-        $argumentText_1 = $this->createMock(Parser\IArgument::class);
-        $argumentText_2 = $this->createMock(Parser\IArgument::class);
+        $argumentText_1 = $this->createMock(Parser\Argument::class);
+        $argumentText_2 = $this->createMock(Parser\Argument::class);
 
         $clauseText->expects($this->once())
             ->method('arguments')

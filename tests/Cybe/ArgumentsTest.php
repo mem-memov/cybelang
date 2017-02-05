@@ -2,11 +2,11 @@
 
 namespace MemMemov\Cybe;
 
-class ArgumentsTest
+class ArgumentsTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var Categories|\PHPUnit_Framework_MockObject_MockObject */
     protected $categories;
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var Compliments|\PHPUnit_Framework_MockObject_MockObject */
     protected $compliments;
 
     protected function setUp()
@@ -24,15 +24,11 @@ class ArgumentsTest
     {
         $arguments = new Arguments($this->categories, $this->compliments);
 
-        $argumentText = $this->getMockBuilder(Parser\IArgument::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $argumentText = $this->createMock(Parser\Argument::class);
 
         // category
 
-        $categoryText = $this->getMockBuilder(Parser\ICategory::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $categoryText = $this->createMock(Parser\Category::class);
 
         $argumentText->expects($this->once())
             ->method('category')
@@ -49,9 +45,7 @@ class ArgumentsTest
 
         // compliment
 
-        $complimentText = $this->getMockBuilder(Parser\Compliment::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $complimentText = $this->createMock(Parser\Compliment::class);
 
         $argumentText->expects($this->once())
             ->method('compliment')
@@ -63,7 +57,7 @@ class ArgumentsTest
 
         $this->compliments->expects($this->once())
             ->method('fromText')
-            ->with($argumentText)
+            ->with($complimentText)
             ->willReturn($compliment);
 
         $result = $arguments->fromText($argumentText);

@@ -8,7 +8,7 @@ class Author
     private $messages;
 
     public function __construct(
-        Parser\IMessages $parser,
+        Parser\Messages $parser,
         Messages $messages
     ) {
         $this->parser = $parser;

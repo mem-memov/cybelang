@@ -15,7 +15,7 @@ class Arguments
         $this->compliments = $compliments;
     }
 
-    public function fromText(Parser\IArgument $argumentText): Argument
+    public function fromText(Parser\Argument $argumentText): Argument
     {
         $category = $this->categories->fromText($argumentText->category());
         $compliment = $this->compliments->fromText($argumentText->compliment());

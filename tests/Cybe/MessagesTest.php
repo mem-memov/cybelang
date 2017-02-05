@@ -4,7 +4,7 @@ namespace MemMemov\Cybe;
 
 class MessagesTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var Clauses|\PHPUnit_Framework_MockObject_MockObject */
     protected $clauses;
 
     protected function setUp()
@@ -18,15 +18,15 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
     {
         $messages = new Messages($this->clauses);
 
-        $messageText = $this->getMockBuilder(Parser\IMessage::class)
+        $messageText = $this->getMockBuilder(Parser\Message::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $clauseText_1 = $this->getMockBuilder(Parser\IClause::class)
+        $clauseText_1 = $this->getMockBuilder(Parser\Clause::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $clauseText_2 = $this->getMockBuilder(Parser\IClause::class)
+        $clauseText_2 = $this->getMockBuilder(Parser\Clause::class)
             ->disableOriginalConstructor()
             ->getMock();
 

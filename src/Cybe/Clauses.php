@@ -18,7 +18,7 @@ class Clauses
         $this->arguments = $arguments;
     }
 
-    public function fromText(Parser\IClause $clauseText): Clause
+    public function fromText(Parser\Clause $clauseText): Clause
     {
         $predicate = $this->predicates->fromText($clauseText->predicate());
         $subject = $this->subjects->fromText($clauseText->subject());
