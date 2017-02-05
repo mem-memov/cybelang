@@ -4,32 +4,34 @@ namespace MemMemov\Cybe;
 
 class Clauses
 {
-    private $parser;
     private $predicates;
     private $subjects;
     private $arguments;
 
     public function __construct(
-        Parser\Clauses $parser,
         Predicates $predicates,
         Subjects $subjects,
         Arguments $arguments
     ) {
-        $this->parser = $parser;
         $this->predicates = $predicates;
         $this->subjects = $subjects;
         $this->arguments = $arguments;
     }
 
-    public function fromText(MessageText $messageText): array
+    public function fromText(Parser\Clause $clauseText): Clause
     {
-        $this->parser->create($messageText);
+        $predicate = $this->predicates->fromText($clauseText->predicate());
+        $subject = $this->subjects->fromText($clauseText->subject());
 
-        $clauses = [];
-        foreach ($clauseStrings as $clauseString) {
-            $clauses[] = new Clause();
+        $arguments = [];
+        foreach ($clauseText->arguments() as $argumentText) {
+            $arguments[] = $this->arguments->fromText($argumentText);
         }
 
-        return $clauses;
+        return new Clause(
+            $predicate,
+            $subject,
+            $arguments
+        );
     }
 }
