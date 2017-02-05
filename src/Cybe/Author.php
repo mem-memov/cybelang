@@ -4,16 +4,21 @@ namespace MemMemov\Cybe;
 
 class Author
 {
-    private $clauses;
+    private $parser;
+    private $messages;
 
     public function __construct(
-        Clauses $clauses
+        Parser\Messages $parser,
+        Messages $messages
     ) {
-        $this->clauses = $clauses;
+        $this->parser = $parser;
+        $this->messages = $messages;
     }
 
     public function write(string $text)
     {
-        $clauses = $this->clauses->fromText($text);
+        $messageText = $this->parser->create($text);
+
+        $message = $this->messages->fromText($messageText);
     }
 }

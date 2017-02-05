@@ -4,17 +4,26 @@ namespace MemMemov\Cybe;
 
 class Clauses
 {
+    private $parser;
+    private $predicates;
+    private $subjects;
+    private $arguments;
+
+    public function __construct(
+        Parser\Clauses $parser,
+        Predicates $predicates,
+        Subjects $subjects,
+        Arguments $arguments
+    ) {
+        $this->parser = $parser;
+        $this->predicates = $predicates;
+        $this->subjects = $subjects;
+        $this->arguments = $arguments;
+    }
+
     public function fromText(MessageText $messageText): array
     {
-        $separator = ')';
-        $strings = explode($separator, $text);
-        array_pop($strings);
-        $clauseStrings = array_map(
-            function (string $string) use ($separator) {
-                return $string . $separator;
-            },
-            $strings
-        );
+        $this->parser->create($messageText);
 
         $clauses = [];
         foreach ($clauseStrings as $clauseString) {

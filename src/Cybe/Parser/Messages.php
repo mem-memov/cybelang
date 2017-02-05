@@ -2,20 +2,7 @@
 
 namespace MemMemov\Cybe\Parser;
 
-class Messages
+interface Messages
 {
-    private $clauses;
-
-    public function __construct(Clauses $clauses)
-    {
-        $this->clauses = $clauses;
-    }
-
-    public function create(string $string): Message
-    {
-        return new Message(
-            $this->clauses,
-            $string
-        );
-    }
+    public function create(string $string): Message;
 }

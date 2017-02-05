@@ -2,12 +2,7 @@
 
 namespace MemMemov\Cybe\Parser;
 
-class Predicate
+interface Predicate
 {
-    private $string;
 
-    public function __construct(string $string)
-    {
-        $this->string = $string;
-    }
 }

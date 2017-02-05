@@ -2,13 +2,7 @@
 
 namespace MemMemov\Cybe\Parser;
 
-class Subject
+interface Subject
 {
-    private $string;
 
-    public function __construct(
-        string $string
-    ) {
-        $this->string = $string;
-    }
 }
