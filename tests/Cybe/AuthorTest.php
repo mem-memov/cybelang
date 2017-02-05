@@ -15,7 +15,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->messages = $this->getMockBuilder(Clauses::class)
+        $this->messages = $this->getMockBuilder(Messages::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -42,7 +42,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->clauses->expects($this->once())
+        $this->messages->expects($this->once())
             ->method('fromText')
             ->with($messageText)
             ->willReturn($message);
