@@ -20,18 +20,22 @@ class ArrayNodeStore implements NodeStore
         return $id;
     }
 
-    public function read(int $id)
+    public function read(int $id): array
     {
-
+        return $this->store[$id];
     }
 
     public function connect(int $fromId, int $toId): void
     {
+        if (in_array($toId, $this->store[$fromId])) {
+            return;
+        }
 
+        $this->store[$fromId][] = $toId;
     }
 
-    public function contains(int $id, array $ids): bool
+    public function contains(int $fromId, int $toId): bool
     {
-
+        return in_array($toId, $this->store[$fromId]);
     }
 }
