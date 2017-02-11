@@ -1,8 +1,8 @@
 <?php
 
-namespace MemMemov\NodeStore;
+namespace MemMemov\GraphStore\NodeStore;
 
-class ArrayNodeStoreTest extends \PHPUnit_Framework_TestCase
+class ArrayNodeStoreTest extends \PHPUnit\Framework\TestCase
 {
     public function testItCreatesNode()
     {

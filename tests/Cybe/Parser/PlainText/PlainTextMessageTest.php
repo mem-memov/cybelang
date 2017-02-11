@@ -4,16 +4,14 @@ namespace MemMemov\Cybe\Parser\PlainText;
 
 use MemMemov\Cybe\Parser\IClause;
 
-class PlainTextMessageTest extends \PHPUnit_Framework_TestCase
+class PlainTextMessageTest extends \PHPUnit\Framework\TestCase
 {
     /** @var PlainTextClauses|\PHPUnit_Framework_MockObject_MockObject */
     protected $clauses;
 
     protected function setUp()
     {
-        $this->clauses = $this->getMockBuilder(PlainTextClauses::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->clauses = $this->createMock(PlainTextClauses::class);
     }
 
     public function testItHasClauses()
@@ -25,23 +23,12 @@ class PlainTextMessageTest extends \PHPUnit_Framework_TestCase
 
         $message = new PlainTextMessage($this->clauses, $string);
 
-        $clause_1 = $this->getMockBuilder(PlainTextClause::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $clause_1 = $this->createMock(PlainTextClause::class);
+        $clause_2 = $this->createMock(PlainTextClause::class);
+        $clause_3 = $this->createMock(PlainTextClause::class);
+        $clause_4 = $this->createMock(PlainTextClause::class);
 
-        $clause_2 = $this->getMockBuilder(PlainTextClause::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $clause_3 = $this->getMockBuilder(PlainTextClause::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $clause_4 = $this->getMockBuilder(PlainTextClause::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->clauses->expects($this->exactly(4))
+        $this->clauses->expects(self::exactly(4))
             ->method('create')
             ->withConsecutive(
                 ['врач.ставить(что:диагноз,кому:больной,когда:сейчас)'],

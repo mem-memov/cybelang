@@ -2,16 +2,14 @@
 
 namespace MemMemov\Cybe\Parser\PlainText;
 
-class PlainTextMessagesTest extends \PHPUnit_Framework_TestCase
+class PlainTextMessagesTest extends \PHPUnit\Framework\TestCase
 {
     /** @var PlainTextClauses|\PHPUnit_Framework_MockObject_MockObject */
     protected $clauses;
 
     protected function setUp()
     {
-        $this->clauses = $this->getMockBuilder(PlainTextClauses::class)
-            ->disableOriginalConstructor()
-            ->getMock($this->clauses);
+        $this->clauses = $this->createMock(PlainTextClauses::class);
     }
 
     public function testItCreatesMessage()

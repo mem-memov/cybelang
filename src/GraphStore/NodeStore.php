@@ -1,6 +1,6 @@
 <?php
 
-namespace MemMemov\NodeStore;
+namespace MemMemov\GraphStore;
 
 interface NodeStore
 {

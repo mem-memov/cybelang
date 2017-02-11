@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe\Parser\PlainText;
 
-class PlainTextClausesTest extends \PHPUnit_Framework_TestCase
+class PlainTextClausesTest extends \PHPUnit\Framework\TestCase
 {
     /** @var PlainTextPredicates|\PHPUnit_Framework_MockObject_MockObject */
     protected $predicates;
@@ -13,17 +13,9 @@ class PlainTextClausesTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->predicates = $this->getMockBuilder(PlainTextPredicates::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->subjects = $this->getMockBuilder(PlainTextSubjects::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->arguments = $this->getMockBuilder(PlainTextArguments::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->predicates = $this->createMock(PlainTextPredicates::class);
+        $this->subjects = $this->createMock(PlainTextSubjects::class);
+        $this->arguments = $this->createMock(PlainTextArguments::class);
     }
 
     public function testItCreatesClause()

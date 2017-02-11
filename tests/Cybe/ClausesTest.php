@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe;
 
-class ClausesTest extends \PHPUnit_Framework_TestCase
+class ClausesTest extends \PHPUnit\Framework\TestCase
 {
     /** @var Predicates|\PHPUnit_Framework_MockObject_MockObject */
     protected $predicates;
@@ -13,17 +13,9 @@ class ClausesTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->predicates = $this->getMockBuilder(Predicates::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->subjects = $this->getMockBuilder(Subjects::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->arguments = $this->getMockBuilder(Arguments::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->predicates = $this->createMock(Predicates::class);
+        $this->subjects = $this->createMock(Subjects::class);
+        $this->arguments = $this->createMock(Arguments::class);
     }
 
     public function testItCreatesClauseFromText()
@@ -36,15 +28,13 @@ class ClausesTest extends \PHPUnit_Framework_TestCase
 
         $predicateText = $this->createMock(Parser\Predicate::class);
 
-        $clauseText->expects($this->once())
+        $clauseText->expects(self::once())
             ->method('predicate')
             ->willReturn($predicateText);
 
-        $predicate = $this->getMockBuilder(Predicate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $predicate = $this->createMock(Predicate::class);
 
-        $this->predicates->expects($this->once())
+        $this->predicates->expects(self::once())
             ->method('fromText')
             ->with($predicateText)
             ->willReturn($predicate);
@@ -53,15 +43,13 @@ class ClausesTest extends \PHPUnit_Framework_TestCase
 
         $subjectText = $this->createMock(Parser\Subject::class);
 
-        $clauseText->expects($this->once())
+        $clauseText->expects(self::once())
             ->method('subject')
             ->willReturn($subjectText);
 
-        $subject = $this->getMockBuilder(Subject::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $subject = $this->createMock(Subject::class);
 
-        $this->subjects->expects($this->once())
+        $this->subjects->expects(self::once())
             ->method('fromText')
             ->with($subjectText)
             ->willReturn($subject);
@@ -71,20 +59,15 @@ class ClausesTest extends \PHPUnit_Framework_TestCase
         $argumentText_1 = $this->createMock(Parser\Argument::class);
         $argumentText_2 = $this->createMock(Parser\Argument::class);
 
-        $clauseText->expects($this->once())
+        $clauseText->expects(self::once())
             ->method('arguments')
             ->with()
             ->willReturn([$argumentText_1, $argumentText_2]);
 
-        $argument_1 = $this->getMockBuilder(Argument::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $argument_1 = $this->createMock(Argument::class);
+        $argument_2 = $this->createMock(Argument::class);
 
-        $argument_2 = $this->getMockBuilder(Argument::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->arguments->expects($this->exactly(2))
+        $this->arguments->expects(self::exactly(2))
             ->method('fromText')
             ->withConsecutive(
                 [$argumentText_1],

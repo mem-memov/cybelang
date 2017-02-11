@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe\Parser\PlainText;
 
-class PlainTextArgumentTest extends \PHPUnit_Framework_TestCase
+class PlainTextArgumentTest extends \PHPUnit\Framework\TestCase
 {
     /** @var PlainTextCategories|\PHPUnit_Framework_MockObject_MockObject */
     protected $categories;
@@ -11,13 +11,8 @@ class PlainTextArgumentTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->categories = $this->getMockBuilder(PlainTextCategories::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->complements = $this->getMockBuilder(PlainTextCompliments::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->categories = $this->createMock(PlainTextCategories::class);
+        $this->complements = $this->createMock(PlainTextCompliments::class);
     }
 
     public function testItHasCategory()
@@ -26,11 +21,9 @@ class PlainTextArgumentTest extends \PHPUnit_Framework_TestCase
 
         $argument = new PlainTextArgument($this->categories, $this->complements, $string);
 
-        $category = $this->getMockBuilder(PlainTextCategory::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $category = $this->createMock(PlainTextCategory::class);
 
-        $this->categories->expects($this->once())
+        $this->categories->expects(self::once())
             ->method('create')
             ->with('что')
             ->willReturn($category);
@@ -46,11 +39,9 @@ class PlainTextArgumentTest extends \PHPUnit_Framework_TestCase
 
         $argument = new PlainTextArgument($this->categories, $this->complements, $string);
 
-        $compliment = $this->getMockBuilder(PlainTextCompliment::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $compliment = $this->createMock(PlainTextCompliment::class);
 
-        $this->complements->expects($this->once())
+        $this->complements->expects(self::once())
             ->method('create')
             ->with('диагноз')
             ->willReturn($compliment);

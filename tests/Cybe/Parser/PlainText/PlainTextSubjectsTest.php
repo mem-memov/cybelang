@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe\Parser\PlainText;
 
-class SubjectsTest extends \PHPUnit_Framework_TestCase
+class SubjectsTest extends \PHPUnit\Framework\TestCase
 {
     public function testItCreatesSubject()
     {

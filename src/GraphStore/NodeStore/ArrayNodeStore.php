@@ -1,8 +1,10 @@
 <?php
 
-namespace MemMemov\NodeStore;
+namespace MemMemov\GraphStore\NodeStore;
 
-class ArrayNodeStore implements NodeStore
+use MemMemov\GraphStore\NodeStore as NodeStoreInterface;
+
+class ArrayNodeStore implements NodeStoreInterface
 {
     private $store;
 

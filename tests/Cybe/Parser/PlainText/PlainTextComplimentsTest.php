@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe\Parser\PlainText;
 
-class PlainTextComplimentsTest extends \PHPUnit_Framework_TestCase
+class PlainTextComplimentsTest extends \PHPUnit\Framework\TestCase
 {
     public function testItCreatesCompliment()
     {

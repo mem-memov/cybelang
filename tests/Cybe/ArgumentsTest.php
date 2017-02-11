@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe;
 
-class ArgumentsTest extends \PHPUnit_Framework_TestCase
+class ArgumentsTest extends \PHPUnit\Framework\TestCase
 {
     /** @var Categories|\PHPUnit_Framework_MockObject_MockObject */
     protected $categories;
@@ -11,13 +11,9 @@ class ArgumentsTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->categories = $this->getMockBuilder(Categories::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->categories = $this->createMock(Categories::class);
 
-        $this->compliments = $this->getMockBuilder(Compliments::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->compliments = $this->createMock(Compliments::class);
     }
 
     public function testItCreatesArgumentFromText()
@@ -30,15 +26,13 @@ class ArgumentsTest extends \PHPUnit_Framework_TestCase
 
         $categoryText = $this->createMock(Parser\Category::class);
 
-        $argumentText->expects($this->once())
+        $argumentText->expects(self::once())
             ->method('category')
             ->willReturn($categoryText);
 
-        $category = $this->getMockBuilder(Category::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $category = $this->createMock(Category::class);
 
-        $this->categories->expects($this->once())
+        $this->categories->expects(self::once())
             ->method('fromText')
             ->with($categoryText)
             ->willReturn($category);
@@ -47,15 +41,13 @@ class ArgumentsTest extends \PHPUnit_Framework_TestCase
 
         $complimentText = $this->createMock(Parser\Compliment::class);
 
-        $argumentText->expects($this->once())
+        $argumentText->expects(self::once())
             ->method('compliment')
             ->willReturn($complimentText);
 
-        $compliment = $this->getMockBuilder(Compliment::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $compliment = $this->createMock(Compliment::class);
 
-        $this->compliments->expects($this->once())
+        $this->compliments->expects(self::once())
             ->method('fromText')
             ->with($complimentText)
             ->willReturn($compliment);

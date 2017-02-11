@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe;
 
-class AuthorTest extends \PHPUnit_Framework_TestCase
+class AuthorTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $parser;
@@ -12,10 +12,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->parser = $this->createMock(Parser\Messages::class);
-
-        $this->messages = $this->getMockBuilder(Messages::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->messages = $this->createMock(Messages::class);
     }
 
     public function testItWritesMessage()
@@ -29,16 +26,14 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
 
         $messageText = $this->createMock(Parser\Message::class);
 
-        $this->parser->expects($this->once())
+        $this->parser->expects(self::once())
             ->method('create')
             ->with($text)
             ->willReturn($messageText);
 
-        $message = $this->getMockBuilder(Message::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $message = $this->createMock(Message::class);
 
-        $this->messages->expects($this->once())
+        $this->messages->expects(self::once())
             ->method('fromText')
             ->with($messageText)
             ->willReturn($message);

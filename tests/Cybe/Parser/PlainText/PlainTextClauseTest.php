@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe\Parser\PlainText;
 
-class PlainTextClauseTest extends \PHPUnit_Framework_TestCase
+class PlainTextClauseTest extends \PHPUnit\Framework\TestCase
 {
     /** @var PlainTextPredicates|\PHPUnit_Framework_MockObject_MockObject */
     protected $predicates;
@@ -13,17 +13,9 @@ class PlainTextClauseTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->predicates = $this->getMockBuilder(PlainTextPredicates::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->subjects = $this->getMockBuilder(PlainTextSubjects::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->arguments = $this->getMockBuilder(PlainTextArguments::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->predicates = $this->createMock(PlainTextPredicates::class);
+        $this->subjects = $this->createMock(PlainTextSubjects::class);
+        $this->arguments = $this->createMock(PlainTextArguments::class);
     }
 
     public function testItHasPredicate()
@@ -32,11 +24,9 @@ class PlainTextClauseTest extends \PHPUnit_Framework_TestCase
 
         $clause = new PlainTextClause($this->predicates, $this->subjects, $this->arguments, $string);
 
-        $predicate = $this->getMockBuilder(PlainTextPredicate::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $predicate = $this->createMock(PlainTextPredicate::class);
 
-        $this->predicates->expects($this->once())
+        $this->predicates->expects(self::once())
             ->method('create')
             ->with('ставить')
             ->willReturn($predicate);
@@ -52,11 +42,9 @@ class PlainTextClauseTest extends \PHPUnit_Framework_TestCase
 
         $clause = new PlainTextClause($this->predicates, $this->subjects, $this->arguments, $string);
 
-        $subject = $this->getMockBuilder(PlainTextSubject::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $subject = $this->createMock(PlainTextSubject::class);
 
-        $this->subjects->expects($this->once())
+        $this->subjects->expects(self::once())
             ->method('create')
             ->with('врач')
             ->willReturn($subject);
@@ -72,19 +60,11 @@ class PlainTextClauseTest extends \PHPUnit_Framework_TestCase
 
         $clause = new PlainTextClause($this->predicates, $this->subjects, $this->arguments, $string);
 
-        $argument_1 = $this->getMockBuilder(PlainTextArgument::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $argument_1 = $this->createMock(PlainTextArgument::class);
+        $argument_2 = $this->createMock(PlainTextArgument::class);
+        $argument_3 = $this->createMock(PlainTextArgument::class);
 
-        $argument_2 = $this->getMockBuilder(PlainTextArgument::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $argument_3 = $this->getMockBuilder(PlainTextArgument::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->arguments->expects($this->exactly(3))
+        $this->arguments->expects(self::exactly(3))
             ->method('create')
             ->withConsecutive(
                 ['что:диагноз'],

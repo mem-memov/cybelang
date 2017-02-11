@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybe\Parser\PlainText;
 
-class PredicatesTest extends \PHPUnit_Framework_TestCase
+class PredicatesTest extends \PHPUnit\Framework\TestCase
 {
     public function testItCreatesPredicate()
     {
