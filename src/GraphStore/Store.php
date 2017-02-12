@@ -1,6 +1,6 @@
 <?php
 
-namespace MemMemov\GraphStore\NodeStore;
+namespace MemMemov\GraphStore;
 
 use MemMemov\SpaceGraph\Store as SpaceGraphStore;
 

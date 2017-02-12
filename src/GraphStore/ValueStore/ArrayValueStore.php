@@ -49,12 +49,12 @@ class ArrayValueStore implements ValueStore
         $this->valueKey[$hash] = $key;
     }
 
-    public function getValue(string $key): string
+    public function value(string $key): string
     {
         return $this->keyValue[$key];
     }
 
-    public function getKey(string $value): string
+    public function key(string $value): string
     {
         $hash = $this->hash->create($value);
 

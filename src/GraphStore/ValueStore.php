@@ -6,7 +6,7 @@ interface ValueStore
 {
     public function bind(string $key, string $value);
 
-    public function getValue(string $key): string;
+    public function value(string $key): string;
 
-    public function getKey(string $value): string;
+    public function key(string $value): string;
 }

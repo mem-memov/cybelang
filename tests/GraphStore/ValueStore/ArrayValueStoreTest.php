@@ -49,7 +49,7 @@ class ArrayValueStoreTest extends TestCase
             ->willReturn('5946210c9e93ae37891dfe96c3e39614');
 
         $store->bind('1', 'some value');
-        $result = $store->getKey('some value');
+        $result = $store->key('some value');
 
         $this->assertEquals('1', $result);
     }
@@ -59,7 +59,7 @@ class ArrayValueStoreTest extends TestCase
         $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
 
         $store->bind('1', 'some value');
-        $result = $store->getValue('1');
+        $result = $store->value('1');
 
         $this->assertEquals('some value', $result);
     }
