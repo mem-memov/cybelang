@@ -6,11 +6,23 @@ use MemMemov\GraphStore\NodeStore as NodeStoreInterface;
 
 class ArrayNodeStore implements NodeStoreInterface
 {
+    private $path;
     private $store;
 
-    public function __construct()
+    public function __construct(string $path)
     {
-        $this->store = [];
+        $this->path = $path;
+
+        if (file_exists($this->path)) {
+            $this->store =  unserialize(file_get_contents($this->path));
+        } else {
+            $this->store = [];
+        }
+    }
+
+    public function __destruct()
+    {
+        file_put_contents($this->path, serialize($this->store));
     }
 
     public function create(): int

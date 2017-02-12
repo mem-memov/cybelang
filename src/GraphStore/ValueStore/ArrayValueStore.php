@@ -7,14 +7,34 @@ use MemMemov\GraphStore\ValueStore;
 class ArrayValueStore implements ValueStore
 {
     private $hash;
+    private $keyPath;
+    private $vlauePath;
     private $keyValue;
     private $valueKey;
 
-    public function __construct(Hash $hash)
+    public function __construct(Hash $hash, string $keyPath, string $vlauePath)
     {
         $this->hash = $hash;
-        $this->keyValue = [];
-        $this->valueKey = [];
+        $this->keyPath = $keyPath;
+        $this->vlauePath = $vlauePath;
+
+        if (file_exists($this->keyPath)) {
+            $this->keyValue = unserialize(file_get_contents($this->keyPath));
+        } else {
+            $this->keyValue = [];
+        }
+
+        if (file_exists($this->valuePath)) {
+            $this->valueValue = unserialize(file_get_contents($this->valuePath));
+        } else {
+            $this->valueValue = [];
+        }
+    }
+
+    public function __destruct()
+    {
+        file_put_contents($this->keyPath, serialize($this->keyValue));
+        file_put_contents($this->valuePath, serialize($this->valueValue));
     }
 
     public function bind(string $key, string $value)
