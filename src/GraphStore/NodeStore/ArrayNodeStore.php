@@ -13,10 +13,12 @@ class ArrayNodeStore implements NodeStoreInterface
     {
         $this->path = $path;
 
+        $this->store = [];
         if (file_exists($this->path)) {
-            $this->store =  unserialize(file_get_contents($this->path));
-        } else {
-            $this->store = [];
+            $contents = file_get_contents($this->path);
+            if (!empty($contents)) {
+                $this->store = unserialize();
+            }
         }
     }
 

@@ -2,7 +2,9 @@
 
 namespace MemMemov\Cybe\Parser\PlainText;
 
-class PlainTextComplimentsTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class PlainTextComplimentsTest extends TestCase
 {
     public function testItCreatesCompliment()
     {

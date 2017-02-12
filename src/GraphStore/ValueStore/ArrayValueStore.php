@@ -12,23 +12,27 @@ class ArrayValueStore implements ValueStore
     private $keyValue;
     private $valueKey;
 
-    public function __construct(Hash $hash, string $keyPath, string $vlauePath)
+    public function __construct(Hash $hash, string $keyPath, string $valuePath)
     {
         $this->hash = $hash;
         $this->keyPath = $keyPath;
-        $this->vlauePath = $vlauePath;
+        $this->valuePath = $valuePath;
 
+        $this->keyValue = [];
         if (file_exists($this->keyPath)) {
-            $this->keyValue = unserialize(file_get_contents($this->keyPath));
-        } else {
-            $this->keyValue = [];
+            $keyContents = file_get_contents($this->keyPath);
+            if (!empty($keyContents)) {
+                $this->keyValue = unserialize($keyContents);
+            }
         }
 
+        $this->valueValue = [];
         if (file_exists($this->valuePath)) {
-            $this->valueValue = unserialize(file_get_contents($this->valuePath));
-        } else {
-            $this->valueValue = [];
-        }
+            $valueContents = file_get_contents($this->valuePath);
+            if (!empty($valueContents)) {
+                $this->valueValue = unserialize($valueContents);
+            };
+        };
     }
 
     public function __destruct()

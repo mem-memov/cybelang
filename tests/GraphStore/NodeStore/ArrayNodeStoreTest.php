@@ -2,11 +2,26 @@
 
 namespace MemMemov\GraphStore\NodeStore;
 
-class ArrayNodeStoreTest extends \PHPUnit\Framework\TestCase
+use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
+
+class ArrayNodeStoreTest extends TestCase
 {
+    /** @var string */
+    protected $path;
+
+    protected function setUp()
+    {
+        vfsStream::setup('rootDirectory', null, [
+            'node_store.txt' => ''
+        ]);
+
+        $this->path = vfsStream::url('rootDirectory/node_store.txt');
+    }
+
     public function testItCreatesNode()
     {
-        $store = new ArrayNodeStore();
+        $store = new ArrayNodeStore($this->path);
 
         $result = $store->create();
 
@@ -15,7 +30,7 @@ class ArrayNodeStoreTest extends \PHPUnit\Framework\TestCase
 
     public function testItConnectsNodes()
     {
-        $store = new ArrayNodeStore();
+        $store = new ArrayNodeStore($this->path);
 
         $fromId = $store->create();
         $toId = $store->create();
@@ -29,7 +44,7 @@ class ArrayNodeStoreTest extends \PHPUnit\Framework\TestCase
 
     public function testItReadsNode()
     {
-        $store = new ArrayNodeStore();
+        $store = new ArrayNodeStore($this->path);
 
         $fromId = $store->create();
 
@@ -46,7 +61,7 @@ class ArrayNodeStoreTest extends \PHPUnit\Framework\TestCase
 
     public function testItChecksNodeConnected()
     {
-        $store = new ArrayNodeStore();
+        $store = new ArrayNodeStore($this->path);
 
         $fromId = $store->create();
         $toId = $store->create();
@@ -60,7 +75,7 @@ class ArrayNodeStoreTest extends \PHPUnit\Framework\TestCase
 
     public function testItChecksNodeNotConnected()
     {
-        $store = new ArrayNodeStore();
+        $store = new ArrayNodeStore($this->path);
 
         $fromId = $store->create();
         $toId = $store->create();

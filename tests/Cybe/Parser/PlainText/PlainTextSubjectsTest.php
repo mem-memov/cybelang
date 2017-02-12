@@ -2,7 +2,9 @@
 
 namespace MemMemov\Cybe\Parser\PlainText;
 
-class SubjectsTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class SubjectsTest extends TestCase
 {
     public function testItCreatesSubject()
     {

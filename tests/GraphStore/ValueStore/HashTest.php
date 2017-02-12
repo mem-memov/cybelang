@@ -2,7 +2,9 @@
 
 namespace MemMemov\GraphStore\ValueStore;
 
-class HashTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class HashTest extends TestCase
 {
     public function testItCreatesHash()
     {

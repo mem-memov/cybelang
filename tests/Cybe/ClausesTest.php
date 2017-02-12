@@ -2,7 +2,9 @@
 
 namespace MemMemov\Cybe;
 
-class ClausesTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class ClausesTest extends TestCase
 {
     /** @var Predicates|\PHPUnit_Framework_MockObject_MockObject */
     protected $predicates;

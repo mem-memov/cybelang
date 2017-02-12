@@ -2,7 +2,9 @@
 
 namespace MemMemov\Cybe;
 
-class AuthorTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class AuthorTest extends TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $parser;

@@ -2,7 +2,9 @@
 
 namespace MemMemov\Cybe\Parser\PlainText;
 
-class PlainTextArgumentTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class PlainTextArgumentTest extends TestCase
 {
     /** @var PlainTextCategories|\PHPUnit_Framework_MockObject_MockObject */
     protected $categories;
