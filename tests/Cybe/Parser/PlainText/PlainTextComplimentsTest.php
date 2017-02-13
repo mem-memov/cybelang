@@ -14,6 +14,6 @@ class PlainTextComplimentsTest extends TestCase
 
         $compliment = $compliments->create($string);
 
-        $this->assertInstanceOf(PlainTextCompliment::class, $compliment);
+        self::assertInstanceOf(PlainTextCompliment::class, $compliment);
     }
 }

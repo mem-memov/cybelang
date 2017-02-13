@@ -79,6 +79,6 @@ class ClausesTest extends TestCase
 
         $result = $clauses->fromText($clauseText);
 
-        $this->assertInstanceOf(Clause::class, $result);
+        self::assertInstanceOf(Clause::class, $result);
     }
 }

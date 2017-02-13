@@ -14,6 +14,6 @@ class SubjectsTest extends TestCase
 
         $result = $subjects->create($string);
 
-        $this->assertInstanceOf(PlainTextSubject::class, $result);
+        self::assertInstanceOf(PlainTextSubject::class, $result);
     }
 }

@@ -35,7 +35,7 @@ class PlainTextClauseTest extends TestCase
 
         $result = $clause->predicate();
 
-        $this->assertSame($predicate, $result);
+        self::assertSame($predicate, $result);
     }
 
     public function testItHasSubject()
@@ -53,7 +53,7 @@ class PlainTextClauseTest extends TestCase
 
         $result = $clause->subject();
 
-        $this->assertSame($subject, $result);
+        self::assertSame($subject, $result);
     }
 
     public function testItHasArguments()
@@ -77,6 +77,6 @@ class PlainTextClauseTest extends TestCase
 
         $result = $clause->arguments();
 
-        $this->assertEquals([$argument_1, $argument_2, $argument_3], $result);
+        self::assertEquals([$argument_1, $argument_2, $argument_3], $result);
     }
 }

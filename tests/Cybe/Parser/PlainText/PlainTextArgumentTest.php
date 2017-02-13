@@ -32,7 +32,7 @@ class PlainTextArgumentTest extends TestCase
 
         $result = $argument->category();
 
-        $this->assertSame($category, $result);
+        self::assertSame($category, $result);
     }
 
     public function testItHasCompliment()
@@ -50,6 +50,6 @@ class PlainTextArgumentTest extends TestCase
 
         $result = $argument->compliment();
 
-        $this->assertSame($compliment, $result);
+        self::assertSame($compliment, $result);
     }
 }

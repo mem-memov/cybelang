@@ -25,6 +25,6 @@ class PlainTextArgumentsTest extends TestCase
 
         $result = $arguments->create($string);
 
-        $this->assertInstanceOf(PlainTextArgument::class, $result);
+        self::assertInstanceOf(PlainTextArgument::class, $result);
     }
 }

@@ -41,6 +41,6 @@ class MessagesTest extends TestCase
 
         $result = $messages->fromText($messageText);
 
-        $this->assertInstanceOf(Message::class, $result);
+        self::assertInstanceOf(Message::class, $result);
     }
 }

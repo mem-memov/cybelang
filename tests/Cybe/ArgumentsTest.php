@@ -56,6 +56,6 @@ class ArgumentsTest extends TestCase
 
         $result = $arguments->fromText($argumentText);
 
-        $this->assertInstanceOf(Argument::class, $result);
+        self::assertInstanceOf(Argument::class, $result);
     }
 }

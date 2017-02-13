@@ -2,9 +2,9 @@
 
 namespace MemMemov\GraphStore;
 
-use MemMemov\SpaceGraph\Node as SpaceGraphNode;
+use MemMemov\SpaceGraph\Node;
 
-class Node implements SpaceGraphNode
+class GraphNode implements Node
 {
     private $store;
     private $id;
@@ -22,7 +22,7 @@ class Node implements SpaceGraphNode
         return $this->id;
     }
 
-    public function addNode(SpaceGraphNode $node)
+    public function addNode(Node $node)
     {
         $this->store->connect($this->id, $node->id());
     }

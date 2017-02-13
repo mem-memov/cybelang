@@ -9,4 +9,8 @@ interface ValueStore
     public function value(string $key): string;
 
     public function key(string $value): string;
+
+    public function hasValue(string $value): bool;
+
+    public function hasKey(string $key): bool;
 }

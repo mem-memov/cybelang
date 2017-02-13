@@ -8,7 +8,7 @@ class ArrayValueStore implements ValueStore
 {
     private $hash;
     private $keyPath;
-    private $vlauePath;
+    private $valuePath;
     private $keyValue;
     private $valueKey;
 
@@ -26,11 +26,11 @@ class ArrayValueStore implements ValueStore
             }
         }
 
-        $this->valueValue = [];
+        $this->valueKey = [];
         if (file_exists($this->valuePath)) {
             $valueContents = file_get_contents($this->valuePath);
             if (!empty($valueContents)) {
-                $this->valueValue = unserialize($valueContents);
+                $this->valueKey = unserialize($valueContents);
             };
         };
     }
@@ -38,7 +38,7 @@ class ArrayValueStore implements ValueStore
     public function __destruct()
     {
         file_put_contents($this->keyPath, serialize($this->keyValue));
-        file_put_contents($this->valuePath, serialize($this->valueValue));
+        file_put_contents($this->valuePath, serialize($this->valueKey));
     }
 
     public function bind(string $key, string $value)
@@ -59,5 +59,17 @@ class ArrayValueStore implements ValueStore
         $hash = $this->hash->create($value);
 
         return $this->valueKey[$hash];
+    }
+
+    public function hasValue(string $value): bool
+    {
+        $hash = $this->hash->create($value);
+
+        return array_key_exists($hash, $this->valueKey);
+    }
+
+    public function hasKey(string $key): bool
+    {
+        return array_key_exists($key, $this->keyValue);
     }
 }

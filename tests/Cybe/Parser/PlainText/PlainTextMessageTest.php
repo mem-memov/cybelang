@@ -41,6 +41,6 @@ class PlainTextMessageTest extends TestCase
 
         $result = $message->clauses();
 
-        $this->assertSame([$clause_1, $clause_2, $clause_3, $clause_4], $result);
+        self::assertSame([$clause_1, $clause_2, $clause_3, $clause_4], $result);
     }
 }

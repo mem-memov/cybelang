@@ -51,7 +51,7 @@ class ArrayValueStoreTest extends TestCase
         $store->bind('1', 'some value');
         $result = $store->key('some value');
 
-        $this->assertEquals('1', $result);
+        self::assertEquals('1', $result);
     }
 
     public function testItProvidesValueByKey()
@@ -61,6 +61,46 @@ class ArrayValueStoreTest extends TestCase
         $store->bind('1', 'some value');
         $result = $store->value('1');
 
-        $this->assertEquals('some value', $result);
+        self::assertEquals('some value', $result);
+    }
+
+    public function testItChecksItHasGotAValue()
+    {
+        $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
+
+        $store->bind('1', 'some value');
+
+        $result =  $store->hasValue('some value');
+
+        self::assertTrue($result);
+    }
+
+    public function testItChecksItHasNotGotAValue()
+    {
+        $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
+
+        $result =  $store->hasValue('some value');
+
+        self::assertFalse($result);
+    }
+
+    public function testItChecksItHasGotAKey()
+    {
+        $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
+
+        $store->bind('1', 'some value');
+
+        $result =  $store->hasKey('1');
+
+        self::assertTrue($result);
+    }
+
+    public function testItChecksItHasNotGotAKey()
+    {
+        $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
+
+        $result =  $store->hasKey('1');
+
+        self::assertFalse($result);
     }
 }
