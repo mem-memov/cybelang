@@ -4,6 +4,7 @@ namespace MemMemov\Cybe;
 
 class Clause
 {
+    private $graphNode;
     private $predicate;
     private $subject;
     private $arguments;

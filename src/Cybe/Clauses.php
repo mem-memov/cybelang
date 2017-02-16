@@ -2,8 +2,11 @@
 
 namespace MemMemov\Cybe;
 
+
+
 class Clauses
 {
+    private $graphSpace;
     private $predicates;
     private $subjects;
     private $arguments;

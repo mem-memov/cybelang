@@ -35,4 +35,9 @@ class GraphValue implements Value
     {
         $this->node->addNode($node);
     }
+
+    public function has(Node $node): bool
+    {
+        $this->node->has($node);
+    }
 }

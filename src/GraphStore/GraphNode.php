@@ -26,4 +26,9 @@ class GraphNode implements Node
     {
         $this->store->connect($this->id, $node->id());
     }
+
+    public function has(Node $node): bool
+    {
+        $this->store->contains($this->id, $node->id());
+    }
 }

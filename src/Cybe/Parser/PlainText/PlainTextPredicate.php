@@ -12,4 +12,9 @@ class PlainTextPredicate implements Predicate
     {
         $this->string = $string;
     }
+
+    public function getWords(): array
+    {
+        return explode(' ', $this->string);
+    }
 }

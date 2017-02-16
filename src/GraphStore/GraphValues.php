@@ -15,7 +15,7 @@ class GraphValues
         $this->nodes = $nodes;
     }
 
-    public function create(string $contents): GraphValue
+    public function readOrCreate(string $contents): GraphValue
     {
         if ($this->store->hasValue($contents)) {
             $key = $this->store->key($contents);
@@ -37,15 +37,6 @@ class GraphValues
         if (!$this->store->hasKey($key)) {
             throw new \Exception();
         }
-
-        return new GraphValue($this->store, $key, $node);
-    }
-
-    public function readByContents(string $contents): GraphValue
-    {
-        $key = $this->store->key($contents);
-        $id = (int)$key;
-        $node = $this->nodes->read($id);
 
         return new GraphValue($this->store, $key, $node);
     }

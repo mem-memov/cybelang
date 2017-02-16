@@ -29,7 +29,7 @@ class GraphStore implements Graph
         return $this->nodes->read($id);
     }
 
-    public function createValue(string $contents): Value
+    public function readOrCreateValue(string $contents): Value
     {
         return $this->values->create($contents);
     }
@@ -37,10 +37,5 @@ class GraphStore implements Graph
     public function readValueByNode(Node $node): Value
     {
         return $this->values->readByNode($node);
-    }
-
-    public function readValueByContents(string $contents): Value
-    {
-        return $this->values->readByContents($contents);
     }
 }
