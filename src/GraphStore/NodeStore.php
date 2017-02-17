@@ -6,7 +6,7 @@ interface NodeStore
 {
     public function create(): int;
 
-    public function read(int $id);
+    public function read(int $id): array;
 
     public function connect(int $fromId, int $toId): void;
 

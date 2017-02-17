@@ -6,35 +6,43 @@ namespace MemMemov\Cybe;
 
 class Clauses
 {
-    private $graphSpace;
-    private $predicates;
+    private static $graphSpace = 'clause';
+
+    private $graph;
     private $subjects;
+    private $predicates;
     private $arguments;
 
     public function __construct(
-        Predicates $predicates,
+        Graph $graph,
         Subjects $subjects,
+        Predicates $predicates,
         Arguments $arguments
     ) {
-        $this->predicates = $predicates;
+        $this->graph = $graph;
         $this->subjects = $subjects;
+        $this->predicates = $predicates;
         $this->arguments = $arguments;
     }
 
     public function fromText(Parser\Clause $clauseText): Clause
     {
-        $predicate = $this->predicates->fromText($clauseText->predicate());
         $subject = $this->subjects->fromText($clauseText->subject());
+        $predicate = $this->predicates->fromText($clauseText->predicate());
 
-        $arguments = [];
-        foreach ($clauseText->arguments() as $argumentText) {
-            $arguments[] = $this->arguments->fromText($argumentText);
-        }
+        $argumentIds = array_map(function(Parser\Argument $argumentText) {
+            return $this->arguments->fromText($argumentText)->id();
+        }, $clauseText->arguments());
+
+        $memberIds = array_merge([$subject->id(), $predicate->id()], $argumentIds);
+
+        $clauseNode = $this->graph->сreateNode(self::$graphSpace, $memberIds);
 
         return new Clause(
-            $predicate,
-            $subject,
-            $arguments
+            $clauseNode->id(),
+            $this->subjects,
+            $this->predicates,
+            $this->arguments
         );
     }
 }

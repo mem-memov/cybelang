@@ -11,4 +11,10 @@ interface Graph
     public function readOrCreateValue(string $contents): Value;
 
     public function readValueByNode(Node $node): Value;
+
+    /**
+     * @param Node[] $nodes
+     * @return Node[]
+     */
+    public function intersect(array $nodes): array;
 }

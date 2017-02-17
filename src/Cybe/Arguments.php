@@ -34,18 +34,20 @@ class Arguments
         );
     }
 
-    public function ofClause(Clause $clause): Arguments
+    public function ofPredicate(Predicate $predicate): Arguments
     {
-        $clauseNode = $this->graph->readNode($clause->id());
+        $predicateNode = $this->graph->readNode($predicate->id());
 
-        $argumentNodes = $clauseNode->all(self::$type);
+        $arguments = [];
 
-        return array_map(function(GraphNode $argumentNode) {
-            return new Argument(
+        $predicateNode->all(self::$type, function(GraphNode $argumentNode) use ($arguments) {
+            $arguments[] = new Argument(
                 $argumentNode->id(),
                 $this->categories,
                 $this->compliments
             );
-        }, $argumentNodes);
+        });
+
+        return $arguments;
     }
 }

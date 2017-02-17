@@ -4,35 +4,27 @@ namespace MemMemov\Cybe;
 
 class Clause
 {
-    private $graphNode;
+    private $id;
     private $subjects;
     private $predicates;
-    private $arguments;
 
     public function __construct(
-        GraphNode $graphNode,
+        int $id,
         Subjects $subjects,
-        Predicates $predicates,
-        Arguments $arguments
+        Predicates $predicates
     ) {
-        $this->graphNode = $graphNode;
+        $this->id = $id;
         $this->subjects = $subjects;
         $this->predicates = $predicates;
-        $this->arguments = $arguments;
     }
 
     public function subject(): Subject
     {
-        return $this->subjects->ofClause($this->graphNode);
+        return $this->subjects->ofClause($this);
     }
 
     public function predicate(): Predicate
     {
-        return $this->predicates->ofClause($this->graphNode);
-    }
-
-    public function arguments(): ClauseArguments
-    {
-        return $this->arguments()->ofClause($this->graphNode);
+        return $this->predicates->ofClause($this);
     }
 }

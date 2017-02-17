@@ -5,11 +5,14 @@ namespace MemMemov\SpaceGraph;
 class Space
 {
     private $value;
+    private $graph;
 
     public function __construct(
-        $value
+        $value,
+        $graph
     ) {
         $this->value = $value;
+        $this->graph = $graph;
     }
 
     public function has(Node $node): bool

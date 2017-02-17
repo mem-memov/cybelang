@@ -7,7 +7,6 @@ use MemMemov\Cybe\SpaceGraph;
 class Spaces implements SpaceGraph
 {
     private $graph;
-
     private $root;
 
     public function __construct(
@@ -18,11 +17,14 @@ class Spaces implements SpaceGraph
         $this->root = $this->graph->readOrCreateValue($rootKey);
     }
 
-    public function readOrCreateSpace(string $type): Space
+    public function createSpace(string $type): Space
     {
         $value = $this->graph->readOrCreateValue($type);
         $this->root->addNode($value);
 
-        return new Space($value);
+        return new Space(
+            $value,
+            $this->graph
+        );
     }
 }

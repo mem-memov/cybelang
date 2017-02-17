@@ -31,4 +31,13 @@ class GraphNode implements Node
     {
         $this->store->contains($this->id, $node->id());
     }
+
+    public function nodes(): array
+    {
+        $ids = $this->store->read($this->id);
+
+        return array_map(function(int $id) {
+            return new self($this->store, $id);
+        }, $ids);
+    }
 }
