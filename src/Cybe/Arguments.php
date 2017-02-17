@@ -4,6 +4,8 @@ namespace MemMemov\Cybe;
 
 class Arguments
 {
+    private static $type = 'argument';
+
     private $categories;
     private $compliments;
 
@@ -24,5 +26,12 @@ class Arguments
             $category,
             $compliment
         );
+    }
+
+    public function ofClause(GraphNode $clauseNode): ClauseArguments
+    {
+        $argumentNodes = $clauseNode->allOfType(self::$type);
+
+        return new ClauseArguments($argumentNodes);
     }
 }

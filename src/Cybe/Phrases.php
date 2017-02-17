@@ -4,25 +4,25 @@ namespace MemMemov\Cybe;
 
 class Phrases
 {
-    private $spaceGraph;
+    private $graph;
     private $words;
 
     public function __construct(
-        SpaceGraph $spaceGraph,
+        Graph $graph,
         Words $words
     ) {
-        $this->spaceGraph = $spaceGraph;
+        $this->graph = $graph;
         $this->words = $words;
     }
 
     public function fromWords(array $wordStrings): Phrase
     {
-        $words[] = array_map(function (string $letters) {
-            return $this->words->fromLetters($letters);
+        $wordIds = array_map(function (string $letters) {
+            return $this->words->fromLetters($letters)->id();
         }, $wordStrings);
 
-        $wordSequence = $this->spaceGraph->readOrCreateNode('phrase', $words);
+        $wordSequence = $this->graph->readOrCreateSequence('phrase', $words);
 
-        return new Phrase();
+        return new Phrase($wordSequence);
     }
 }

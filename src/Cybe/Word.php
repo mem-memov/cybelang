@@ -11,11 +11,11 @@ class Word
     public function __construct(
         GraphValue $graphValue
     ) {
-        $graphValue = $graphValue;
+        $this->graphValue = $graphValue;
     }
 
-    public function getId(): int
+    public function id(): int
     {
-        return $graphValue->id();
+        return $this->graphValue->id();
     }
 }
