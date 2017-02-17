@@ -28,4 +28,16 @@ class Categories
             $this->phrases
         );
     }
+
+    public function ofArgument(Argument $argument): Category
+    {
+        $argumentNode = $this->graph->readNode($argument->id());
+
+        $categoryNode = $argumentNode->one(self::$graphSpace);
+
+        return new Category(
+            $categoryNode->id(),
+            $this->phrases
+        );
+    }
 }

@@ -22,24 +22,30 @@ class Arguments
 
     public function fromText(Parser\Argument $argumentText): Argument
     {
-        $argumentNode = $this->graph->readOrCreateNode(self::$type, []);
+        $category = $this->categories->fromText($argumentText->category());
+        $compliment = $this->compliments->fromText($argumentText->compliment());
 
-        $argument = new Argument(
-            $argumentNode,
+        $argumentNode = $this->graph->createNode(self::$type, [$category->id(), $compliment->id()]);
+
+        return new Argument(
+            $argumentNode->id(),
             $this->categories,
             $this->compliments
         );
-
-        $this->categories->fromText($argument, $argumentText->category());
-        $this->compliments->fromText($argument, $argumentText->compliment());
-
-        return $argument;
     }
 
-    public function ofClause(GraphNode $clauseNode): Arguments
+    public function ofClause(Clause $clause): Arguments
     {
-        $argumentNodes = $clauseNode->allOfType(self::$type);
+        $clauseNode = $this->graph->readNode($clause->id());
 
-        return new ClauseArguments($argumentNodes);
+        $argumentNodes = $clauseNode->all(self::$type);
+
+        return array_map(function(GraphNode $argumentNode) {
+            return new Argument(
+                $argumentNode->id(),
+                $this->categories,
+                $this->compliments
+            );
+        }, $argumentNodes);
     }
 }
