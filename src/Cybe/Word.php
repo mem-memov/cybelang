@@ -2,20 +2,26 @@
 
 namespace MemMemov\Cybe;
 
-use MemMemov\GraphStore\GraphValue;
-
 class Word
 {
-    private $graphValue;
+    private $id;
+    private $content;
 
     public function __construct(
-        GraphValue $graphValue
+        int $id,
+        string $content
     ) {
-        $this->graphValue = $graphValue;
+        $this->id = $id;
+        $this->content = $content;
     }
 
     public function id(): int
     {
-        return $this->graphValue->id();
+        return $this->id;
+    }
+
+    public function content(): string
+    {
+        return $this->content;
     }
 }

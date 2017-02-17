@@ -4,14 +4,17 @@ namespace MemMemov\Cybe;
 
 class Argument
 {
-    private $category;
-    private $compliment;
+    private $graphNode;
+    private $categories;
+    private $compliments;
 
     public function __construct(
-        Category $category,
-        Compliment $compliment
+        GraphNode $graphNode,
+        Categories $categories,
+        Compliments $compliments
     ) {
-        $this->category = $category;
-        $this->compliment = $compliment;
+        $this->graphNode = $graphNode;
+        $this->categories = $categories;
+        $this->compliments = $compliments;
     }
 }

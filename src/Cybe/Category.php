@@ -4,11 +4,19 @@ namespace MemMemov\Cybe;
 
 class Category
 {
-    private $phrase;
+    private $id;
+    private $phrases;
 
     public function __construct(
-        Phrase $phrase
+        int $id,
+        Phrases $phrases
     ) {
-        $this->phrase = $phrase;
+        $this->id = $id;
+        $this->phrases = $phrases;
+    }
+
+    public function phrase(): Phrase
+    {
+        return $this->phrases->ofCategory($this);
     }
 }

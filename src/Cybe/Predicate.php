@@ -4,14 +4,19 @@ namespace MemMemov\Cybe;
 
 class Predicate
 {
-    private $graphNode;
+    private $id;
     private $phrases;
 
     public function __construct(
-        GraphNode $graphNode,
+        int $id,
         Phrases $phrases
     ) {
-        $this->graphNode = $graphNode;
+        $this->id = $id;
         $this->phrases = $phrases;
+    }
+
+    public function phrase(): Phrase
+    {
+        return $this->phrases->ofPredicate($this);
     }
 }

@@ -5,7 +5,6 @@ namespace MemMemov\Cybe;
 interface GraphNode
 {
     public function id(): int;
-
-    public function oneOfType(string $type): GraphNode;
-    public function allOfType(string $type): array;
+    public function one(string $space): GraphNode;
+    public function all(string $space, callable $use): void;
 }
