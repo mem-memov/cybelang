@@ -12,6 +12,8 @@ interface Store
      */
     public function readNode(int $id): array;
 
+    public function connectNodes(int $fromId, int $toId): void;
+
     public function provideNode(string $value): int;
 
     public function readValue(int $id): string;

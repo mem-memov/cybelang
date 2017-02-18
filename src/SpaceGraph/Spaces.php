@@ -6,20 +6,20 @@ use MemMemov\Cybe\SpaceGraph;
 
 class Spaces implements SpaceGraph
 {
-    private $graph;
+    private $store;
     private $root;
 
     public function __construct(
-        Graph $graph,
+        Store $store,
         string $rootKey
     ) {
-        $this->graph = $graph;
-        $this->root = $this->graph->readOrCreateValue($rootKey);
+        $this->store = $store;
+        $this->root = $this->store->readOrCreateValue($rootKey);
     }
 
     public function provideSpace(string $name): Space
     {
-        $value = $this->graph->privideNodeForValue($name);
+        $value = $this->store->provideNode($name);
         $this->root->addNode($value);
 
         return new Space(

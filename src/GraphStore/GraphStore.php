@@ -27,13 +27,18 @@ class GraphStore implements Store
         return $this->nodeStore->read($id);
     }
 
+    public function connectNodes(int $fromId, int $toId): void
+    {
+        $this->nodeStore->connect($fromId, $toId);
+    }
+
     public function provideNode(string $value): int
     {
         if ($this->valueStore->hasValue($value)) {
             $id = (int)$this->valueStore->key($contents);
         } else {
             $id = $this->nodeStore->create();
-            $this->store->bind((string)$id, $value);
+            $this->valueStore->bind((string)$id, $value);
         }
 
         return $id;

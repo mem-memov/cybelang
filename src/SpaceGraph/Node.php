@@ -2,23 +2,24 @@
 
 namespace MemMemov\SpaceGraph;
 
-use MemMemov\Cybe\GraphNode;
-
-class Node implements GraphNode
+class Node
 {
     private $id;
     private $ids;
+    private $store;
     private $nodes;
 
     public function __construct(
         int $id,
         array $ids,
+        Store $store,
         Nodes $nodes
     ) {
         $this->id = $id;
         $this->ids = array_map(function(int $id) {
             return $id;
         }, $ids);
+        $this->store = $store;
         $this->nodes = $nodes;
     }
 
@@ -27,16 +28,18 @@ class Node implements GraphNode
         return $this->id;
     }
 
-    public function one(string $type): GraphNode
+    /**
+     * @return Node[]
+     */
+    public function all(): array
     {
-        $ids = $this->store->readNode($this->id);
-        $space = $this->spaces->provideSpace($type);
-
-
+        return array_map(function(int $id) {
+            return $this->nodes->readNode($id);
+        }, $this->ids);
     }
 
-    public function all(string $type, callable $use): void
+    public function add(Node $node)
     {
-
+        $this->store->connectNodes($this->id, $node->id());
     }
 }
