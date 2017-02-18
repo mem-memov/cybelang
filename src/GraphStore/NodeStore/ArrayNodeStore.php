@@ -54,4 +54,17 @@ class ArrayNodeStore implements NodeStoreInterface
     {
         return in_array($toId, $this->store[$fromId]);
     }
+
+    public function intersect(array $fromIds): array
+    {
+        $toIds = [];
+
+        foreach ($fromIds as $fromId) {
+            $toIds[] = $this->store[$fromId];
+        }
+
+        $uniqueToIds = array_unique(call_user_func_array('array_merge', $toIds));
+
+        return call_user_func_array('array_intersect', array_unshift($toIds, $uniqueToIds));
+    }
 }

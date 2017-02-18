@@ -11,4 +11,6 @@ interface NodeStore
     public function connect(int $fromId, int $toId): void;
 
     public function contains(int $fromId, int $toId): bool;
+
+    public function intersect(array $ids): array;
 }

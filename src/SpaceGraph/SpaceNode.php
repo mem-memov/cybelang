@@ -24,7 +24,7 @@ class SpaceNode implements GraphNode
 
     public function one(string $type): GraphNode
     {
-        $space = $this->spaces->createSpace($type);
+        $space = $this->spaces->provideSpace($type);
 
 
     }

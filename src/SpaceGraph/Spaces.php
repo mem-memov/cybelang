@@ -17,9 +17,9 @@ class Spaces implements SpaceGraph
         $this->root = $this->graph->readOrCreateValue($rootKey);
     }
 
-    public function createSpace(string $type): Space
+    public function provideSpace(string $name): Space
     {
-        $value = $this->graph->readOrCreateValue($type);
+        $value = $this->graph->privideNodeForValue($name);
         $this->root->addNode($value);
 
         return new Space(

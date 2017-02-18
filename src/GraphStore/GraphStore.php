@@ -8,34 +8,46 @@ use MemMemov\SpaceGraph\Graph;
 
 class GraphStore implements Graph
 {
-    private $nodes;
-    private $values;
+    private $nodeStore;
+    private $valueStore;
 
     public function __construct(
-        GraphNodes $nodes,
-        GraphValues $values
+        NodeStore $nodeStore,
+        ValueStore $valueStore
     ) {
-        $this->nodes = $nodes;
-        $this->values = $values;
+        $this->nodeStore = $nodeStore;
+        $this->valueStore = $valueStore;
     }
 
-    public function createNode(): Node
+    public function createNode(): int
     {
-        return $this->nodes->create();
+        return $this->nodeStore->create();
     }
 
-    public function readNode(int $id): Node
+    public function readNode(int $id): array
     {
-        return $this->nodes->read($id);
+        return $this->nodeStore->read($id);
     }
 
-    public function readOrCreateValue(string $contents): Value
+    public function provideNode(string $value): int
     {
-        return $this->values->create($contents);
+        if ($this->valueStore->hasValue($value)) {
+            $id = (int)$this->valueStore->key($contents);
+        } else {
+            $id = $this->nodeStore->create();
+            $this->store->bind((string)$id, $value);
+        }
+
+        return $id;
     }
 
-    public function readValueByNode(Node $node): Value
+    public function readValue(int $id): string
     {
-        return $this->values->readByNode($node);
+        return $this->valueStore->value((string)$id);
+    }
+
+    public function commonNodes(array $ids): array
+    {
+        return $this->nodeStore->intersect($ids);
     }
 }

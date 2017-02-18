@@ -4,17 +4,21 @@ namespace MemMemov\SpaceGraph;
 
 interface Graph
 {
-    public function createNode(): Node;
+    public function createNode(): int;
 
-    public function readNode(int $id): Node;
+    /**
+     * @param int $id
+     * @return int[]
+     */
+    public function readNode(int $id): array;
 
-    public function readOrCreateValue(string $contents): Value;
+    public function provideNode(string $value): int;
 
-    public function readValueByNode(Node $node): Value;
+    public function readValue(int $id): string;
 
     /**
      * @param Node[] $nodes
      * @return Node[]
      */
-    public function intersect(array $nodes): array;
+    public function intersect(array $ids): array;
 }
