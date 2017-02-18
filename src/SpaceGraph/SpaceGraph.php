@@ -2,46 +2,56 @@
 
 namespace MemMemov\SpaceGraph;
 
-use MemMemov\Cybe\Graph as CybeGraph;
+use MemMemov\Cybe\Graph;
 use MemMemov\Cybe\GraphNode;
 use MemMemov\Cybe\GraphSequence;
 use MemMemov\Cybe\GraphValue;
 
-class SpaceGraph implements CybeGraph
+class SpaceGraph implements Graph
 {
-    private $graph;
+    private $store;
     private $spaces;
 
     public function __construct(
-        Graph $graph,
+        Store $store,
         Spaces $spaces
     ) {
-        $this->graph = $graph;
+        $this->store = $store;
         $this->spaces = $spaces;
     }
 
-    public function сreateCommonNode(string $type, array $ids): SpaceNode
+    public function provideCommonNode(string $type, array $ids): SpaceNode
     {
         $space = $this->spaces->provideSpace($type);
 
-        $nodes = array_map(function(int $id) {
-            return $this->graph->readNode($id);
-        }, $ids);
-
-        $commonIds = $this->graph->intersect($nodes);
+        $idCount = count($ids);
+        $commonIds = array_filter(
+            $this->store->intersect($ids),
+            function(int $commonId) use ($idCount) {
+                return $this->store->countNode($commonId) === $idCount;
+            }
+        );
 
         $commonIdCount = count($commonIds);
 
-        if (1 === $commonIdCount) {
-            $commonId = $commonIds[0];
-        } elseif (0 === $commonIdCount) {
-            $commonId = $this->graph->createNode();
-            $space->add($commonNode);
+        if (0 === $commonIdCount) {
+            $commonId = $this->store->createNode();
+            //$space->add($commonNode);
             array_map(function(Node $node) use ($commonNode) {
                 $commonNode->addNode($node);
                 $node->addNode($commonNode);
             }, $nodes);
-        } else {
+        } elseif () {
+            $idCount = count($ids);
+            $countedCommonIds = [];
+            foreach ($commonIds as $commonId) {
+                if ($this->store->countNode($commonId) === $idCount) {
+                    $countedCommonIds[] = $commonId;
+                }
+            }
+            if () {
+
+            }
             throw new \Exception('Multiple common nodes detected');
         }
 

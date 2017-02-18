@@ -4,20 +4,20 @@ namespace MemMemov\SpaceGraph;
 
 class Space
 {
-    private $value;
-    private $graph;
+    private $id;
+    private $store;
 
     public function __construct(
-        $value,
-        $graph
+        int $id,
+        Store $store
     ) {
-        $this->value = $value;
-        $this->graph = $graph;
+        $this->id = $id;
+        $this->store = $store;
     }
 
-    public function has(Node $node): bool
+    public function has(int $id): bool
     {
-        return $node->has($this->value);
+        return $this->store->contains($id, $this->id);
     }
 
     public function add(Node $node): void
