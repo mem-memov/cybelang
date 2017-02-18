@@ -2,11 +2,9 @@
 
 namespace MemMemov\GraphStore;
 
-use MemMemov\SpaceGraph\Node;
-use MemMemov\SpaceGraph\Value;
-use MemMemov\SpaceGraph\Graph;
+use MemMemov\SpaceGraph\Store;
 
-class GraphStore implements Graph
+class GraphStore implements Store
 {
     private $nodeStore;
     private $valueStore;

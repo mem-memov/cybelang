@@ -20,8 +20,12 @@ class Subjects
     public function fromText(Parser\Subject $subjectText): Subject
     {
         $phrase = $this->phrases->fromWords($subjectText->getWords());
+        $subjectNode = $this->graph->сreateNode(self::$graphSpace, [$phrase->id()]);
 
-        return new Subject($phrase);
+        return new Subject(
+            $subjectNode->id(),
+            $this->phrases
+        );
     }
 
     public function ofClause(Clause $clause): Subject

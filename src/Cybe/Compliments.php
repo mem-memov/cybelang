@@ -20,7 +20,6 @@ class Compliments
     public function fromText(Parser\Compliment $complimentText): Compliment
     {
         $phrase = $this->phrases->fromWords($complimentText->words());
-
         $complimentNode = $this->graph->сreateNode(self::$graphSpace, [$phrase->id()]);
 
         return new Compliment(
@@ -32,7 +31,6 @@ class Compliments
     public function ofArgument(Argument $argument): Compliment
     {
         $argumentNode = $this->graph->readNode($argument->id());
-
         $complimentNode = $argumentNode->one(self::$graphSpace);
 
         return new Compliment(

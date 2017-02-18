@@ -30,7 +30,7 @@ class Words
         $words = [];
 
         $phraseSequence->each(function (int $id) use ($words) {
-            $wordValue = $this->graph->readValue(self::$graphSpace, $id);
+            $wordValue = $this->graph->readValue($id);
             $words[] = new Word(
                 $wordValue->id(),
                 $wordValue->content()

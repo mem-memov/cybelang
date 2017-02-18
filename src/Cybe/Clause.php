@@ -7,15 +7,18 @@ class Clause
     private $id;
     private $subjects;
     private $predicates;
+    private $arguments;
 
     public function __construct(
         int $id,
         Subjects $subjects,
-        Predicates $predicates
+        Predicates $predicates,
+        Arguments $arguments
     ) {
         $this->id = $id;
         $this->subjects = $subjects;
         $this->predicates = $predicates;
+        $this->arguments = $arguments;
     }
 
     public function subject(): Subject
@@ -25,6 +28,11 @@ class Clause
 
     public function predicate(): Predicate
     {
-        return $this->predicates->ofClause($this);
+        return $this->predicates->ofClause($this->graphNode);
+    }
+
+    public function arguments(): array
+    {
+        return $this->arguments()->ofClause($this->graphNode);
     }
 }

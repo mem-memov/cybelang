@@ -20,11 +20,9 @@ class Phrase
         return $this->id;
     }
 
-    public function words(callable $use): void
+    public function words(callable $use): array
     {
         $words = $this->words->ofPhrase($this);
-        foreach ($words as $word) {
-            $use($word);
-        }
+        return array_map($use, $words);
     }
 }

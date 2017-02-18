@@ -28,14 +28,14 @@ class SpaceGraph implements CybeGraph
             return $this->graph->readNode($id);
         }, $ids);
 
-        $commonNodes = $this->graph->intersect($nodes);
+        $commonIds = $this->graph->intersect($nodes);
 
-        $commonNodeCount = count($commonNodes);
+        $commonIdCount = count($commonIds);
 
-        if (1 === $commonNodeCount) {
-            $commonNode = $commonNodes[0];
-        } elseif (0 === $commonNodeCount) {
-            $commonNode = $this->graph->createNode();
+        if (1 === $commonIdCount) {
+            $commonId = $commonIds[0];
+        } elseif (0 === $commonIdCount) {
+            $commonId = $this->graph->createNode();
             $space->add($commonNode);
             array_map(function(Node $node) use ($commonNode) {
                 $commonNode->addNode($node);
@@ -45,7 +45,7 @@ class SpaceGraph implements CybeGraph
             throw new \Exception('Multiple common nodes detected');
         }
 
-        return new SpaceNode($commonNode, $this->spaces);
+        return new SpaceNode($commonId, $type, $this->graph, $this->spaces);
     }
 
     public function readNode(int $id): GraphNode

@@ -4,7 +4,7 @@ namespace MemMemov\Cybe;
 
 class Arguments
 {
-    private static $type = 'argument';
+    private static $graphSpace = 'argument';
 
     private $graph;
     private $categories;
@@ -25,7 +25,7 @@ class Arguments
         $category = $this->categories->fromText($argumentText->category());
         $compliment = $this->compliments->fromText($argumentText->compliment());
 
-        $argumentNode = $this->graph->createNode(self::$type, [$category->id(), $compliment->id()]);
+        $argumentNode = $this->graph->createNode(self::$graphSpace, [$category->id(), $compliment->id()]);
 
         return new Argument(
             $argumentNode->id(),
@@ -34,13 +34,17 @@ class Arguments
         );
     }
 
-    public function ofPredicate(Predicate $predicate): Arguments
+    /**
+     * @param Predicate $predicate
+     * @return Argument[]
+     */
+    public function ofPredicate(Predicate $predicate): array
     {
         $predicateNode = $this->graph->readNode($predicate->id());
 
         $arguments = [];
 
-        $predicateNode->all(self::$type, function(GraphNode $argumentNode) use ($arguments) {
+        $predicateNode->all(self::$graphSpace, function(GraphNode $argumentNode) use ($arguments) {
             $arguments[] = new Argument(
                 $argumentNode->id(),
                 $this->categories,

@@ -20,16 +20,15 @@ class Predicates
         $this->phrases = $phrases;
     }
 
-    public function fromText(Parser\Predicate $predicateText, Parser): Predicate
+    public function fromText(Parser\Predicate $predicateText): Predicate
     {
-        $this->arguments->fromText($predicateText->)
-
-        $predicateNode = $this->graph->сreateNode(self::$graphSpace, );
-
         $phrase = $this->phrases->fromWords($predicateText->getWords());
+        $predicateNode = $this->graph->сreateNode(self::$graphSpace, [$phrase->id()]);
 
-
-        return new Predicate($phrase);
+        return new Predicate(
+            $predicateNode->id(),
+            $this->phrases
+        );
     }
 
     public function ofClause(Clause $clause): Predicate

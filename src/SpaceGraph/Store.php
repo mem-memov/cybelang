@@ -2,7 +2,7 @@
 
 namespace MemMemov\SpaceGraph;
 
-interface Graph
+interface Store
 {
     public function createNode(): int;
 
@@ -17,8 +17,8 @@ interface Graph
     public function readValue(int $id): string;
 
     /**
-     * @param Node[] $nodes
-     * @return Node[]
+     * @param int[] $nodes
+     * @return int[]
      */
-    public function intersect(array $ids): array;
+    public function commonNodes(array $ids): array;
 }
