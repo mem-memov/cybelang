@@ -25,6 +25,11 @@ class Node
         return $this->id;
     }
 
+    public function value(): string
+    {
+        return $this->store->readValue($this->id);
+    }
+
     /**
      * @return Node[]
      */

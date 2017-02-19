@@ -5,58 +5,43 @@ namespace MemMemov\SpaceGraph;
 class Space
 {
     private $name;
-    private $id;
-    private $store;
+    private $node;
 
     public function __construct(
         string $name,
-        int $id,
-        Store $store
+        Node $node
     ) {
         $this->name = $name;
-        $this->id = $id;
-        $this->store = $store;
+        $this->node = $node;
     }
 
-    public function create(): Node
+    public function has(Node $node): bool
     {
-        $id = $this->store->createNode();
-        $this->store->connectNodes($id, $this->id);
-
-        return new Node(
-            $id,
-            [$this->id],
-            $this->store
-        );
-    }
-
-    public function read(int $id): Node
-    {
-        $ids = $this->store->readNode($id);
-
-        if (!in_array($this->id, $ids)) {
-            throw new \Exception(sprintf('Node %d is not from space %s(%d)', $id, $this->name, $this->id));
+        foreach ($node->all() as $connectedNode) {
+            if ($connectedNode->id() === $this->node->id()) {
+                return true;
+            }
         }
 
-        return new Node(
-            $id,
-            $ids,
-            $this->store
-        );
-    }
-
-    public function filter(array $ids): array
-    {
-
-    }
-
-    public function has(int $id): bool
-    {
-        return $this->store->contains($id, $this->id);
+        return false;
     }
 
     public function add(Node $node): void
     {
-        $node->addNode($this->value);
+        $node->addNode($this->node);
+    }
+
+    public function filter(Node $node): array
+    {
+        $selectedNodes = [];
+        foreach ($node->all() as $connectedNode) {
+            foreach ($connectedNode->all() as $aNode) {
+                if ($aNode->id() === $this->node->id()) {
+                    $selectedNodes[] = $connectedNode;
+                }
+            }
+        }
+
+        return $selectedNodes;
     }
 }

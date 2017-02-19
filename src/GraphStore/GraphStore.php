@@ -46,7 +46,13 @@ class GraphStore implements Store
 
     public function readValue(int $id): string
     {
-        return $this->valueStore->value((string)$id);
+        $key = (string)$id;
+
+        if ($this->valueStore->hasKey($key)) {
+            throw new \Exception(sprintf('No value for key %s', $key));
+        }
+
+        return $this->valueStore->value($key);
     }
 
     public function commonNodes(array $ids): array

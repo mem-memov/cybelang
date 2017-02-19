@@ -6,25 +6,31 @@ use MemMemov\Cybe\SpaceGraph;
 
 class Spaces implements SpaceGraph
 {
-    private $store;
-    private $root;
+    private $nodes;
+    private $rootName;
+    private $spaceNodess;
 
     public function __construct(
-        Store $store,
-        string $rootKey
+        Nodes $nodes,
+        string $rootName
     ) {
-        $this->store = $store;
-        $this->root = $this->store->readOrCreateValue($rootKey);
+        $this->nodes = $nodes;
+        $this->rootName = $rootName;
+        $this->spaceNodes = [];
     }
 
-    public function provideSpace(string $name): Space
+    public function provideSpace(string $spaceName): Space
     {
-        $value = $this->store->provideNode($name);
-        $this->root->addNode($value);
+        if (!array_key_exists($spaceName, $this->spaceNodes)) {
+            $spaceNode = $this->nodes->provideForValue($spaceName);
+            $rootNode = $this->nodes->provideForValue($this->rootName);
+            $rootNode->add($spaceNode);
+            $this->spaceNodes[$spaceName] = $spaceNode;
+        }
 
         return new Space(
-            $value,
-            $this->graph
+            $spaceName,
+            $this->spaceNodes[$spaceName]
         );
     }
 }
