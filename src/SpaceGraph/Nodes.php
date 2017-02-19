@@ -12,15 +12,27 @@ class Nodes
         $this->store = $store;
     }
 
-    public function readNode(int $id): Node
+    public function create(): Node
+    {
+        $id = $this->store->createNode();
+
+        return new Node(
+            $id,
+            [],
+            $this->store
+        );
+    }
+
+    
+
+    public function read(int $id): Node
     {
         $ids = $this->store->readNode($id);
 
         return new Node(
             $id,
             $ids,
-            $this->store,
-            $this
+            $this->store
         );
     }
 }
