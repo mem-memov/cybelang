@@ -30,6 +30,11 @@ class Node
         return $this->store->readValue($this->id);
     }
 
+    public function has(Node $node): bool
+    {
+        return in_array($node->id(), $this->ids);
+    }
+
     /**
      * @return Node[]
      */

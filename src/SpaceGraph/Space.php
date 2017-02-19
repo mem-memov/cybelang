@@ -35,10 +35,8 @@ class Space
     {
         $selectedNodes = [];
         foreach ($node->all() as $connectedNode) {
-            foreach ($connectedNode->all() as $aNode) {
-                if ($aNode->id() === $this->node->id()) {
-                    $selectedNodes[] = $connectedNode;
-                }
+            if ($connectedNode->has($this->node)) {
+                $selectedNodes[] = $connectedNode;
             }
         }
 
