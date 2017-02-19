@@ -25,11 +25,6 @@ class Node
         return $this->id;
     }
 
-    public function value(): string
-    {
-        return $this->store->readValue($this->id);
-    }
-
     public function has(Node $node): bool
     {
         return in_array($node->id(), $this->ids);

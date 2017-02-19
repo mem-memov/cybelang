@@ -23,18 +23,6 @@ class Nodes
         );
     }
 
-    public function provideForValue(string $value): Node
-    {
-        $id = $this->store->provideNode($value);
-        $ids = $this->store->readNode($id);
-
-        return new Node(
-            $id,
-            $ids,
-            $this->store
-        );
-    }
-
     public function read(int $id): Node
     {
         $ids = $this->store->readNode($id);

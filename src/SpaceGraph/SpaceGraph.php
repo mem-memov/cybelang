@@ -20,6 +20,18 @@ class SpaceGraph implements Graph
         $this->spaces = $spaces;
     }
 
+    public function provideForValue(string $value): Node
+    {
+        $id = $this->store->provideNode($value);
+        $ids = $this->store->readNode($id);
+
+        return new Node(
+            $id,
+            $ids,
+            $this->store
+        );
+    }
+
     public function provideCommonNode(string $type, array $ids): SpaceNode
     {
         $space = $this->spaces->provideSpace($type);
