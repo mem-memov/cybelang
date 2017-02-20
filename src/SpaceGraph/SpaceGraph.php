@@ -9,27 +9,28 @@ use MemMemov\Cybe\GraphValue;
 
 class SpaceGraph implements Graph
 {
-    private $store;
+    private $nodes;
     private $spaces;
+    private $spaceNodes;
+    private $store;
 
     public function __construct(
-        Store $store,
-        Spaces $spaces
+        Nodes $nodes,
+        Spaces $spaces,
+        SpaceNodes $spaceNodes,
+        Store $store
     ) {
-        $this->store = $store;
+        $this->nodes = $nodes;
         $this->spaces = $spaces;
+        $this->spaceNodes = $spaceNodes;
+        $this->store = $store;
     }
 
-    public function provideForValue(string $value): Node
+    public function provideForValue(string $type, string $value): SpaceNode
     {
         $id = $this->store->provideNode($value);
-        $ids = $this->store->readNode($id);
-
-        return new Node(
-            $id,
-            $ids,
-            $this->store
-        );
+        
+        return $this->spaceNodes->read($id);
     }
 
     public function provideCommonNode(string $type, array $ids): SpaceNode
