@@ -15,15 +15,28 @@ class Space
         $this->node = $node;
     }
 
-    public function has(Node $node): bool
+    public function createNode(Nodes $nodes): SpaceNode
     {
-        foreach ($node->all() as $connectedNode) {
-            if ($connectedNode->id() === $this->node->id()) {
-                return true;
-            }
+        $node = $nodes->create();
+        $node->add($this->node);
+
+        return new SpaceNode($node, $this);
+    }
+
+    public function readNode(int $id, Nodes $nodes): SpaceNode
+    {
+        $node = $nodes->read($id);
+
+        if (!$node->has($this->node)) {
+            throw new \Exception(sprintf('Space %s(%d) has no node %d.', $this->name, $this->node->id(), $id));
         }
 
-        return false;
+        return new SpaceNode($node, $this);
+    }
+
+    public function has(Node $node): bool
+    {
+        return $node->has($this->node);
     }
 
     public function add(Node $node): void
