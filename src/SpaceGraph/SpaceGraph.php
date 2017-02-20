@@ -12,30 +12,24 @@ class SpaceGraph implements Graph
     private $nodes;
     private $spaces;
     private $spaceNodes;
-    private $store;
 
     public function __construct(
         Nodes $nodes,
         Spaces $spaces,
-        SpaceNodes $spaceNodes,
-        Store $store
+        SpaceNodes $spaceNodes
     ) {
         $this->nodes = $nodes;
         $this->spaces = $spaces;
         $this->spaceNodes = $spaceNodes;
-        $this->store = $store;
     }
 
-    public function provideForValue(string $type, string $value): SpaceNode
-    {
-        $id = $this->store->provideNode($value);
-        
-        return $this->spaceNodes->read($id);
-    }
+
 
     public function provideCommonNode(string $type, array $ids): SpaceNode
     {
         $space = $this->spaces->provideSpace($type);
+
+
 
         $idCount = count($ids);
         $commonIds = array_filter(
