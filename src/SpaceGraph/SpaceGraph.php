@@ -25,9 +25,10 @@ class SpaceGraph implements Graph
 
 
 
-    public function provideCommonNode(string $toType, array $ids): SpaceNode
+    public function provideCommonNode(string $toType, string $fromType, array $fromIds): SpaceNode
     {
-        $space = $this->spaces->provideSpace($type);
+        $toSpace = $this->spaces->provideSpace($toType);
+        $fromSpace = $this->spaces->provideSpace($fromType);
 
         $idCount = count($ids);
 
