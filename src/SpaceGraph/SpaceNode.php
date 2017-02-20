@@ -46,7 +46,6 @@ class SpaceNode implements GraphNode
         $selectedNodes = $space->filter($this->node);
 
         $spaceNodes = [];
-
         foreach ($selectedNodes as $selectedNode) {
             $spaceNodes[] = new SpaceNode($selectedNode, $this->spaces);
         }

@@ -26,7 +26,7 @@ class Nodes
         return new Node($id, $ids, $this->store);
     }
 
-    public function forValue(string $value): Node
+    public function nodeForValue(string $value): Node
     {
         $id = $this->store->provideNode($value);
         $ids = $this->store->readNode($id);
@@ -34,7 +34,7 @@ class Nodes
         return new Node($id, $ids, $this->store);
     }
 
-    public function forNode(Node $node): string
+    public function valueForNode(Node $node): string
     {
         return $this->store->readValue($node->id());
     }

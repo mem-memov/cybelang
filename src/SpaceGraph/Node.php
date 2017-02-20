@@ -29,12 +29,7 @@ class Node
     {
         return in_array($node->id(), $this->ids);
     }
-
-    public function count(): int
-    {
-        return count($this->ids);
-    }
-
+    
     /**
      * @return Node[]
      */
