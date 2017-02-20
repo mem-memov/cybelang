@@ -51,9 +51,9 @@ class Spaces implements SpaceGraph
     /**
      * @param Node $node
      *
-     * @return Space[]
+     * @return Space
      */
-    public function ofNode(Node $node): array
+    public function spaceOfNode(Node $node): Space
     {
         if (empty($this->spacesByName) || empty($this->spacesById)) {
             // load all spaces
@@ -68,10 +68,23 @@ class Spaces implements SpaceGraph
             }
         }
 
-        $nodeSpaces = array_filter($this->spacesByName, function(Space $space) use ($node) {
-            return $space->has($node);
-        });
+        $nodeSpaces = array_filter(
+            $this->spacesByName, 
+            function(Space $space) use ($node) {
+                return $space->has($node);
+            }
+        );
 
-        return $nodeSpaces;
+        $nodeSpaceCount = count();
+
+        if (0 === $nodeSpaceCount) {
+            throw new \Exception(sprintf('Node %d has no space', $node->id()));
+        }
+        
+        if (1 < $nodeSpaceCount) {
+            throw new \Exception(sprintf('Node %d more than one space', $node->id()));
+        }
+
+        return $nodeSpaces[0];
     }
 }

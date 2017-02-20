@@ -32,12 +32,6 @@ class SpaceGraph implements Graph
         $nodes = array_map(function(int $id) {
             return $this->nodes->read($id);
         }, $ids);
-        
-        $spacesWithNodes = [];
-        $nodesInSpaces = [];
-        foreach ($nodes as $node) {
-            $nodeSpaces = $this->spaces->ofNode($node);
-        }
 
         $commonNodes = array_filter(
             $this->nodes->commonNodes($ids),
