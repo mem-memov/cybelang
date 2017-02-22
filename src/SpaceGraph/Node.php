@@ -29,6 +29,21 @@ class Node
     {
         return in_array($node->id(), $this->ids);
     }
+
+    /**
+     * @param Node[] $nodes
+     * @return bool
+     */
+    public function in(array $nodes): bool
+    {
+        foreach ($nodes as $node) {
+            if ($node->id() === $this->id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     
     /**
      * @return Node[]

@@ -25,57 +25,14 @@ class SpaceGraph implements Graph
 
 
 
-    public function provideCommonNode(string $type, array $ids): SpaceNode
+    public function provideCommonNode(string $type, array $ids): GraphNode
     {
-        $space = $this->spaces->provideSpace($type);
+        $commonNode = new CommonNode($type, $ids);
 
-        $nodes = array_map(function(int $id) {
-            return $this->nodes->read($id);
-        }, $ids);
-
-        $commonNodes = array_filter(
-            $this->nodes->commonNodes($ids),
-            function(Node $commonNode) use ($space) {
-                if (!$space->has($commonNode)) {
-                    return false;
-                }
-                
-                return true;
-            }
+        return new SpaceNode(
+            $commonNode->provide($this->nodes, $this->spaces),
+            $this->spaces
         );
-
-
-        $commonIds = array_filter(
-            $this->store->intersect($ids),
-            function(int $commonId) use ($idCount) {
-                return $this->store->countNode($commonId) === $idCount;
-            }
-        );
-
-        $commonIdCount = count($commonIds);
-
-        if (0 === $commonIdCount) {
-            $commonId = $this->store->createNode();
-            //$space->add($commonNode);
-            array_map(function(Node $node) use ($commonNode) {
-                $commonNode->addNode($node);
-                $node->addNode($commonNode);
-            }, $nodes);
-        } elseif () {
-            $idCount = count($ids);
-            $countedCommonIds = [];
-            foreach ($commonIds as $commonId) {
-                if ($this->store->countNode($commonId) === $idCount) {
-                    $countedCommonIds[] = $commonId;
-                }
-            }
-            if () {
-
-            }
-            throw new \Exception('Multiple common nodes detected');
-        }
-
-        return new SpaceNode($commonId, $type, $this->graph, $this->spaces);
     }
 
     public function readNode(int $id): GraphNode

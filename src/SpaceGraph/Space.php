@@ -15,6 +15,11 @@ class Space
         $this->node = $node;
     }
 
+    public function id(): int
+    {
+        return $this->node->id();
+    }
+
     public function createNode(Nodes $nodes): SpaceNode
     {
         $node = $nodes->create();
@@ -44,12 +49,16 @@ class Space
         $node->addNode($this->node);
     }
 
-    public function filter(Node $node): array
+    /**
+     * @param Node[] $nodes
+     * @return Node[]
+     */
+    public function filter(array $nodes): array
     {
         $selectedNodes = [];
-        foreach ($node->all() as $connectedNode) {
-            if ($connectedNode->has($this->node)) {
-                $selectedNodes[] = $connectedNode;
+        foreach ($nodes as $node) {
+            if ($node->has($this->node)) {
+                $selectedNodes[] = $node;
             }
         }
 

@@ -33,6 +33,6 @@ class Clause
 
     public function arguments(): array
     {
-        return $this->arguments()->ofClause($this->graphNode);
+        return $this->arguments->ofClause($this->graphNode);
     }
 }

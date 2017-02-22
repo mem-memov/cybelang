@@ -87,4 +87,20 @@ class Spaces implements SpaceGraph
 
         return $nodeSpaces[0];
     }
+
+    /**
+     * @param Node[] $nodes
+     * @return Space[]
+     */
+    public function uniqueSpacesOfNodes(array $nodes): array
+    {
+        $uniqueSpaces = [];
+
+        foreach ($nodes as $node) {
+            $space = $this->spaceOfNode($node);
+            $uniqueSpaces[$space->id()] = $space;
+        }
+
+        return array_values($uniqueSpaces);
+    }
 }

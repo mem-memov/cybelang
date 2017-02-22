@@ -26,7 +26,7 @@ class SpaceNode implements GraphNode
     {
         $space = $this->spaces->provideSpace($type);
 
-        $selectedNodes = $space->filter($this->node);
+        $selectedNodes = $space->filter($this->node->all());
 
         if (1 !== count($selectedNodes)) {
             throw new \Exception(sprintf('%d nodes of type %s found in node %d instead of one', count($selectedNodes), $type, $this->node->id()));
@@ -43,7 +43,7 @@ class SpaceNode implements GraphNode
     {
         $space = $this->spaces->provideSpace($type);
 
-        $selectedNodes = $space->filter($this->node);
+        $selectedNodes = $space->filter($this->node->all());
 
         $spaceNodes = [];
         foreach ($selectedNodes as $selectedNode) {

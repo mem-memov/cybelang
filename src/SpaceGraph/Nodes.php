@@ -19,11 +19,35 @@ class Nodes
         return new Node($id, [], $this->store);
     }
 
+    public function createCommonNode(array $nodes): Node
+    {
+        $commonNode = $nodes->create();
+        foreach ($nodes as $node) {
+            $node->add($commonNode);
+            $commonNode->add($node);
+        }
+        return $commonNode;
+    }
+
     public function read(int $id): Node
     {
         $ids = $this->store->readNode($id);
 
         return new Node($id, $ids, $this->store);
+    }
+
+    /**
+     * @param int[] $ids
+     * @return Node[]
+     */
+    public function readMany(array $ids): array
+    {
+        $nodes = [];
+        foreach ($ids as $id) {
+            $nodes[] = $this->read($id);
+        }
+
+        return $nodes;
     }
 
     public function nodeForValue(string $value): Node
