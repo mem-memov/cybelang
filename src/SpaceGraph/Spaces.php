@@ -78,11 +78,11 @@ class Spaces implements SpaceGraph
         $nodeSpaceCount = count();
 
         if (0 === $nodeSpaceCount) {
-            throw new \Exception(sprintf('Node %d has no space', $node->id()));
+            throw new ForbidNodeInNoSpace(sprintf('Node %d has no space', $node->id()));
         }
         
         if (1 < $nodeSpaceCount) {
-            throw new \Exception(sprintf('Node %d more than one space', $node->id()));
+            throw new ForbidOneNodeInManySpaces(sprintf('Node %d more than one space', $node->id()));
         }
 
         return $nodeSpaces[0];
