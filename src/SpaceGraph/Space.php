@@ -33,7 +33,7 @@ class Space
         $node = $nodes->read($id);
 
         if (!$node->has($this->node)) {
-            throw new \Exception(sprintf('Space %s(%d) has no node %d.', $this->name, $this->node->id(), $id));
+            throw new NodeNotFoundInSpace(sprintf('Space %s(%d) has no node %d.', $this->name, $this->node->id(), $id));
         }
 
         return new SpaceNode($node, $this);

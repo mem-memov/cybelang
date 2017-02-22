@@ -23,8 +23,6 @@ class SpaceGraph implements Graph
         $this->spaceNodes = $spaceNodes;
     }
 
-
-
     public function provideCommonNode(string $type, array $ids): GraphNode
     {
         $commonNode = new CommonNode($type, $ids);
@@ -33,6 +31,13 @@ class SpaceGraph implements Graph
             $commonNode->provide($this->nodes, $this->spaces),
             $this->spaces
         );
+    }
+
+    public function provideValueNode(string $type, string $value): GraphNode
+    {
+        $space = $this->spaces->provideSpace($type);
+
+
     }
 
     public function readNode(int $id): GraphNode
