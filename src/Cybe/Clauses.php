@@ -36,7 +36,7 @@ class Clauses
 
         $memberIds = array_merge([$subject->id(), $predicate->id()], $argumentIds);
 
-        $clauseNode = $this->graph->сreateNode(self::$graphSpace, $memberIds);
+        $clauseNode = $this->graph->provideCommonNode(self::$graphSpace, $memberIds);
 
         return new Clause(
             $clauseNode->id(),

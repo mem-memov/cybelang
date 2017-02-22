@@ -15,10 +15,10 @@ class Words
 
     public function fromLetters(string $letters): Word
     {
-        $graphValue = $this->graph->createValue(self::$graphSpace, $letters);
+        $wordNode = $this->graph->provideValueNode(self::$graphSpace, $letters);
 
         return new Word(
-            $graphValue->id(),
+            $wordNode->id(),
             $letters
         );
     }

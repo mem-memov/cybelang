@@ -25,19 +25,12 @@ class SpaceGraph implements Graph
 
     public function provideCommonNode(string $type, array $ids): GraphNode
     {
-        $commonNode = new CommonNode($type, $ids);
-
-        return new SpaceNode(
-            $commonNode->provide($this->nodes, $this->spaces),
-            $this->spaces
-        );
+        return $this->spaceNodes->provideCommonNode($type, $ids);
     }
 
     public function provideValueNode(string $type, string $value): GraphNode
     {
-        $space = $this->spaces->provideSpace($type);
-
-
+        return $this->spaceNodes->provideNodeForValue($type, $value);
     }
 
     public function readNode(int $id): GraphNode
