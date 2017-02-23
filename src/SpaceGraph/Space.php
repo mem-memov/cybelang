@@ -27,15 +27,15 @@ class Space
      * @param Node[] $nodes
      * @return SpaceNode
      */
-    public function createCommonNode(array $nodes): SpaceNode
+    public function createCommonNode(array $nodes): Node
     {
         $node = $this->nodes->createCommonNode($nodes);
         $node->add($this->node);
 
-        return new SpaceNode($node, $this);
+        return $node;
     }
 
-    public function createNodeForValue(string $value): SpaceNode
+    public function createNodeForValue(string $value): Node
     {
         $node = $this->nodes->nodeForValue($value);
 
@@ -43,10 +43,10 @@ class Space
             $node->add($this->node);
         }
 
-        return new SpaceNode($node, $this);
+        return $node;
     }
 
-    public function getOneNode(Node $node): SpaceNode
+    public function getOneNode(Node $node): Node
     {
         $selectedNodes = $this->nodes->filter($this->node, $node->all());
 
@@ -54,26 +54,19 @@ class Space
             throw new RequireOneNode(sprintf('%d nodes of type %s found in node %d instead of one', count($selectedNodes), $this->name, $node->id()));
         }
 
-        return new SpaceNode($selectedNodes[0], $this);
+        return $selectedNodes[0];
     }
 
     /**
      * @param Node $node
-     * @return SpaceNode[]
+     * @return Node[]
      */
     public function findNodes(Node $node): array
     {
-        $selectedNodes = $this->nodes->filter($this->node, $node->all());
-
-        $spaceNodes = [];
-        foreach ($selectedNodes as $selectedNode) {
-            $spaceNodes[] = new SpaceNode($selectedNode, $this->spaces);
-        }
-
-        return $spaceNodes;
+        return $this->nodes->filter($this->node, $node->all());
     }
 
-    public function readNode(int $id): SpaceNode
+    public function readNode(int $id): Node
     {
         $node = $this->nodes->read($id);
 
@@ -81,11 +74,22 @@ class Space
             throw new NodeNotFoundInSpace(sprintf('Space %s(%d) has no node %d.', $this->name, $this->node->id(), $id));
         }
 
-        return new SpaceNode($node, $this);
+        return $node;
     }
 
     public function has(Node $node): bool
     {
         return $node->has($this->node);
+    }
+
+    /**
+     * @param Node[] $nodes
+     * @return Node[]
+     */
+    public function filter(array $nodes): array
+    {
+        return array_filter($nodes, function(Node $node) {
+            return $node->has($this->node);
+        });
     }
 }
