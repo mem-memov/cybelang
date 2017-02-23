@@ -27,7 +27,7 @@ class Nodes
     public function createCommonNode(array $nodes): Node
     {
         $commonNode = $nodes->create();
-        
+
         foreach ($nodes as $node) {
             $node->add($commonNode);
             $commonNode->add($node);
