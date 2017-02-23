@@ -8,6 +8,8 @@ interface Graph
 
     public function provideValueNode(string $type, string $value): GraphNode;
 
+    public function getNodeValue(int $id): string;
+
     public function readNode(int $id): GraphNode;
 
     public function provideSequenceNode(string $type, array $ids): GraphNode;

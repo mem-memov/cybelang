@@ -25,17 +25,17 @@ class Words
 
     public function ofPhrase(Phrase $phrase)
     {
-        $phraseSequence = $this->graph->readSequence($phrase->id());
+        $phraseSequence = $this->graph->readSequenceNodes(self::$graphSpace, $phrase->id());
 
         $words = [];
 
-        $phraseSequence->each(function (int $id) use ($words) {
-            $wordValue = $this->graph->readValue($id);
+        foreach ($phraseSequence as $node) {
+            $nodeId = $node->id();
             $words[] = new Word(
-                $wordValue->id(),
-                $wordValue->content()
+                $nodeId,
+                $this->graph->getNodeValue($nodeId)
             );
-        });
+        }
 
         return $words;
     }

@@ -15,6 +15,13 @@ class SpaceNodes
         $this->spaces = $spaces;
     }
 
+    public function readNode(int $id): SpaceNode
+    {
+        $node = $this->nodes->read($id);
+
+        return new SpaceNode($node, $this);
+    }
+
     /**
      * @param string $spaceName
      * @param int[] $ids
@@ -106,9 +113,9 @@ class SpaceNodes
         return new SpaceNode($node, $this);
     }
 
-    public function valueOfNode(SpaceNode $spaceNode): string
+    public function valueOfNode(int $id): string
     {
-        $node = $this->nodes->read($spaceNode->id());
+        $node = $this->nodes->read($id);
 
         return $this->nodes->valueForNode($node);
     }
