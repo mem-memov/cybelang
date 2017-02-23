@@ -108,6 +108,8 @@ class SpaceNodes
 
     public function valueOfNode(SpaceNode $spaceNode): string
     {
-        return $this->nodes->valueForNode();
+        $node = $this->nodes->read($spaceNode->id());
+
+        return $this->nodes->valueForNode($node);
     }
 }

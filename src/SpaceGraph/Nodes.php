@@ -5,35 +5,48 @@ namespace MemMemov\SpaceGraph;
 class Nodes
 {
     private $store;
+    /** @var int[] */
+    private $cache;
 
     public function __construct(
         Store $store
     ) {
         $this->store = $store;
+        $this->cache = [];
     }
 
     public function create(): Node
     {
         $id = $this->store->createNode();
+        $node = new Node($id, [], $this->store);
+        $this->cache[$id] = $node;
 
-        return new Node($id, [], $this->store);
+        return $node;
     }
 
     public function createCommonNode(array $nodes): Node
     {
         $commonNode = $nodes->create();
+        
         foreach ($nodes as $node) {
             $node->add($commonNode);
             $commonNode->add($node);
         }
+
         return $commonNode;
     }
 
     public function read(int $id): Node
     {
-        $ids = $this->store->readNode($id);
+        if (array_key_exists($id, $this->cache)) {
+            return $this->cache[$id];
+        }
 
-        return new Node($id, $ids, $this->store);
+        $ids = $this->store->readNode($id);
+        $node = new Node($id, $ids, $this->store);
+        $this->cache[$id] = $node;
+
+        return $node;
     }
 
     /**
@@ -53,9 +66,8 @@ class Nodes
     public function nodeForValue(string $value): Node
     {
         $id = $this->store->provideNode($value);
-        $ids = $this->store->readNode($id);
 
-        return new Node($id, $ids, $this->store);
+        return $this->read($id);
     }
 
     public function valueForNode(Node $node): string
@@ -70,8 +82,7 @@ class Nodes
     public function commonNodes(array $ids): array
     {
         return array_map(function(int $id) {
-            $ids =  $this->store->readNode($id);
-            return new Node($id, $ids, $this->store);
+            return $this->read($id);
         }, $this->store->commonNodes($ids));
     }
 

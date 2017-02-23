@@ -58,6 +58,12 @@ class Node
 
     public function add(Node $node): void
     {
-        $this->store->connectNodes($this->id, $node->id());
+        $nodeId = $node->id();
+
+        if (!in_array($nodeId, $this->ids)) {
+            $this->ids[] = $nodeId;
+        }
+
+        $this->store->connectNodes($this->id, $nodeId);
     }
 }
