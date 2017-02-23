@@ -37,4 +37,18 @@ class SpaceGraph implements Graph
     {
 
     }
+
+    public function provideSequenceNode(string $type, array $ids): GraphNode
+    {
+        return $this->spaceNodes->provideSequenceNode($type, $ids);
+    }
+
+    /**
+     * @param int $id
+     * @return GraphNode[]
+     */
+    public function readSequenceNodes(string $type, int $id): array
+    {
+        return $this->spaceNodes->readNodeSequence($type, $id);
+    }
 }

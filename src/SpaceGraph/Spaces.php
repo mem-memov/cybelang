@@ -103,4 +103,15 @@ class Spaces implements SpaceGraph
 
         return array_values($uniqueSpaces);
     }
+
+    /**
+     * @param Node[] $nodes
+     * @return bool
+     */
+    public function inSameSpace(array $nodes): bool
+    {
+        $uniqueSpaces = $this->uniqueSpacesOfNodes($nodes);
+
+        return 1 === count($uniqueSpaces);
+    }
 }
