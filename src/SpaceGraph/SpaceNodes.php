@@ -53,37 +53,39 @@ class SpaceNodes
         }
 
         if (0 === $matchingCommonNodeCount) {
-            $newCommonNode = $this->nodes->createCommonNode($idNodes);
             $space = $this->spaces->provideSpace($spaceName);
-            $space->add($newCommonNode);
+            $newCommonNode = $space->createCommonNode($idNodes);
             return new SpaceNode($newCommonNode, $this->spaces);
         }
 
         throw new ForbidMultipleCommonNodes('Multiple common nodes detected');
     }
 
+    public function getOneNode(string $spaceName, int $id): SpaceNode
+    {
+        $space = $this->spaces->provideSpace($spaceName);
+        $node = $this->nodes->read($id);
+
+        return $space->getOneNode($node);
+    }
+
+    public function findNodes(string $spaceName, int $id): array
+    {
+        $space = $this->spaces->provideSpace($spaceName);
+        $node = $this->nodes->read($id);
+
+        return $space->findNodes($node);
+    }
+
     public function provideNodeForValue(string $spaceName, string $value): SpaceNode
     {
-        $valueNode = $this->nodes->nodeForValue($value);
         $space = $this->spaces->provideSpace($spaceName);
 
-        if (!$space->has($valueNode)) {
-            $space->add($valueNode);
-        }
-
-        return new SpaceNode($valueNode, $this->spaces);
+        return $space->nodeForValue($value);
     }
 
     public function valueOfNode(SpaceNode $spaceNode): string
     {
         return $this->nodes->valueForNode();
-    }
-
-    public function read(int $id): SpaceNode
-    {
-        $node = $this->nodes->read($id);
-        $space = $this->spaces->spaceOfNode($node);
-
-        return new SpaceNode($node, $this->spaces);
     }
 }

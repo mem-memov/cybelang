@@ -6,13 +6,16 @@ class Space
 {
     private $name;
     private $node;
+    private $nodes;
 
     public function __construct(
         string $name,
-        Node $node
+        Node $node,
+        Nodes $nodes
     ) {
         $this->name = $name;
         $this->node = $node;
+        $this->nodes = $nodes;
     }
 
     public function id(): int
@@ -20,17 +23,59 @@ class Space
         return $this->node->id();
     }
 
-    public function createNode(Nodes $nodes): SpaceNode
+    /**
+     * @param Node[] $nodes
+     * @return SpaceNode
+     */
+    public function createCommonNode(array $nodes): SpaceNode
     {
-        $node = $nodes->create();
+        $node = $this->nodes->createCommonNode($nodes);
         $node->add($this->node);
 
         return new SpaceNode($node, $this);
     }
 
-    public function readNode(int $id, Nodes $nodes): SpaceNode
+    public function createNodeForValue(string $value): SpaceNode
     {
-        $node = $nodes->read($id);
+        $node = $this->nodes->nodeForValue($value);
+
+        if (!$node->has($this->node)) {
+            $node->add($this->node);
+        }
+
+        return new SpaceNode($node, $this);
+    }
+
+    public function getOneNode(Node $node): SpaceNode
+    {
+        $selectedNodes = $this->nodes->filter($this->node, $node->all());
+
+        if (1 !== count($selectedNodes)) {
+            throw new RequireOneNode(sprintf('%d nodes of type %s found in node %d instead of one', count($selectedNodes), $this->name, $node->id()));
+        }
+
+        return new SpaceNode($selectedNodes[0], $this);
+    }
+
+    /**
+     * @param Node $node
+     * @return SpaceNode[]
+     */
+    public function findNodes(Node $node): array
+    {
+        $selectedNodes = $this->nodes->filter($this->node, $node->all());
+
+        $spaceNodes = [];
+        foreach ($selectedNodes as $selectedNode) {
+            $spaceNodes[] = new SpaceNode($selectedNode, $this->spaces);
+        }
+
+        return $spaceNodes;
+    }
+
+    public function readNode(int $id): SpaceNode
+    {
+        $node = $this->nodes->read($id);
 
         if (!$node->has($this->node)) {
             throw new NodeNotFoundInSpace(sprintf('Space %s(%d) has no node %d.', $this->name, $this->node->id(), $id));
@@ -42,26 +87,5 @@ class Space
     public function has(Node $node): bool
     {
         return $node->has($this->node);
-    }
-
-    public function add(Node $node): void
-    {
-        $node->addNode($this->node);
-    }
-
-    /**
-     * @param Node[] $nodes
-     * @return Node[]
-     */
-    public function filter(array $nodes): array
-    {
-        $selectedNodes = [];
-        foreach ($nodes as $node) {
-            if ($node->has($this->node)) {
-                $selectedNodes[] = $node;
-            }
-        }
-
-        return $selectedNodes;
     }
 }

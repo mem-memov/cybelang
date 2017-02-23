@@ -74,4 +74,21 @@ class Nodes
             return new Node($id, $ids, $this->store);
         }, $this->store->commonNodes($ids));
     }
+
+    /**
+     * @param Node $selectorNode
+     * @param Node[] $nodes
+     * @return Node[]
+     */
+    public function filter(Node $selectorNode, array $nodes): array
+    {
+        $selectedNodes = [];
+        foreach ($nodes as $node) {
+            if ($node->has($selectorNode)) {
+                $selectedNodes[] = $node;
+            }
+        }
+
+        return $selectedNodes;
+    }
 }

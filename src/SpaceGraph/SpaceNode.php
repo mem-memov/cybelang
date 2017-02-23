@@ -6,50 +6,33 @@ use MemMemov\Cybe\GraphNode;
 
 class SpaceNode implements GraphNode
 {
-    private $node;
-    private $spaces;
+    private $id;
+    private $spaceNodes;
 
     public function __construct(
-        Node $node,
-        Spaces $spaces
+        int $id,
+        SpaceNodes $spaceNodes
     ) {
-        $this->node = $node;
-        $this->spaces = $spaces;
+        $this->id = $id;
+        $this->spaceNodes = $spaceNodes;
     }
 
     public function id(): int
     {
-        return $this->node->id();
+        return $this->id();
     }
 
     public function one(string $type): GraphNode
     {
-        $space = $this->spaces->provideSpace($type);
-
-        $selectedNodes = $space->filter($this->node->all());
-
-        if (1 !== count($selectedNodes)) {
-            throw new \Exception(sprintf('%d nodes of type %s found in node %d instead of one', count($selectedNodes), $type, $this->node->id()));
-        }
-
-        return new SpaceNode($selectedNodes[0], $this->spaces);
+        return $this->spaceNodes->getOneNode($type, $this->id);
     }
 
     /**
      * @param string $type
-     * @return SpaceNode[]
+     * @return GraphNode[]
      */
     public function all(string $type): array
     {
-        $space = $this->spaces->provideSpace($type);
-
-        $selectedNodes = $space->filter($this->node->all());
-
-        $spaceNodes = [];
-        foreach ($selectedNodes as $selectedNode) {
-            $spaceNodes[] = new SpaceNode($selectedNode, $this->spaces);
-        }
-
-        return $spaceNodes;
+        return $this->spaceNodes->findNodes($type, $this->id);
     }
 }
