@@ -23,7 +23,7 @@ class Phrases
             return $this->words->fromLetters($letters)->id();
         }, $wordStrings);
 
-        $phraseNode = $this->graph->сreateSequence(self::$graphSpace, $wordIds);
+        $phraseNode = $this->graph->provideSequenceNode(self::$graphSpace, $wordIds);
 
         return new Phrase(
             $phraseNode->id(),
