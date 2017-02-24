@@ -28,14 +28,14 @@ class AuthorTest extends TestCase
 
         $messageText = $this->createMock(Parser\Message::class);
 
-        $this->parser->expects(self::once())
+        $this->parser->expects($this->once())
             ->method('create')
             ->with($text)
             ->willReturn($messageText);
 
         $message = $this->createMock(Message::class);
 
-        $this->messages->expects(self::once())
+        $this->messages->expects($this->once())
             ->method('fromText')
             ->with($messageText)
             ->willReturn($message);

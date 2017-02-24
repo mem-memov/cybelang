@@ -25,6 +25,6 @@ class PlainTextMessagesTest extends TestCase
 
         $result = $messages->create($string);
 
-        self::assertInstanceOf(PlainTextMessage::class, $result);
+        $this->assertInstanceOf(PlainTextMessage::class, $result);
     }
 }

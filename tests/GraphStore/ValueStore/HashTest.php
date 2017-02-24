@@ -12,6 +12,6 @@ class HashTest extends TestCase
 
         $result = $hash->create('some value');
 
-        self::assertEquals($result, '5946210c9e93ae37891dfe96c3e39614');
+        $this->assertEquals($result, '5946210c9e93ae37891dfe96c3e39614');
     }
 }

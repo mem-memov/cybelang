@@ -18,6 +18,11 @@ class Argument
         $this->compliments = $compliments;
     }
 
+    public function id(): int
+    {
+        return $this->id;
+    }
+
     public function category(): Category
     {
         return $this->categories->ofArgument($this);

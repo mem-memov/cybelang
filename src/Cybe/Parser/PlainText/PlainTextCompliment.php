@@ -12,4 +12,12 @@ class PlainTextCompliment implements Compliment
     {
         $this->string = $string;
     }
+
+    /**
+     * @return string[]
+     */
+    public function words(): array
+    {
+        return explode(' ', $this->string);
+    }
 }

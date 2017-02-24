@@ -4,7 +4,8 @@ namespace MemMemov\Cybe\Parser;
 
 interface Predicate
 {
-    public function getWords(): array;
-
-    public function arguments(): array;
+    /**
+     * @return string[]
+     */
+    public function words(): array;
 }

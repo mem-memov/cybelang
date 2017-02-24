@@ -25,7 +25,7 @@ class Arguments
         $category = $this->categories->fromText($argumentText->category());
         $compliment = $this->compliments->fromText($argumentText->compliment());
 
-        $argumentNode = $this->graph->createNode(self::$graphSpace, [$category->id(), $compliment->id()]);
+        $argumentNode = $this->graph->provideCommonNode(self::$graphSpace, [$category->id(), $compliment->id()]);
 
         return new Argument(
             $argumentNode->id(),

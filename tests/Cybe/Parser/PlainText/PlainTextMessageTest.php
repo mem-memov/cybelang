@@ -29,7 +29,7 @@ class PlainTextMessageTest extends TestCase
         $clause_3 = $this->createMock(PlainTextClause::class);
         $clause_4 = $this->createMock(PlainTextClause::class);
 
-        $this->clauses->expects(self::exactly(4))
+        $this->clauses->expects($this->exactly(4))
             ->method('create')
             ->withConsecutive(
                 ['врач.ставить(что:диагноз,кому:больной,когда:сейчас)'],
@@ -41,6 +41,6 @@ class PlainTextMessageTest extends TestCase
 
         $result = $message->clauses();
 
-        self::assertSame([$clause_1, $clause_2, $clause_3, $clause_4], $result);
+        $this->assertSame([$clause_1, $clause_2, $clause_3, $clause_4], $result);
     }
 }

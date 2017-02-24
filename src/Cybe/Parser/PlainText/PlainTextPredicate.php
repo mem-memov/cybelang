@@ -13,7 +13,10 @@ class PlainTextPredicate implements Predicate
         $this->string = $string;
     }
 
-    public function getWords(): array
+    /**
+     * @return string[]
+     */
+    public function words(): array
     {
         return explode(' ', $this->string);
     }

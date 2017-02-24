@@ -28,14 +28,14 @@ class PlainTextClauseTest extends TestCase
 
         $predicate = $this->createMock(PlainTextPredicate::class);
 
-        $this->predicates->expects(self::once())
+        $this->predicates->expects($this->once())
             ->method('create')
             ->with('ставить')
             ->willReturn($predicate);
 
         $result = $clause->predicate();
 
-        self::assertSame($predicate, $result);
+        $this->assertSame($predicate, $result);
     }
 
     public function testItHasSubject()
@@ -46,14 +46,14 @@ class PlainTextClauseTest extends TestCase
 
         $subject = $this->createMock(PlainTextSubject::class);
 
-        $this->subjects->expects(self::once())
+        $this->subjects->expects($this->once())
             ->method('create')
             ->with('врач')
             ->willReturn($subject);
 
         $result = $clause->subject();
 
-        self::assertSame($subject, $result);
+        $this->assertSame($subject, $result);
     }
 
     public function testItHasArguments()
@@ -66,7 +66,7 @@ class PlainTextClauseTest extends TestCase
         $argument_2 = $this->createMock(PlainTextArgument::class);
         $argument_3 = $this->createMock(PlainTextArgument::class);
 
-        $this->arguments->expects(self::exactly(3))
+        $this->arguments->expects($this->exactly(3))
             ->method('create')
             ->withConsecutive(
                 ['что:диагноз'],
@@ -77,6 +77,6 @@ class PlainTextClauseTest extends TestCase
 
         $result = $clause->arguments();
 
-        self::assertEquals([$argument_1, $argument_2, $argument_3], $result);
+        $this->assertEquals([$argument_1, $argument_2, $argument_3], $result);
     }
 }

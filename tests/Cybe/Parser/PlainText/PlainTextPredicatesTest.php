@@ -14,6 +14,6 @@ class PredicatesTest extends TestCase
 
         $result = $predicates->create($string);
 
-        self::assertInstanceOf(PlainTextPredicate::class, $result);
+        $this->assertInstanceOf(PlainTextPredicate::class, $result);
     }
 }

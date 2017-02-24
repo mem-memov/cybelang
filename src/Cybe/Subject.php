@@ -15,6 +15,11 @@ class Subject
         $this->phrases = $phrases;
     }
 
+    public function id(): int
+    {
+        return $this->id;
+    }
+
     public function phrase(): Phrase
     {
         return $this->phrases->ofSubject($this);

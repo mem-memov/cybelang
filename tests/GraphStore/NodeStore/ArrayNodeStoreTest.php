@@ -25,7 +25,7 @@ class ArrayNodeStoreTest extends TestCase
 
         $result = $store->create();
 
-        self::assertEquals(1, $result);
+        $this->assertEquals(1, $result);
     }
 
     public function testItConnectsNodes()
@@ -39,7 +39,7 @@ class ArrayNodeStoreTest extends TestCase
 
         $result = $store->read($fromId);
 
-        self::assertContains($toId, $result);
+        $this->assertContains($toId, $result);
     }
 
     public function testItReadsNode()
@@ -56,7 +56,7 @@ class ArrayNodeStoreTest extends TestCase
 
         $result = $store->read($fromId);
 
-        self::assertEquals([$toId_1, $toId_2], $result);
+        $this->assertEquals([$toId_1, $toId_2], $result);
     }
 
     public function testItChecksNodeConnected()
@@ -70,7 +70,7 @@ class ArrayNodeStoreTest extends TestCase
 
         $result = $store->contains($fromId, $toId);
 
-        self::assertTrue($result);
+        $this->assertTrue($result);
     }
 
     public function testItChecksNodeNotConnected()
@@ -82,6 +82,6 @@ class ArrayNodeStoreTest extends TestCase
 
         $result = $store->contains($fromId, $toId);
 
-        self::assertFalse($result);
+        $this->assertFalse($result);
     }
 }

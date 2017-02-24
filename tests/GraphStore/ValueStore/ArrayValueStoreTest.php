@@ -31,7 +31,7 @@ class ArrayValueStoreTest extends TestCase
     {
         $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
 
-        $this->hash->expects(self::once())
+        $this->hash->expects($this->once())
             ->method('create')
             ->with('some value')
             ->willReturn('5946210c9e93ae37891dfe96c3e39614');
@@ -43,7 +43,7 @@ class ArrayValueStoreTest extends TestCase
     {
         $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
 
-        $this->hash->expects(self::exactly(2))
+        $this->hash->expects($this->exactly(2))
             ->method('create')
             ->with('some value')
             ->willReturn('5946210c9e93ae37891dfe96c3e39614');
@@ -51,7 +51,7 @@ class ArrayValueStoreTest extends TestCase
         $store->bind('1', 'some value');
         $result = $store->key('some value');
 
-        self::assertEquals('1', $result);
+        $this->assertEquals('1', $result);
     }
 
     public function testItProvidesValueByKey()
@@ -61,7 +61,7 @@ class ArrayValueStoreTest extends TestCase
         $store->bind('1', 'some value');
         $result = $store->value('1');
 
-        self::assertEquals('some value', $result);
+        $this->assertEquals('some value', $result);
     }
 
     public function testItChecksItHasGotAValue()
@@ -72,7 +72,7 @@ class ArrayValueStoreTest extends TestCase
 
         $result =  $store->hasValue('some value');
 
-        self::assertTrue($result);
+        $this->assertTrue($result);
     }
 
     public function testItChecksItHasNotGotAValue()
@@ -81,7 +81,7 @@ class ArrayValueStoreTest extends TestCase
 
         $result =  $store->hasValue('some value');
 
-        self::assertFalse($result);
+        $this->assertFalse($result);
     }
 
     public function testItChecksItHasGotAKey()
@@ -92,7 +92,7 @@ class ArrayValueStoreTest extends TestCase
 
         $result =  $store->hasKey('1');
 
-        self::assertTrue($result);
+        $this->assertTrue($result);
     }
 
     public function testItChecksItHasNotGotAKey()
@@ -101,6 +101,6 @@ class ArrayValueStoreTest extends TestCase
 
         $result =  $store->hasKey('1');
 
-        self::assertFalse($result);
+        $this->assertFalse($result);
     }
 }

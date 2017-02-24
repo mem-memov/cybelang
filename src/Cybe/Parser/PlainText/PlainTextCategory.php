@@ -12,4 +12,12 @@ class PlainTextCategory implements Category
     {
         $this->string = $string;
     }
+
+    /**
+     * @return string[]
+     */
+    public function words(): array
+    {
+        return explode(' ', $this->string);
+    }
 }

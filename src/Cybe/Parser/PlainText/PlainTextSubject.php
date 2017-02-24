@@ -13,4 +13,12 @@ class PlainTextSubject implements Subject
     ) {
         $this->string = $string;
     }
+
+    /**
+     * @return string[]
+     */
+    public function words(): array
+    {
+        return explode(' ', $this->string);
+    }
 }

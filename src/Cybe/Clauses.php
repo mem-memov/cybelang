@@ -31,7 +31,8 @@ class Clauses
         $predicate = $this->predicates->fromText($clauseText->predicate());
 
         $argumentIds = array_map(function(Parser\Argument $argumentText) {
-            return $this->arguments->fromText($argumentText)->id();
+            $argument = $this->arguments->fromText($argumentText);
+            return $argument->id();
         }, $clauseText->arguments());
 
         $memberIds = array_merge([$subject->id(), $predicate->id()], $argumentIds);

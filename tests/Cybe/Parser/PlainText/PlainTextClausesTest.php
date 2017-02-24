@@ -28,6 +28,6 @@ class PlainTextClausesTest extends TestCase
 
         $clause = $clauses->create($string);
 
-        self::assertInstanceOf(PlainTextClause::class, $clause);
+        $this->assertInstanceOf(PlainTextClause::class, $clause);
     }
 }

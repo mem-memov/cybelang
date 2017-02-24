@@ -25,14 +25,14 @@ class PlainTextArgumentTest extends TestCase
 
         $category = $this->createMock(PlainTextCategory::class);
 
-        $this->categories->expects(self::once())
+        $this->categories->expects($this->once())
             ->method('create')
             ->with('что')
             ->willReturn($category);
 
         $result = $argument->category();
 
-        self::assertSame($category, $result);
+        $this->assertSame($category, $result);
     }
 
     public function testItHasCompliment()
@@ -43,13 +43,13 @@ class PlainTextArgumentTest extends TestCase
 
         $compliment = $this->createMock(PlainTextCompliment::class);
 
-        $this->complements->expects(self::once())
+        $this->complements->expects($this->once())
             ->method('create')
             ->with('диагноз')
             ->willReturn($compliment);
 
         $result = $argument->compliment();
 
-        self::assertSame($compliment, $result);
+        $this->assertSame($compliment, $result);
     }
 }

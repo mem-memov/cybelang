@@ -23,14 +23,14 @@ class MessagesTest extends TestCase
         $clauseText_1 = $this->createMock(Parser\Clause::class);
         $clauseText_2 = $this->createMock(Parser\Clause::class);
 
-        $messageText->expects(self::once())
+        $messageText->expects($this->once())
             ->method('clauses')
             ->willReturn([$clauseText_1, $clauseText_2]);
 
         $clause_1 = $this->createMock(Clause::class);
         $clause_2 = $this->createMock(Clause::class);
 
-        $this->clauses->expects(self::exactly(2))
+        $this->clauses->expects($this->exactly(2))
             ->method('fromText')
             ->withConsecutive(
                 [$clauseText_1],
@@ -41,6 +41,6 @@ class MessagesTest extends TestCase
 
         $result = $messages->fromText($messageText);
 
-        self::assertInstanceOf(Message::class, $result);
+        $this->assertInstanceOf(Message::class, $result);
     }
 }
