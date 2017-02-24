@@ -17,7 +17,7 @@ class ArrayNodeStore implements NodeStoreInterface
         if (file_exists($this->path)) {
             $contents = file_get_contents($this->path);
             if (!empty($contents)) {
-                $this->store = unserialize();
+                $this->store = unserialize($contents);
             }
         }
     }
@@ -43,7 +43,11 @@ class ArrayNodeStore implements NodeStoreInterface
 
     public function connect(int $fromId, int $toId): void
     {
-        if (in_array($toId, $this->store[$fromId])) {
+        if (
+            array_key_exists($fromId, $this->store)
+            && is_array($this->store[$fromId])
+            && in_array($toId, $this->store[$fromId])
+        ) {
             return;
         }
 
@@ -65,6 +69,9 @@ class ArrayNodeStore implements NodeStoreInterface
 
         $uniqueToIds = array_unique(call_user_func_array('array_merge', $toIds));
 
-        return call_user_func_array('array_intersect', array_unshift($toIds, $uniqueToIds));
+        $arguments = $toIds;
+        array_unshift($arguments, $uniqueToIds);
+
+        return call_user_func_array('array_intersect', $arguments);
     }
 }
