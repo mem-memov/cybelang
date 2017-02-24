@@ -103,4 +103,30 @@ class ArrayValueStoreTest extends TestCase
 
         $this->assertFalse($result);
     }
+
+    public function testItReadsPersistedKeys()
+    {
+        $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
+        $store->bind('1', 'some value');
+        unset($store);
+
+        $store_2 = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
+
+        $result =  $store_2->value('1');
+
+        $this->assertEquals('some value', $result);
+    }
+
+    public function testItReadsPersistedValues()
+    {
+        $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
+        $store->bind('1', 'some value');
+        unset($store);
+
+        $store_2 = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
+
+        $result =  $store_2->key('some value');
+
+        $this->assertEquals('1', $result);
+    }
 }
