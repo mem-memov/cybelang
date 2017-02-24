@@ -35,7 +35,7 @@ class GraphStore implements Store
     public function provideNode(string $value): int
     {
         if ($this->valueStore->hasValue($value)) {
-            $id = (int)$this->valueStore->key($contents);
+            $id = (int)$this->valueStore->key($value);
         } else {
             $id = $this->nodeStore->create();
             $this->valueStore->bind((string)$id, $value);
@@ -48,8 +48,8 @@ class GraphStore implements Store
     {
         $key = (string)$id;
 
-        if ($this->valueStore->hasKey($key)) {
-            throw new \Exception(sprintf('No value for key %s', $key));
+        if (!$this->valueStore->hasKey($key)) {
+            throw new SomeNodesHaveNoValue(sprintf('No value for key %s', $key));
         }
 
         return $this->valueStore->value($key);
