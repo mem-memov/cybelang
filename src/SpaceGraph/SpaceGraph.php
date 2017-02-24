@@ -4,8 +4,6 @@ namespace MemMemov\SpaceGraph;
 
 use MemMemov\Cybe\Graph;
 use MemMemov\Cybe\GraphNode;
-use MemMemov\Cybe\GraphSequence;
-use MemMemov\Cybe\GraphValue;
 
 class SpaceGraph implements Graph
 {
