@@ -13,14 +13,16 @@ class NodeCache
 
     public function set(Node $node)
     {
+        $nodeId = $node->id();
+
         if (
-            $this->has($node->id())
-            && $this->get($node->id()) !== $node
+            $this->has($nodeId)
+            && $this->get($nodeId) !== $node
         ) {
-            throw new ForbidNonUniqueInstancesInNodeCache($node->id());
+            throw new ForbidNonUniqueInstancesInNodeCache($nodeId);
         }
 
-        $this->instances[$node->id()] = $node;
+        $this->instances[$nodeId] = $node;
     }
 
     public function has(int $id): bool
