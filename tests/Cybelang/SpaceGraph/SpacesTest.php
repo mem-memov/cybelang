@@ -26,13 +26,12 @@ class SpacesTest extends TestCase
 
         $spaceName = 'clause';
 
+        $space = $this->createMock(Space::class);
+
         $this->cache->expects($this->once())
             ->method('hasSpaceWithName')
             ->with($spaceName)
             ->willReturn(true);
-
-        $space = $this->createMock(Space::class);
-
         $this->cache->expects($this->once())
             ->method('getSpaceWithName')
             ->with($spaceName)
@@ -59,22 +58,20 @@ class SpacesTest extends TestCase
             ->method('add')
             ->with($spaceNode);
 
-        $this->cache->expects($this->exactly(2))
-            ->method('hasSpaceWithName')
-            ->withConsecutive([$spaceName], [$spaceName])
-            ->will($this->onConsecutiveCalls(false, false));
-
         $this->nodes->expects($this->exactly(2))
             ->method('nodeForValue')
             ->withConsecutive([$this->rootName], [$spaceName])
             ->will($this->onConsecutiveCalls($rootNode, $spaceNode));
 
+        $space = $this->createMock(Space::class);
+
+        $this->cache->expects($this->exactly(2))
+            ->method('hasSpaceWithName')
+            ->withConsecutive([$spaceName], [$spaceName])
+            ->will($this->onConsecutiveCalls(false, false));
         $this->cache->expects($this->once())
             ->method('set')
             ->with($this->isInstanceOf(Space::class));
-
-        $space = $this->createMock(Space::class);
-
         $this->cache->expects($this->once())
             ->method('getSpaceWithName')
             ->with($spaceName)
@@ -91,11 +88,6 @@ class SpacesTest extends TestCase
 
         $spaceId = 3;
         $spaceName = 'clause';
-
-        $this->cache->expects($this->exactly(2))
-            ->method('hasSpaceWithName')
-            ->withConsecutive([$spaceName], [$spaceName])
-            ->will($this->onConsecutiveCalls(false, true));
 
         $spaceNode = $this->createMock(Node::class);
         $spaceNode->expects($this->once())
@@ -114,6 +106,10 @@ class SpacesTest extends TestCase
 
         $space = $this->createMock(Space::class);
 
+        $this->cache->expects($this->exactly(2))
+            ->method('hasSpaceWithName')
+            ->withConsecutive([$spaceName], [$spaceName])
+            ->will($this->onConsecutiveCalls(false, true));
         $this->cache->expects($this->once())
             ->method('hasSpaceWithId')
             ->with($spaceId)
