@@ -43,10 +43,7 @@ class Space
     public function createNodeForValue(string $value): Node
     {
         $node = $this->nodes->nodeForValue($value);
-
-        if (!$node->has($this->node)) {
-            $node->add($this->node);
-        }
+        $node->add($this->node);
 
         return $node;
     }
@@ -93,8 +90,14 @@ class Space
      */
     public function filter(array $nodes): array
     {
-        return array_filter($nodes, function(Node $node) {
-            return $node->has($this->node);
-        });
+        $selectedNodes = [];
+
+        foreach ($nodes as $node) {
+            if ($node->has($this->node)) {
+                $selectedNodes[] = $node;
+            }
+        }
+
+        return $selectedNodes;
     }
 }
