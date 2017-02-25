@@ -2,9 +2,9 @@
 
 namespace MemMemov\Cybelang\SpaceGraph;
 
-use MemMemov\Cybelang\Cybe\SpaceGraph;
+//use MemMemov\Cybelang\Cybe\SpaceGraph;
 
-class Spaces implements SpaceGraph
+class Spaces // implements SpaceGraph
 {
     private $nodes;
     private $rootName;
@@ -30,7 +30,7 @@ class Spaces implements SpaceGraph
 
             foreach ($spaceNodes as $spaceNode) {
                 if (!array_key_exists($spaceNode->id(), $this->spacesById)) {
-                    $space = new Space($spaceName, $spaceNode);
+                    $space = new Space($spaceName, $spaceNode, $this->nodes);
                     $this->spacesByName[$spaceName] = $space;
                     $this->spacesById[$spaceNode->id()] = $space;
                 }
@@ -62,7 +62,7 @@ class Spaces implements SpaceGraph
 
             foreach ($spaceNodes as $spaceNode) {
                 $spaceName = $this->nodes->valueForNode($spaceNode);
-                $space = new Space($spaceName, $spaceNode);
+                $space = new Space($spaceName, $spaceNode, $this->nodes);
                 $this->spacesByName[$spaceName] = $space;
                 $this->spacesById[$spaceNode->id()] = $space;
             }
@@ -75,7 +75,7 @@ class Spaces implements SpaceGraph
             }
         );
 
-        $nodeSpaceCount = count();
+        $nodeSpaceCount = count($nodeSpaces);
 
         if (0 === $nodeSpaceCount) {
             throw new ForbidNodeInNoSpace(sprintf('Node %d has no space', $node->id()));
