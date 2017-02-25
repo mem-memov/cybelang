@@ -36,8 +36,9 @@ class Spaces // implements SpaceGraph
 
     /**
      * @param Node $node
-     *
      * @return Space
+     * @throws ForbidNodeInNoSpace
+     * @throws ForbidOneNodeInManySpaces
      */
     public function spaceOfNode(Node $node): Space
     {
