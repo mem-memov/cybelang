@@ -19,7 +19,7 @@ class SpaceNode implements GraphNode
 
     public function id(): int
     {
-        return $this->id();
+        return $this->id;
     }
 
     public function one(string $type): GraphNode
