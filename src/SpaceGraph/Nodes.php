@@ -5,28 +5,28 @@ namespace MemMemov\SpaceGraph;
 class Nodes
 {
     private $store;
-    /** @var int[] */
     private $cache;
 
     public function __construct(
-        Store $store
+        Store $store,
+        NodeCache $cache
     ) {
         $this->store = $store;
-        $this->cache = [];
+        $this->cache = $cache;
     }
 
     public function create(): Node
     {
         $id = $this->store->createNode();
         $node = new Node($id, [], $this->store);
-        $this->cache[$id] = $node;
+        $this->cache->set($node);
 
         return $node;
     }
 
     public function createCommonNode(array $nodes): Node
     {
-        $commonNode = $nodes->create();
+        $commonNode = $this->create();
 
         foreach ($nodes as $node) {
             $node->add($commonNode);
@@ -38,13 +38,13 @@ class Nodes
 
     public function read(int $id): Node
     {
-        if (array_key_exists($id, $this->cache)) {
-            return $this->cache[$id];
+        if ($this->cache->has($id)) {
+            return $this->cache->get($id);
         }
 
         $ids = $this->store->readNode($id);
         $node = new Node($id, $ids, $this->store);
-        $this->cache[$id] = $node;
+        $this->cache->set($node);
 
         return $node;
     }
