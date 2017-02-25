@@ -7,17 +7,17 @@ namespace MemMemov\Cybelang\SpaceGraph;
 class Spaces // implements SpaceGraph
 {
     private $nodes;
-    private $rootName;
     private $cache;
+    private $rootName;
 
     public function __construct(
         Nodes $nodes,
-        string $rootName,
-        SpaceCache $cache
+        SpaceCache $cache,
+        string $rootName
     ) {
         $this->nodes = $nodes;
-        $this->rootName = $rootName;
         $this->cache = $cache;
+        $this->rootName = $rootName;
     }
 
     public function provideSpace(string $spaceName): Space
