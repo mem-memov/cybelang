@@ -35,6 +35,7 @@ class NodesTest extends TestCase
 
     public function testItCreatesCommonNode()
     {
+        /** @var Nodes|\PHPUnit_Framework_MockObject_MockObject $nodes */
         $nodes = $this->getMockBuilder(Nodes::class)
             ->setMethods(['create'])
             ->setConstructorArgs([$this->store, $this->nodeCache])
@@ -116,6 +117,7 @@ class NodesTest extends TestCase
 
     public function testItReadsManyNodes()
     {
+        /** @var Nodes|\PHPUnit_Framework_MockObject_MockObject $nodes */
         $nodes = $this->getMockBuilder(Nodes::class)
             ->setMethods(['read'])
             ->setConstructorArgs([$this->store, $this->nodeCache])
@@ -137,6 +139,7 @@ class NodesTest extends TestCase
 
     public function testItReadsNodeForValue()
     {
+        /** @var Nodes|\PHPUnit_Framework_MockObject_MockObject $nodes */
         $nodes = $this->getMockBuilder(Nodes::class)
             ->setMethods(['read'])
             ->setConstructorArgs([$this->store, $this->nodeCache])
@@ -186,6 +189,7 @@ class NodesTest extends TestCase
 
     public function testItFindsCommonNodes()
     {
+        /** @var Nodes|\PHPUnit_Framework_MockObject_MockObject $nodes */
         $nodes = $this->getMockBuilder(Nodes::class)
             ->setMethods(['read'])
             ->setConstructorArgs([$this->store, $this->nodeCache])

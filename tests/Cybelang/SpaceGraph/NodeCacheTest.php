@@ -8,6 +8,7 @@ class NodeCacheTest extends TestCase
 {
     public function testItSetsNode()
     {
+        /** @var NodeCache|\PHPUnit_Framework_MockObject_MockObject $nodeCache */
         $nodeCache = $this->getMockBuilder(NodeCache::class)
             ->setMethods(['has'])
             ->getMock();
@@ -30,6 +31,7 @@ class NodeCacheTest extends TestCase
 
     public function testItForbidsNonUniqueNodeInstances()
     {
+        /** @var NodeCache|\PHPUnit_Framework_MockObject_MockObject $nodeCache */
         $nodeCache = $this->getMockBuilder(NodeCache::class)
             ->setMethods(['has', 'get'])
             ->getMock();
@@ -47,14 +49,14 @@ class NodeCacheTest extends TestCase
             ->with($nodeId)
             ->willReturn(true);
 
-        $duplicateNnode = $this->createMock(Node::class);
+        $duplicateNode = $this->createMock(Node::class);
 
         $nodeCache->expects($this->once())
             ->method('get')
             ->with($nodeId)
-            ->willReturn($duplicateNnode);
+            ->willReturn($duplicateNode);
 
-        $this->expectException(ForbidNonUniqueInstancesInNodeCache::class);
+        $this->expectException(ForbidNonUniqueInstancesInCache::class);
 
         $nodeCache->set($node);
     }
@@ -91,6 +93,7 @@ class NodeCacheTest extends TestCase
 
     public function testItSuppliesANode()
     {
+        /** @var NodeCache|\PHPUnit_Framework_MockObject_MockObject $nodeCache */
         $nodeCache = $this->getMockBuilder(NodeCache::class)
             ->setMethods(['has'])
             ->getMock();
@@ -117,6 +120,7 @@ class NodeCacheTest extends TestCase
 
     public function testItComplainsWhenItCanNotSupplyAMissingNode()
     {
+        /** @var NodeCache|\PHPUnit_Framework_MockObject_MockObject $nodeCache */
         $nodeCache = $this->getMockBuilder(NodeCache::class)
             ->setMethods(['has'])
             ->getMock();
@@ -128,7 +132,7 @@ class NodeCacheTest extends TestCase
             ->with($nodeId)
             ->willReturn(false);
 
-        $this->expectException(ComplainAboutNodesMissingInNodeCache::class);
+        $this->expectException(ComplainAboutItemsMissingInCache::class);
 
         $nodeCache->get($nodeId);
     }

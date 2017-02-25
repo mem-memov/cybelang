@@ -15,8 +15,25 @@ class SpaceCache
 
     public function set(Space $space): void
     {
-        $this->spacesByName[$space->name()] = $space;
-        $this->spacesById[$space->id()] = $space;
+        $spaceId = $space->id();
+        $spaceName = $space->name();
+
+        if (
+            $this->hasSpaceWithId($spaceId)
+            && $this->getSpaceWithId($spaceId) !== $space
+        ) {
+            throw new ForbidNonUniqueInstancesInCache($spaceId);
+        }
+
+        if (
+            $this->hasSpaceWithName($spaceName)
+            && $this->getSpaceWithName($spaceName) !== $space
+        ) {
+            throw new ForbidNonUniqueInstancesInCache($spaceId);
+        }
+
+        $this->spacesById[$spaceId] = $space;
+        $this->spacesByName[$spaceName] = $space;
     }
 
     public function hasSpaceWithName(string $spaceName): bool
@@ -42,8 +59,21 @@ class SpaceCache
         return array_values($this->spacesByName);
     }
 
+    public function getSpaceWithId(int $id): Space
+    {
+        if (!$this->hasSpaceWithId($id)) {
+            throw new ComplainAboutItemsMissingInCache($id);
+        }
+
+        return $this->spacesById[$id];
+    }
+
     public function getSpaceWithName(string $spaceName): Space
     {
+        if (!$this->hasSpaceWithName($spaceName)) {
+            throw new ComplainAboutItemsMissingInCache($spaceName);
+        }
+
         return $this->spacesByName[$spaceName];
     }
 }

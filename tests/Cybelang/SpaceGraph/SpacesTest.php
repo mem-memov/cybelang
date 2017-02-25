@@ -208,6 +208,7 @@ class SpacesTest extends TestCase
 
     public function testItFindsUniqueSpacesOfNodes()
     {
+        /** @var Spaces|\PHPUnit_Framework_MockObject_MockObject $spaces */
         $spaces = $this->getMockBuilder(Spaces::class)
             ->setConstructorArgs([$this->nodes, $this->spaceCache, $this->spaceRoot])
             ->setMethods(['spaceOfNode'])
@@ -234,6 +235,7 @@ class SpacesTest extends TestCase
 
     public function testItChecksIfAllNodesAreInSameSpace()
     {
+        /** @var Spaces|\PHPUnit_Framework_MockObject_MockObject $spaces */
         $spaces = $this->getMockBuilder(Spaces::class)
             ->setConstructorArgs([$this->nodes, $this->spaceCache, $this->spaceRoot])
             ->setMethods(['uniqueSpacesOfNodes'])
@@ -256,6 +258,7 @@ class SpacesTest extends TestCase
 
     public function testItChecksIfNotAllNodesAreInSameSpace()
     {
+        /** @var Spaces|\PHPUnit_Framework_MockObject_MockObject $spaces */
         $spaces = $this->getMockBuilder(Spaces::class)
             ->setConstructorArgs([$this->nodes, $this->spaceCache, $this->spaceRoot])
             ->setMethods(['uniqueSpacesOfNodes'])

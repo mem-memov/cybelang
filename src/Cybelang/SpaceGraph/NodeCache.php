@@ -19,7 +19,7 @@ class NodeCache
             $this->has($nodeId)
             && $this->get($nodeId) !== $node
         ) {
-            throw new ForbidNonUniqueInstancesInNodeCache($nodeId);
+            throw new ForbidNonUniqueInstancesInCache($nodeId);
         }
 
         $this->instances[$nodeId] = $node;
@@ -33,7 +33,7 @@ class NodeCache
     public function get(int $id): Node
     {
         if (!$this->has($id)) {
-            throw new ComplainAboutNodesMissingInNodeCache($id);
+            throw new ComplainAboutItemsMissingInCache($id);
         }
 
         return $this->instances[$id];
