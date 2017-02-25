@@ -228,7 +228,7 @@ class NodesTest extends TestCase
             ->method('has')
             ->with($selectorNode)
             ->willReturn(false);
-
+ 
         $result = $nodes->filter($selectorNode, [$node_1, $node_2]);
 
         $this->assertSame([$node_1], $result);
