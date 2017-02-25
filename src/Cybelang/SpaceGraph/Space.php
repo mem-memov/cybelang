@@ -23,6 +23,11 @@ class Space
         return $this->node->id();
     }
 
+    public function name(): string
+    {
+        return $this->name;
+    }
+
     /**
      * @param Node[] $nodes
      * @return SpaceNode

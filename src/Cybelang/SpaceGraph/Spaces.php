@@ -8,44 +8,42 @@ class Spaces // implements SpaceGraph
 {
     private $nodes;
     private $rootName;
-    private $spacesByName;
-    private $spacesById;
+    private $cache;
 
     public function __construct(
         Nodes $nodes,
-        string $rootName
+        string $rootName,
+        SpaceCache $cache
     ) {
         $this->nodes = $nodes;
         $this->rootName = $rootName;
-        $this->spacesByName = [];
-        $this->spacesById = [];
+        $this->cache = $cache;
     }
 
     public function provideSpace(string $spaceName): Space
     {
-        if (!array_key_exists($spaceName, $this->spacesByName)) {
+        if (!$this->cache->hasSpaceWithName($spaceName)) {
             // load all spaces
             $rootNode = $this->nodes->nodeForValue($this->rootName);
             $spaceNodes = $rootNode->all();
 
             foreach ($spaceNodes as $spaceNode) {
-                if (!array_key_exists($spaceNode->id(), $this->spacesById)) {
+                if (!$this->cache->hasSpaceWithId($spaceNode->id())) {
                     $space = new Space($spaceName, $spaceNode, $this->nodes);
-                    $this->spacesByName[$spaceName] = $space;
-                    $this->spacesById[$spaceNode->id()] = $space;
+                    $this->cache->set($space);
                 }
             }
 
-            if (!array_key_exists($spaceName, $this->spacesByName)) {
+            if (!$this->cache->hasSpaceWithName($spaceName)) {
                 // create new space
                 $spaceNode = $this->nodes->nodeForValue($spaceName);
                 $rootNode->add($spaceNode);
-                $this->spacesByName[$spaceName] = $space;
-                $this->spacesById[$spaceNode->id()] = $space;
+                $space = new Space($spaceName, $spaceNode, $this->nodes);
+                $this->cache->set($space);
             }
         }
 
-        return $this->spacesByName[$spaceName];
+        return $this->cache->getSpaceWithName($spaceName);
     }
 
     /**
@@ -55,7 +53,7 @@ class Spaces // implements SpaceGraph
      */
     public function spaceOfNode(Node $node): Space
     {
-        if (empty($this->spacesByName) || empty($this->spacesById)) {
+        if ($this->cache->isEmpty()) {
             // load all spaces
             $rootNode = $this->nodes->nodeForValue($this->rootName);
             $spaceNodes = $rootNode->all();
@@ -63,13 +61,12 @@ class Spaces // implements SpaceGraph
             foreach ($spaceNodes as $spaceNode) {
                 $spaceName = $this->nodes->valueForNode($spaceNode);
                 $space = new Space($spaceName, $spaceNode, $this->nodes);
-                $this->spacesByName[$spaceName] = $space;
-                $this->spacesById[$spaceNode->id()] = $space;
+                $this->cache->set($space);
             }
         }
 
         $nodeSpaces = array_filter(
-            $this->spacesByName, 
+            $this->cache->getAll(),
             function(Space $space) use ($node) {
                 return $space->has($node);
             }
