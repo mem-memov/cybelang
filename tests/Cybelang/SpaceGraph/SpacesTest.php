@@ -82,7 +82,7 @@ class SpacesTest extends TestCase
         $this->assertSame($space, $result);
     }
 
-    public function testItRefreshesCacheAndReadsSpaceFromIt()
+    public function testItFillsCacheAndReadsSpaceFromIt()
     {
         $spaces = new Spaces($this->nodes, $this->cache, $this->rootName);
 
