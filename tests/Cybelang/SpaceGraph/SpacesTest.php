@@ -10,28 +10,29 @@ class SpacesTest extends TestCase
     protected $nodes;
     /** @var SpaceCache|\PHPUnit_Framework_MockObject_MockObject */
     protected $cache;
-    /** @var string */
-    protected $rootName;
+    /** @var SpaceRoot|\PHPUnit_Framework_MockObject_MockObject */
+    protected $spaceRoot;
 
     protected function setUp()
     {
         $this->nodes = $this->createMock(Nodes::class);
         $this->cache = $this->createMock(SpaceCache::class);
-        $this->rootName = 'someCrazyName34t3f@';
+        $this->spaceRoot = $this->createMock(SpaceRoot::class);
     }
 
     public function testItReadsSpaceFromCache()
     {
-        $spaces = new Spaces($this->nodes, $this->cache, $this->rootName);
+        $spaces = new Spaces($this->nodes, $this->cache, $this->spaceRoot);
 
         $spaceName = 'clause';
-
-        $space = $this->createMock(Space::class);
 
         $this->cache->expects($this->once())
             ->method('hasSpaceWithName')
             ->with($spaceName)
             ->willReturn(true);
+
+        $space = $this->createMock(Space::class);
+
         $this->cache->expects($this->once())
             ->method('getSpaceWithName')
             ->with($spaceName)
@@ -44,34 +45,25 @@ class SpacesTest extends TestCase
 
     public function testItCreatesNewSpaceAndReadsItFromCache()
     {
-        $spaces = new Spaces($this->nodes, $this->cache, $this->rootName);
+        $spaces = new Spaces($this->nodes, $this->cache, $this->spaceRoot);
 
         $spaceName = 'clause';
-
-        $spaceNode = $this->createMock(Node::class);
-
-        $rootNode = $this->createMock(Node::class);
-        $rootNode->expects($this->once())
-            ->method('all')
-            ->willReturn([]);
-        $rootNode->expects($this->once())
-            ->method('add')
-            ->with($spaceNode);
-
-        $this->nodes->expects($this->exactly(2))
-            ->method('nodeForValue')
-            ->withConsecutive([$this->rootName], [$spaceName])
-            ->will($this->onConsecutiveCalls($rootNode, $spaceNode));
-
-        $space = $this->createMock(Space::class);
 
         $this->cache->expects($this->exactly(2))
             ->method('hasSpaceWithName')
             ->withConsecutive([$spaceName], [$spaceName])
             ->will($this->onConsecutiveCalls(false, false));
-        $this->cache->expects($this->once())
-            ->method('set')
-            ->with($this->isInstanceOf(Space::class));
+
+        $this->spaceRoot->expects($this->once())
+            ->method('loadSpacesIntoCache')
+            ->with($this->cache, $this->nodes);
+
+        $this->spaceRoot->expects($this->once())
+            ->method('addNewSpace')
+            ->with($this->cache, $this->nodes, $spaceName);
+
+        $space = $this->createMock(Space::class);
+
         $this->cache->expects($this->once())
             ->method('getSpaceWithName')
             ->with($spaceName)
@@ -84,39 +76,21 @@ class SpacesTest extends TestCase
 
     public function testItFillsCacheAndReadsSpaceFromIt()
     {
-        $spaces = new Spaces($this->nodes, $this->cache, $this->rootName);
+        $spaces = new Spaces($this->nodes, $this->cache, $this->spaceRoot);
 
-        $spaceId = 3;
         $spaceName = 'clause';
-
-        $spaceNode = $this->createMock(Node::class);
-        $spaceNode->expects($this->once())
-            ->method('id')
-            ->willReturn($spaceId);
-
-        $rootNode = $this->createMock(Node::class);
-        $rootNode->expects($this->once())
-            ->method('all')
-            ->willReturn([$spaceNode]);
-
-        $this->nodes->expects($this->once())
-            ->method('nodeForValue')
-            ->with($this->rootName)
-            ->willReturn($rootNode);
-
-        $space = $this->createMock(Space::class);
 
         $this->cache->expects($this->exactly(2))
             ->method('hasSpaceWithName')
             ->withConsecutive([$spaceName], [$spaceName])
             ->will($this->onConsecutiveCalls(false, true));
-        $this->cache->expects($this->once())
-            ->method('hasSpaceWithId')
-            ->with($spaceId)
-            ->willReturn(false);
-        $this->cache->expects($this->once())
-            ->method('set')
-            ->with($this->isInstanceOf(Space::class));
+
+        $this->spaceRoot->expects($this->once())
+            ->method('loadSpacesIntoCache')
+            ->with($this->cache, $this->nodes);
+
+        $space = $this->createMock(Space::class);
+
         $this->cache->expects($this->once())
             ->method('getSpaceWithName')
             ->with($spaceName)

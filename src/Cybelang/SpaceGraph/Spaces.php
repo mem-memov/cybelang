@@ -7,43 +7,31 @@ namespace MemMemov\Cybelang\SpaceGraph;
 class Spaces // implements SpaceGraph
 {
     private $nodes;
-    private $cache;
-    private $rootName;
+    private $spaceCache;
+    private $spaceRoot;
 
     public function __construct(
         Nodes $nodes,
-        SpaceCache $cache,
-        string $rootName
+        SpaceCache $spaceCache,
+        SpaceRoot $spaceRoot
     ) {
         $this->nodes = $nodes;
-        $this->cache = $cache;
-        $this->rootName = $rootName;
+        $this->spaceCache = $spaceCache;
+        $this->spaceRoot = $spaceRoot;
     }
 
     public function provideSpace(string $spaceName): Space
     {
-        if (!$this->cache->hasSpaceWithName($spaceName)) {
-            // load all spaces
-            $rootNode = $this->nodes->nodeForValue($this->rootName);
-            $spaceNodes = $rootNode->all();
+        if (!$this->spaceCache->hasSpaceWithName($spaceName)) {
 
-            foreach ($spaceNodes as $spaceNode) {
-                if (!$this->cache->hasSpaceWithId($spaceNode->id())) {
-                    $space = new Space($spaceName, $spaceNode, $this->nodes);
-                    $this->cache->set($space);
-                }
-            }
+            $this->spaceRoot->loadSpacesIntoCache($this->spaceCache, $this->nodes);
 
-            if (!$this->cache->hasSpaceWithName($spaceName)) {
-                // create new space
-                $spaceNode = $this->nodes->nodeForValue($spaceName);
-                $rootNode->add($spaceNode);
-                $space = new Space($spaceName, $spaceNode, $this->nodes);
-                $this->cache->set($space);
+            if (!$this->spaceCache->hasSpaceWithName($spaceName)) {
+                $this->spaceRoot->addNewSpace($this->spaceCache, $this->nodes, $spaceName);
             }
         }
 
-        return $this->cache->getSpaceWithName($spaceName);
+        return $this->spaceCache->getSpaceWithName($spaceName);
     }
 
     /**
@@ -53,20 +41,12 @@ class Spaces // implements SpaceGraph
      */
     public function spaceOfNode(Node $node): Space
     {
-        if ($this->cache->isEmpty()) {
-            // load all spaces
-            $rootNode = $this->nodes->nodeForValue($this->rootName);
-            $spaceNodes = $rootNode->all();
-
-            foreach ($spaceNodes as $spaceNode) {
-                $spaceName = $this->nodes->valueForNode($spaceNode);
-                $space = new Space($spaceName, $spaceNode, $this->nodes);
-                $this->cache->set($space);
-            }
+        if ($this->spaceCache->isEmpty()) {
+            $this->spaceRoot->loadSpacesIntoCache($this->spaceCache, $this->nodes);
         }
 
         $nodeSpaces = array_filter(
-            $this->cache->getAll(),
+            $this->spaceCache->getAll(),
             function(Space $space) use ($node) {
                 return $space->has($node);
             }
