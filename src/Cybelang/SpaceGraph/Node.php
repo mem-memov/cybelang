@@ -60,10 +60,11 @@ class Node
     {
         $nodeId = $node->id();
 
-        if (!in_array($nodeId, $this->ids)) {
-            $this->ids[] = $nodeId;
+        if (in_array($nodeId, $this->ids)) {
+            return;
         }
 
+        $this->ids[] = $nodeId;
         $this->store->connectNodes($this->id, $nodeId);
     }
 }
