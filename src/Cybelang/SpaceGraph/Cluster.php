@@ -7,7 +7,7 @@ class Cluster
     /** @var int */
     protected $spaceId;
     /** @var int[] */
-    protected $nodes;
+    protected $nodeIds;
 
     public function __construct(
         int $spaceId,
@@ -19,7 +19,7 @@ class Cluster
 
     public function spaceId(): int
     {
-        return $this->spaceId();
+        return $this->spaceId;
     }
 
     public function nodeIds(): array
@@ -29,15 +29,17 @@ class Cluster
 
     public function equals(Cluster $cluster): bool
     {
-        if ($this->spaceId() !== $cluster->spaceId()) {
+        if ($this->spaceId !== $cluster->spaceId()) {
             return false;
         }
 
-        if (0 !== count(array_diff($this->nodeIds(), $cluster->nodeIds()))) {
+        $clusterNodeIds = $cluster->nodeIds();
+
+        if (0 !== count(array_diff($this->nodeIds, $clusterNodeIds))) {
             return false;
         }
 
-        if (0 !== count(array_diff($cluster->nodeIds(), $this->nodeIds()))) {
+        if (0 !== count(array_diff($clusterNodeIds, $this->nodeIds))) {
             return false;
         }
 
