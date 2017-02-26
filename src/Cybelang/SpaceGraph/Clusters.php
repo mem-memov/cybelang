@@ -4,14 +4,11 @@ namespace MemMemov\Cybelang\SpaceGraph;
 
 class Clusters
 {
-    private $nodes;
     private $spaces;
 
     public function __construct(
-        Nodes $nodes,
         Spaces $spaces
     ) {
-        $this->nodes = $nodes;
         $this->spaces = $spaces;
     }
 
@@ -32,6 +29,10 @@ class Clusters
                 $clusterNodeIds[] = $clusterNode->id();
             }
             $clusters[] = new Cluster($uniqueSpace->id(), $clusterNodeIds);
+        }
+
+        if (0 === count($clusters)) {
+            throw new ForbidEmptyClusterSet();
         }
 
         return new ClusterSet($clusters);
