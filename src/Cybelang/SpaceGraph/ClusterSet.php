@@ -32,10 +32,12 @@ class ClusterSet
 
     public function hasCluster(Cluster $cluster): bool
     {
-        if (!array_key_exists($cluster->spaceId(), $this->clusters)) {
+        $clusterSpaceId = $cluster->spaceId();
+
+        if (!array_key_exists($clusterSpaceId, $this->clusters)) {
             return false;
         }
 
-        return $cluster->equals($this->clusters[$cluster->spaceId()]);
+        return $cluster->equals($this->clusters[$clusterSpaceId]);
     }
 }
