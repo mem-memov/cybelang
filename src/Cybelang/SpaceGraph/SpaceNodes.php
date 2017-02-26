@@ -6,13 +6,16 @@ class SpaceNodes
 {
     private $nodes;
     private $spaces;
+    private $clusters;
 
     public function __construct(
         Nodes $nodes,
-        Spaces $spaces
+        Spaces $spaces,
+        Clusters $clusters
     ) {
         $this->nodes = $nodes;
         $this->spaces = $spaces;
+        $this->clusters = $clusters;
     }
 
     public function readNode(int $id): SpaceNode
@@ -30,33 +33,15 @@ class SpaceNodes
      */
     public function provideCommonNode(string $spaceName, array $ids): SpaceNode
     {
-        $idNodes = $this->nodes->readMany($ids);
+        $nodes = $this->nodes->readMany($ids);
 
-        $uniqueSpaces = $this->spaces->uniqueSpacesOfNodes($idNodes);
-        $uniqueSpaceNodes = [];
-        /** @var Space $uniqueSpace */
-        foreach ($uniqueSpaces as $uniqueSpace) {
-            $uniqueSpaceNodes[$uniqueSpace->id()] = $uniqueSpace->filter($idNodes);
-        }
+        $masterClusterSet = $this->clusters->createClusterSet($nodes);
 
         $commonNodes = $this->nodes->commonNodes($ids);
         $matchingCommonNodes = [];
         foreach ($commonNodes as $commonNode) {
-            $isMatching = true;
-            foreach ($uniqueSpaces as $uniqueSpace) {
-                $memberNodes = $uniqueSpace->filter($commonNode->all());
-                /** @var Node $uniqueSpaceNode */
-                foreach ($uniqueSpaceNodes[$uniqueSpace->id()] as $uniqueSpaceNode) {
-                    if (!$uniqueSpaceNode->in($memberNodes)) {
-                        $isMatching = false;
-                        break;
-                    }
-                }
-                if (!$isMatching) {
-                    break;
-                }
-            }
-            if ($isMatching) {
+            $clusterSet = $this->clusters->createClusterSet($commonNode->all());
+            if ($masterClusterSet->inClusterSet($clusterSet)) {
                 $matchingCommonNodes[] = $commonNode;
             }
         }
@@ -70,7 +55,7 @@ class SpaceNodes
         }
 
         if (0 === $matchingCommonNodeCount) {
-            $node = $space->createCommonNode($idNodes);
+            $node = $space->createCommonNode($nodes);
             return new SpaceNode($node, $this);
         }
 
