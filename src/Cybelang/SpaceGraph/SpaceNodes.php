@@ -6,23 +6,23 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
 {
     private $nodes;
     private $spaces;
-    private $clusters;
+    private $commonNodes;
 
     public function __construct(
         Nodes $nodes,
         Spaces $spaces,
-        Clusters $clusters
+        CommonNodes $commonNodes
     ) {
         $this->nodes = $nodes;
         $this->spaces = $spaces;
-        $this->clusters = $clusters;
+        $this->commonNodes = $commonNodes;
     }
 
     public function readNode(int $id): SpaceNode
     {
-        $node = $this->nodes->read($id);
+        $node = $this->nodes->read($id); // checking it exsits and loading to cache
 
-        return new SpaceNode($node, $this);
+        return new SpaceNode($id, $this);
     }
 
     /**
@@ -33,30 +33,24 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
      */
     public function provideCommonNode(string $spaceName, array $ids): SpaceNode
     {
-        $nodes = $this->nodes->readMany($ids);
-
-        $masterClusterSet = $this->clusters->createClusterSet($nodes);
-
-        $commonNodes = $this->nodes->commonNodes($ids);
-        $matchingCommonNodes = [];
-        foreach ($commonNodes as $commonNode) {
-            $clusterSet = $this->clusters->createClusterSet($commonNode->all());
-            if ($masterClusterSet->inClusterSet($clusterSet)) {
-                $matchingCommonNodes[] = $commonNode;
-            }
-        }
-
-        $matchingCommonNodeCount = count($matchingCommonNodes);
         $space = $this->spaces->provideSpace($spaceName);
 
+        $matchingCommonNodes = $this->commonNodes->provideMatchingCommonNodes($space, $ids);
+
+        $matchingCommonNodeCount = count($matchingCommonNodes);
+
         if (1 === $matchingCommonNodeCount) {
-            $node = $space->readNode($matchingCommonNodeCount[0]);
-            return new SpaceNode($node, $this);
+            $node = $matchingCommonNodes[0];
+            if (!$space->has($node)) {
+                throw new \Exception();
+            }
+            return new SpaceNode($node->id(), $this);
         }
 
         if (0 === $matchingCommonNodeCount) {
+            $nodes = $this->nodes->readMany($ids);
             $node = $space->createCommonNode($nodes);
-            return new SpaceNode($node, $this);
+            return new SpaceNode($node->id(), $this);
         }
 
         throw new ForbidMultipleCommonNodes('Multiple common nodes detected');
@@ -68,7 +62,7 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
         $space = $this->spaces->provideSpace($spaceName);
         $node = $space->getOneNode($containerNode);
 
-        return new SpaceNode($node, $this);
+        return new SpaceNode($node->id(), $this);
     }
 
     /**
@@ -84,7 +78,7 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
 
         $spaceNodes = [];
         foreach ($nodes as $node) {
-            $spaceNodes[] = new SpaceNode($node, $this);
+            $spaceNodes[] = new SpaceNode($node->id(), $this);
         }
 
         return $spaceNodes;
@@ -95,7 +89,7 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
         $space = $this->spaces->provideSpace($spaceName);
         $node = $space->createNodeForValue($value);
 
-        return new SpaceNode($node, $this);
+        return new SpaceNode($node->id(), $this);
     }
 
     public function valueOfNode(int $id): string
@@ -132,7 +126,7 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
             }
         );
 
-        return new SpaceNode($lastNode, $this);
+        return new SpaceNode($lastNode->id(), $this);
     }
 
     /**
@@ -147,7 +141,7 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
         $lastNodeSpace = $this->spaces->spaceOfNode($lastNode);
 
         $node = $space->getOneNode($lastNode);
-        $spaceNode = new SpaceNode($node, $this);
+        $spaceNode = new SpaceNode($node->id(), $this);
 
         $previousNodes = $lastNodeSpace->findNodes($lastNode);
         $previousNodeCount = count($previousNodes);
