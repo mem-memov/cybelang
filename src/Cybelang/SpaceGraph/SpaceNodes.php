@@ -40,17 +40,17 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
         $matchingCommonNodeCount = count($matchingCommonNodes);
 
         if (1 === $matchingCommonNodeCount) {
-            $node = $matchingCommonNodes[0];
-            if (!$space->has($node)) {
-                throw new \Exception();
+            $commonNode = $matchingCommonNodes[0];
+            if (!$space->has($commonNode)) {
+                throw new NodeNotFoundInSpace($commonNode->id());
             }
-            return new SpaceNode($node->id(), $this);
+            return new SpaceNode($commonNode->id(), $this);
         }
 
         if (0 === $matchingCommonNodeCount) {
             $nodes = $this->nodes->readMany($ids);
-            $node = $space->createCommonNode($nodes);
-            return new SpaceNode($node->id(), $this);
+            $commonNode = $space->createCommonNode($nodes);
+            return new SpaceNode($commonNode->id(), $this);
         }
 
         throw new ForbidMultipleCommonNodes('Multiple common nodes detected');

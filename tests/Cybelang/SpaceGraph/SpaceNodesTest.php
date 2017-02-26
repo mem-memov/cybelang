@@ -68,4 +68,46 @@ class SpaceNodesTest extends TestCase
 
         $this->assertInstanceOf(SpaceNode::class, $result);
     }
+
+    public function testItCreatesCommonNode()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes);
+
+        $spaceName = 'clause';
+        $ids = [10];
+
+        $space = $this->createMock(Space::class);
+
+        $this->spaces->expects($this->once())
+            ->method('provideSpace')
+            ->with($spaceName)
+            ->willReturn($space);
+
+        $this->commonNodes->expects($this->once())
+            ->method('provideMatchingCommonNodes')
+            ->with($space, $ids)
+            ->willReturn([]);
+
+        $node = $this->createMock(Node::class);
+
+        $this->nodes->expects($this->once())
+            ->method('readMany')
+            ->with($ids)
+            ->willReturn([$node]);
+
+        $commonNode = $this->createMock(Node::class);
+
+        $space->expects($this->once())
+            ->method('createCommonNode')
+            ->with([$node])
+            ->willReturn($commonNode);
+
+        $commonNode->expects($this->once())
+            ->method('id')
+            ->willReturn(33000);
+
+        $result = $spaceNodes->provideCommonNode($spaceName, $ids);
+
+        $this->assertInstanceOf(SpaceNode::class, $result);
+    }
 }
