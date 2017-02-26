@@ -11,7 +11,7 @@ class SpaceNode implements GraphNode
 
     public function __construct(
         int $id,
-        SpaceNodes $spaceNodes
+        SpaceNodesInNode $spaceNodes
     ) {
         $this->id = $id;
         $this->spaceNodes = $spaceNodes;

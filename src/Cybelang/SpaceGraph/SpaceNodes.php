@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybelang\SpaceGraph;
 
-class SpaceNodes
+class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
 {
     private $nodes;
     private $spaces;

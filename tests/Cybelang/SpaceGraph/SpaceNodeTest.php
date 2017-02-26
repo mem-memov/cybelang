@@ -8,13 +8,13 @@ class SpaceNodeTest extends TestCase
 {
     /** @var Store|\PHPUnit_Framework_MockObject_MockObject */
     protected $id;
-    /** @var SpaceNodes|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var SpaceNodesInNode|\PHPUnit_Framework_MockObject_MockObject */
     protected $spaceNodes;
 
     protected function setUp()
     {
         $this->id = 10;
-        $this->spaceNodes = $this->createMock(SpaceNodes::class);
+        $this->spaceNodes = $this->createMock(SpaceNodesInNode::class);
     }
 
     public function testItSupplieId()

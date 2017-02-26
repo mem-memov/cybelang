@@ -10,7 +10,7 @@ class SpaceGraph implements Graph
     private $spaceNodes;
 
     public function __construct(
-        SpaceNodes $spaceNodes
+        SpaceNodesInGraph $spaceNodes
     ) {
         $this->spaceNodes = $spaceNodes;
     }
