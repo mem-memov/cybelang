@@ -52,10 +52,10 @@ class Sequences
      */
     public function readNodeSequence(string $spaceName, int $id): array
     {
-        $space = $this->spaces->provideSpace($spaceName);
         $lastNode = $this->nodes->read($id);
         $lastNodeSpace = $this->spaces->spaceOfNode($lastNode);
 
+        $space = $this->spaces->provideSpace($spaceName);
         $node = $space->getOneNode($lastNode);
 
         $previousNodes = $lastNodeSpace->findNodes($lastNode);
