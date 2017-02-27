@@ -37,7 +37,7 @@ class Sequences
             $nodes,
             function(Node $lastNode = null, Node $node) use ($space) {
                 return is_null($lastNode)
-                    ? $space->createCommonNode($node)
+                    ? $space->createCommonNode([$node])
                     : $space->createCommonNode([$lastNode, $node]);
             }
         );
