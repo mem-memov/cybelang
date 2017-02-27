@@ -7,15 +7,18 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
     private $nodes;
     private $spaces;
     private $commonNodes;
+    private $sequences;
 
     public function __construct(
         Nodes $nodes,
         Spaces $spaces,
-        CommonNodes $commonNodes
+        CommonNodes $commonNodes,
+        Sequences $sequences
     ) {
         $this->nodes = $nodes;
         $this->spaces = $spaces;
         $this->commonNodes = $commonNodes;
+        $this->sequences = $sequences;
     }
 
     public function readNode(int $id): SpaceNode
@@ -106,25 +109,7 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
      */
     public function provideSequenceNode(string $spaceName, array $ids): SpaceNode
     {
-        $space = $this->spaces->provideSpace($spaceName);
-
-        $nodes = [];
-        foreach ($ids as $id) {
-            $nodes[] = $this->nodes->read($id);
-        }
-
-        if (!$this->spaces->inSameSpace($nodes)) {
-            throw new ForbidSequencingMultipleSpaces();
-        }
-
-        $lastNode = array_reduce(
-            $nodes,
-            function(Node $lastNode = null, Node $node) use ($space) {
-                return is_null($lastNode)
-                    ? $space->createCommonNode($node)
-                    : $space->createCommonNode([$lastNode, $node]);
-            }
-        );
+        $lastNode = $this->sequences->provideSequenceNode($spaceName, $ids);
 
         return new SpaceNode($lastNode->id(), $this);
     }
@@ -136,25 +121,13 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
      */
     public function readNodeSequence(string $spaceName, int $id): array
     {
-        $space = $this->spaces->provideSpace($spaceName);
-        $lastNode = $this->nodes->read($id);
-        $lastNodeSpace = $this->spaces->spaceOfNode($lastNode);
+        $nodes = $this->sequences->readNodeSequence($spaceName, $id);
 
-        $node = $space->getOneNode($lastNode);
-        $spaceNode = new SpaceNode($node->id(), $this);
-
-        $previousNodes = $lastNodeSpace->findNodes($lastNode);
-        $previousNodeCount = count($previousNodes);
-
-        if (0 === $previousNodeCount) {
-            return [$spaceNode];
+        $spaceNodes = [];
+        foreach ($nodes as $node) {
+            $spaceNodes[] = new SpaceNode($node->id(), $this);
         }
 
-        if (1 === $previousNodeCount) {
-            $previousNode = $previousNodes[0];
-            $sequence = $this->readNodeSequence($spaceName, $previousNode->id());
-            $sequence[] = $spaceNode;
-            return $sequence;
-        }
+        return $spaceNodes;
     }
 }

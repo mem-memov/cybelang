@@ -12,17 +12,20 @@ class SpaceNodesTest extends TestCase
     protected $spaces;
     /** @var CommonNodes|\PHPUnit_Framework_MockObject_MockObject */
     protected $commonNodes;
+    /** @var Sequences|\PHPUnit_Framework_MockObject_MockObject */
+    protected $sequences;
 
     protected function setUp()
     {
         $this->nodes = $this->createMock(Nodes::class);
         $this->spaces = $this->createMock(Spaces::class);
         $this->commonNodes = $this->createMock(CommonNodes::class);
+        $this->sequences = $this->createMock(Sequences::class);
     }
 
     public function testItReadsNodeWithId()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
 
         $id = 2;
 
@@ -40,7 +43,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItReadsCommonNode()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
 
         $spaceName = 'clause';
         $ids = [10];
@@ -71,7 +74,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItForbidsUsingNodeFromDifferentSpaceWhenReadingCommonNode()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
 
         $spaceName = 'clause';
         $ids = [10];
@@ -102,7 +105,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItCreatesCommonNode()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
 
         $spaceName = 'clause';
         $ids = [10];
@@ -144,7 +147,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItForbidsMultipleCommonNodes()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
 
         $spaceName = 'clause';
         $ids = [10];
@@ -167,5 +170,179 @@ class SpaceNodesTest extends TestCase
         $this->expectException(ForbidMultipleCommonNodes::class);
 
         $spaceNodes->provideCommonNode($spaceName, $ids);
+    }
+
+    public function testItSuppliesOneNode()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+
+        $spaceName = 'clause';
+        $id = 8;
+
+        $containerNode = $this->createMock(Node::class);
+
+        $this->nodes->expects($this->once())
+            ->method('read')
+            ->with($id)
+            ->willReturn($containerNode);
+
+        $space = $this->createMock(Space::class);
+
+        $this->spaces->expects($this->once())
+            ->method('provideSpace')
+            ->with($spaceName)
+            ->willReturn($space);
+
+        $node = $this->createMock(Node::class);
+
+        $space->expects($this->once())
+            ->method('getOneNode')
+            ->with($containerNode)
+            ->willReturn($node);
+
+        $node->expects($this->once())
+            ->method('id')
+            ->willReturn(78);
+
+        $result = $spaceNodes->getOneNode($spaceName, $id);
+
+        $this->assertInstanceOf(SpaceNode::class, $result);
+    }
+
+    public function testItFindsSubnodesWithNamespace()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+
+        $spaceName = 'clause';
+        $id = 8;
+
+        $containerNode = $this->createMock(Node::class);
+
+        $this->nodes->expects($this->once())
+            ->method('read')
+            ->with($id)
+            ->willReturn($containerNode);
+
+        $space = $this->createMock(Space::class);
+
+        $this->spaces->expects($this->once())
+            ->method('provideSpace')
+            ->with($spaceName)
+            ->willReturn($space);
+
+        $node = $this->createMock(Node::class);
+
+        $space->expects($this->once())
+            ->method('findNodes')
+            ->with($containerNode)
+            ->willReturn([$node]);
+
+        $node->expects($this->once())
+            ->method('id')
+            ->willReturn(78);
+
+        $result = $spaceNodes->findNodes($spaceName, $id);
+
+        $this->assertContainsOnlyInstancesOf(SpaceNode::class, $result);
+    }
+
+    public function testItProvidesNodeForValue()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+
+        $spaceName = 'word';
+        $value = 'dog';
+
+        $space = $this->createMock(Space::class);
+
+        $this->spaces->expects($this->once())
+            ->method('provideSpace')
+            ->with($spaceName)
+            ->willReturn($space);
+
+        $node = $this->createMock(Node::class);
+
+        $space->expects($this->once())
+            ->method('createNodeForValue')
+            ->with($value)
+            ->willReturn($node);
+
+        $node->expects($this->once())
+            ->method('id')
+            ->willReturn(78);
+
+        $result = $spaceNodes->provideNodeForValue($spaceName, $value);
+
+        $this->assertInstanceOf(SpaceNode::class, $result);
+    }
+
+    public function testItSuppliesValueForNode()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+
+        $id = 598;
+        $value = 'cat';
+
+        $node = $this->createMock(Node::class);
+
+        $this->nodes->expects($this->once())
+            ->method('read')
+            ->with($id)
+            ->willReturn($node);
+
+        $this->nodes->expects($this->once())
+            ->method('valueForNode')
+            ->with($node)
+            ->willReturn($value);
+
+        $result = $spaceNodes->valueOfNode($id);
+
+        $this->assertEquals($value, $result);
+    }
+
+    public function testItProvidesSequenceNode()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+
+        $spaceName = 'clause';
+        $ids = [10];
+
+        $lastNode = $this->createMock(Node::class);
+
+        $this->sequences->expects($this->once())
+            ->method('provideSequenceNode')
+            ->with($spaceName, $ids)
+            ->willReturn($lastNode);
+
+        $lastNode->expects($this->once())
+            ->method('id')
+            ->willReturn(78);
+
+        $result = $spaceNodes->provideSequenceNode($spaceName, $ids);
+
+        $this->assertInstanceOf(SpaceNode::class, $result);
+    }
+
+    public function testItReadsNodeSequence()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+
+        $spaceName = 'clause';
+        $id = 78;
+
+        $node = $this->createMock(Node::class);
+
+        $this->sequences->expects($this->once())
+            ->method('readNodeSequence')
+            ->with($spaceName, $id)
+            ->willReturn([$node]);
+
+        $node->expects($this->once())
+            ->method('id')
+            ->willReturn(10);
+
+        $result = $spaceNodes->readNodeSequence($spaceName, $id);
+
+        $this->assertContainsOnlyInstancesOf(SpaceNode::class, $result);
     }
 }
