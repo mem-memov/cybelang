@@ -8,168 +8,69 @@ class SequencesTest extends TestCase
 {
     /** @var Nodes|\PHPUnit_Framework_MockObject_MockObject */
     protected $nodes;
-    /** @var Spaces|\PHPUnit_Framework_MockObject_MockObject */
-    protected $spaces;
+    /** @var SequenceTrees|\PHPUnit_Framework_MockObject_MockObject */
+    protected $sequenceTrees;
 
     protected function setUp()
     {
         $this->nodes = $this->createMock(Nodes::class);
-        $this->spaces = $this->createMock(Spaces::class);
+        $this->sequenceTrees = $this->createMock(SequenceTrees::class);
     }
 
-    public function testItForbidsSequencingMultipleSpaces()
+    public function testItProvideSequenceNode()
     {
-        $sequences = new Sequences($this->nodes, $this->spaces);
+        $sequences = new Sequences($this->nodes, $this->sequenceTrees);
 
-        $spaceName = 'clause';
-        $ids = [533];
+        $treeSpaceName = 'phrase';
+        $ids = [330763];
 
-        $space = $this->createMock(Space::class);
-
-        $this->spaces->expects($this->once())
-            ->method('provideSpace')
-            ->with($spaceName)
-            ->willReturn($space);
-
-        $node = $this->createMock(Node::class);
+        $sequenceNode = $this->createMock(Node::class);
 
         $this->nodes->expects($this->once())
             ->method('read')
-            ->with(533)
-            ->willReturn($node);
+            ->with($ids[0])
+            ->willReturn($sequenceNode);
 
-        $this->spaces->expects($this->once())
-            ->method('inSameSpace')
-            ->with([$node])
-            ->willReturn(false);
+        $sequenceTree = $this->createMock(SequenceTree::class);
 
-        $this->expectException(ForbidSequencingMultipleSpaces::class);
+        $this->sequenceTrees->expects($this->once())
+            ->method('create')
+            ->with($treeSpaceName, [$sequenceNode])
+            ->willReturn($sequenceTree);
 
-        $sequences->provideSequenceNode($spaceName, $ids);
+        $treeNode = $this->createMock(Node::class);
+
+        $sequenceTree->expects($this->once())
+            ->method('getTreeNode')
+            ->willReturn($treeNode);
+
+        $result = $sequences->provideSequenceNode($treeSpaceName, $ids);
+
+        $this->assertSame($treeNode, $result);
     }
 
-    public function testItProvidesSingleNodeInSequence()
+    public function testItReadsNodeSequence()
     {
-        $sequences = new Sequences($this->nodes, $this->spaces);
+        $sequences = new Sequences($this->nodes, $this->sequenceTrees);
 
-        $spaceName = 'clause';
-        $ids = [533];
+        $sequenceSpaceName = 'word';
+        $treeNodeId = 6346043;
 
-        $space = $this->createMock(Space::class);
+        $sequenceTree = $this->createMock(SequenceTree::class);
 
-        $this->spaces->expects($this->once())
-            ->method('provideSpace')
-            ->with($spaceName)
-            ->willReturn($space);
+        $this->sequenceTrees->expects($this->once())
+            ->method('get')
+            ->with($sequenceSpaceName, $treeNodeId)
+            ->willReturn($sequenceTree);
 
-        $node = $this->createMock(Node::class);
+        $sequenceNode = $this->createMock(Node::class);
 
-        $this->nodes->expects($this->once())
-            ->method('read')
-            ->with(533)
-            ->willReturn($node);
+        $sequenceTree->expects($this->once())
+            ->method('collectSequenceNodes')
+            ->willReturn([$sequenceNode]);
 
-        $this->spaces->expects($this->once())
-            ->method('inSameSpace')
-            ->with([$node])
-            ->willReturn(true);
+        $result = $sequences->readNodeSequence($sequenceSpaceName, $treeNodeId);
 
-        $firstSequenceNode = $this->createMock(Node::class);
-
-        $space->expects($this->once())
-            ->method('createCommonNode')
-            ->with([$node])
-            ->willReturn($firstSequenceNode);
-
-        $result = $sequences->provideSequenceNode($spaceName, $ids);
-
-        $this->assertSame($firstSequenceNode, $result);
-    }
-
-    public function testItProvidesLastNodeInSequence()
-    {
-        $sequences = new Sequences($this->nodes, $this->spaces);
-
-        $spaceName = 'clause';
-        $ids = [533, 17, 8735];
-
-        $space = $this->createMock(Space::class);
-
-        $this->spaces->expects($this->once())
-            ->method('provideSpace')
-            ->with($spaceName)
-            ->willReturn($space);
-
-        $node_1 = $this->createMock(Node::class);
-        $node_2 = $this->createMock(Node::class);
-        $node_3 = $this->createMock(Node::class);
-
-        $this->nodes->expects($this->exactly(3))
-            ->method('read')
-            ->withConsecutive([533], [17], [8735])
-            ->will($this->onConsecutiveCalls($node_1, $node_2, $node_3));
-
-        $this->spaces->expects($this->once())
-            ->method('inSameSpace')
-            ->with([$node_1, $node_2, $node_3])
-            ->willReturn(true);
-
-        $sequenceNode_1 = $this->createMock(Node::class);
-        $sequenceNode_2 = $this->createMock(Node::class);
-        $sequenceNode_3 = $this->createMock(Node::class);
-
-        $space->expects($this->exactly(3))
-            ->method('createCommonNode')
-            ->withConsecutive([[$node_1]], [[$sequenceNode_1, $node_2]], [[$sequenceNode_2, $node_3]])
-            ->will($this->onConsecutiveCalls($sequenceNode_1, $sequenceNode_2, $sequenceNode_3));
-
-        $result = $sequences->provideSequenceNode($spaceName, $ids);
-
-        $this->assertSame($sequenceNode_3, $result);
-    }
-
-    public function testItReadsSingleSequenceNode()
-    {
-        $sequences = new Sequences($this->nodes, $this->spaces);
-
-        $spaceName = 'clause';
-        $lastNodeId = 40987;
-
-        $lastNode = $this->createMock(Node::class);
-
-        $this->nodes->expects($this->once())
-            ->method('read')
-            ->with($lastNodeId)
-            ->willReturn($lastNode);
-
-        $lastNodeSpace = $this->createMock(Space::class);
-
-            $this->spaces->expects($this->once())
-            ->method('spaceOfNode')
-            ->with($lastNode)
-            ->willReturn($lastNodeSpace);
-
-        $space = $this->createMock(Space::class);
-
-        $this->spaces->expects($this->once())
-            ->method('provideSpace')
-            ->with($spaceName)
-            ->willReturn($space);
-
-        $node = $this->createMock(Node::class);
-
-        $space->expects($this->once())
-            ->method('getOneNode')
-            ->with($lastNode)
-            ->willReturn($node);
-
-        $lastNodeSpace->expects($this->once())
-            ->method('findNodes')
-            ->with($lastNode)
-            ->willReturn([]);
-
-        $result = $sequences->readNodeSequence($spaceName, $lastNodeId);
-
-        $this->assertSame([$node], $result);
+        $this->assertSame([$sequenceNode], $result);
     }
 }

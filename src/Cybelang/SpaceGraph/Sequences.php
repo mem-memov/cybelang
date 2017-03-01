@@ -5,14 +5,14 @@ namespace MemMemov\Cybelang\SpaceGraph;
 class Sequences
 {
     private $nodes;
-    private $spaces;
+    private $sequenceTrees;
 
     public function __construct(
         Nodes $nodes,
-        Spaces $spaces
+        SequenceTrees $sequenceTrees
     ) {
         $this->nodes = $nodes;
-        $this->spaces = $spaces;
+        $this->sequenceTrees = $sequenceTrees;
     }
 
     /**
@@ -20,56 +20,27 @@ class Sequences
      * @param int[] $ids
      * @return SpaceNode
      */
-    public function provideSequenceNode(string $spaceName, array $ids): Node
+    public function provideSequenceNode(string $treeSpaceName, array $ids): Node
     {
-        $space = $this->spaces->provideSpace($spaceName);
-
         $nodes = [];
         foreach ($ids as $id) {
             $nodes[] = $this->nodes->read($id);
         }
 
-        if (!$this->spaces->inSameSpace($nodes)) {
-            throw new ForbidSequencingMultipleSpaces();
-        }
+        $sequenceTree = $this->sequenceTrees->create($treeSpaceName, $nodes);
 
-        $lastNode = array_reduce(
-            $nodes,
-            function(Node $lastNode = null, Node $node) use ($space) {
-                return is_null($lastNode)
-                    ? $space->createCommonNode([$node])
-                    : $space->createCommonNode([$lastNode, $node]);
-            }
-        );
-
-        return $lastNode;
+        return $sequenceTree->getTreeNode();
     }
 
     /**
      * @param string $spaceName
      * @param int $id
-     * @return SpaceNode[]
+     * @return Node[]
      */
-    public function readNodeSequence(string $spaceName, int $id): array
+    public function readNodeSequence(string $sequenceSpaceName, int $treeNodeId): array
     {
-        $lastNode = $this->nodes->read($id);
-        $lastNodeSpace = $this->spaces->spaceOfNode($lastNode);
+        $sequenceTree = $this->sequenceTrees->get($sequenceSpaceName, $treeNodeId);
 
-        $space = $this->spaces->provideSpace($spaceName);
-        $node = $space->getOneNode($lastNode);
-
-        $previousNodes = $lastNodeSpace->findNodes($lastNode);
-        $previousNodeCount = count($previousNodes);
-
-        if (0 === $previousNodeCount) {
-            return [$node];
-        }
-
-        if (1 === $previousNodeCount) {
-            $previousNode = $previousNodes[0];
-            $sequence = $this->readNodeSequence($spaceName, $previousNode->id());
-            $sequence[] = $node;
-            return $sequence;
-        }
+        return $sequenceTree->collectSequenceNodes();
     }
 }
