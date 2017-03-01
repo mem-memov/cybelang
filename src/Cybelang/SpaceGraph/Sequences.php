@@ -40,7 +40,7 @@ class Sequences
     public function readNodeSequence(string $sequenceSpaceName, int $treeNodeId): array
     {
         $sequenceTree = $this->sequenceTrees->get($sequenceSpaceName, $treeNodeId);
-
+ 
         return $sequenceTree->collectSequenceNodes();
     }
 }
