@@ -2,8 +2,6 @@
 
 namespace MemMemov\Cybelang\SpaceGraph;
 
-use MemMemov\Cybelang\SpaceGraph\SpaceGraph as SGraph;
-
 class SpaceGraphs
 {
     private $store;
@@ -17,7 +15,7 @@ class SpaceGraphs
         $this->rootName = $rootName;
     }
 
-    public function create(): SGraph
+    public function create(): SpaceGraph
     {
         $nodeCache = new NodeCache();
         $nodes = new Nodes($this->store, $nodeCache);
@@ -34,6 +32,6 @@ class SpaceGraphs
         
         $spaceNodes = new SpaceNodes($nodes, $spaces, $commonNodes, $sequences);
         
-        return new SGraph($spaceNodes);
+        return new SpaceGraph($spaceNodes);
     }
 }
