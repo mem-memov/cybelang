@@ -21,18 +21,25 @@ class SequenceTrees
      */
     public function create(string $treeSpaceName, array $sequenceNodes): SequenceTree
     {
-        $sequenceNode = array_pop($sequenceNodes);
-
-        $treeSpace = $this->spaces->provideSpace($treeSpaceName);
-
         if (0 === count($sequenceNodes)) {
-            $treeNode = $treeSpace->createCommonNode([$sequenceNode]);
-        } else {
-            $previousTree = $this->create($treeSpaceName, $sequenceNodes);
-            $treeNode = $treeSpace->createCommonNode([$previousTree->getTreeNode(), $sequenceNode]);
+            throw new ForbidEmptySequence();
         }
-
-        return new SequenceTree($treeNode, $sequenceNode, $this->nodes, $this->spaces);
+        
+        $treeSpace = $this->spaces->provideSpace($treeSpaceName);
+        $sequenceTrees = [];
+        
+        /** @var Node $sequenceNode */
+        foreach ($sequenceNodes as $index => $sequenceNode) {
+            if (0 === $index) {
+                $treeNode = $treeSpace->createCommonNode([$sequenceNode]);
+            } else {
+                $previousTree = $sequenceTrees[$index - 1];
+                $treeNode = $treeSpace->createCommonNode([$previousTree->getTreeNode(), $sequenceNode]);
+            }
+            $sequenceTrees[] = new SequenceTree($treeNode, $sequenceNode, $this->nodes, $this->spaces);
+        }
+        
+        return end($sequenceTrees);
     }
 
     public function get(string $sequenceSpaceName, int $treeNodeId): SequenceTree
