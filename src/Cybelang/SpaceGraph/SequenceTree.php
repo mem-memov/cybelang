@@ -45,13 +45,13 @@ class SequenceTree
             return true;
         }
 
-        throw new \Exception();
+        throw new ForbidSequenceTreeToHaveManySubtrees();
     }
 
     public function getPreviousTree(): SequenceTree
     {
         if (!$this->hasPreviousTree()) {
-            throw new \Exception();
+            throw new ForbidMissingSequenceSubtree();
         }
 
         $treeSpace = $this->spaces->spaceOfNode($this->treeNode);
