@@ -5,21 +5,21 @@ namespace MemMemov\Cybelang\SpaceGraph;
 class Nodes
 {
     private $store;
-    private $cache;
+    private $nodeCache;
 
     public function __construct(
         Store $store,
-        NodeCache $cache
+        NodeCache $nodeCache
     ) {
         $this->store = $store;
-        $this->cache = $cache;
+        $this->nodeCache = $nodeCache;
     }
 
     public function create(): Node
     {
         $id = $this->store->createNode();
         $node = new Node($id, [], $this->store);
-        $this->cache->set($node);
+        $this->nodeCache->set($node);
 
         return $node;
     }
@@ -38,13 +38,13 @@ class Nodes
 
     public function read(int $id): Node
     {
-        if ($this->cache->has($id)) {
-            return $this->cache->get($id);
+        if ($this->nodeCache->has($id)) {
+            return $this->nodeCache->get($id);
         }
 
         $ids = $this->store->readNode($id);
         $node = new Node($id, $ids, $this->store);
-        $this->cache->set($node);
+        $this->nodeCache->set($node);
 
         return $node;
     }
