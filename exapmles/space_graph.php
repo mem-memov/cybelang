@@ -5,8 +5,11 @@ $nodePath = '';
 $keyPath = '';
 $valuePath = '';
     
-$store = new MemMemov\Cybelang\GraphStore\GraphStores($nodePath, $keyPath, $valuePath);
+$stores = new MemMemov\Cybelang\GraphStore\GraphStores();
+$store = $stores->arrayStore($nodePath, $keyPath, $valuePath);
 
 $rootName = 'root';
-$graph = new MemMemov\Cybelang\SpaceGraph\SpaceGraphs($store, $rootName);
+$graphs = new MemMemov\Cybelang\SpaceGraph\SpaceGraphs($store, $rootName);
+$graph = $graphs->create();
+
 
