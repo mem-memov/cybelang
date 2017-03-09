@@ -7,21 +7,34 @@ class Cybes
     public function create(Graph $graph): Cybe
     {
         $words = new Words($graph);
-        
         $phrases = new Phrases($graph, $words);
-        
         $subjects = new Subjects($graph, $phrases);
-        
         $categories = new Categories($graph, $phrases);
-        
         $compliments = new Compliments($graph, $phrases);
-        
         $arguments = new Arguments($graph, $categories, $compliments);
-        
         $predicates = new Predicates($graph, $arguments, $phrases);
-
         $clauses = new Clauses($graph, $subjects, $predicates, $arguments);
+        $messages = new Messages($graph, $clauses);
+        $contexts = new Contexts($graph, $messages);
+        $statements = new Statements($graph, $messages);
+        $utterances = new Utterances($graph, $messages);
+        $authors = new Authors($graph, $utterances);
         
-        return new Cybe();
+        $utterances->setAuthors($authors);
+        $words->setPrases($phrases);
+        $phrases->setSubjects($subjects);
+        $phrases->setPredicates($predicates);
+        $phrases->setArguments($arguments);
+        $subjects->setClauses($clauses);
+        $predicates->setClauses($clauses);
+        $arguments->setClauses($clauses);
+        $categories->setArguments($arguments);
+        $compliments->setArguments($arguments);
+        $clauses->setMessages($messages);
+        $messages->setContexts($contexts);
+        $messages->setStatements($statements);
+        $messages->setUtterances($utterances);
+        
+        return new Cybe($authors);
     }
 }

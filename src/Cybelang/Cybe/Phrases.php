@@ -2,12 +2,20 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
-class Phrases
+class Phrases implements Destructable
 {
     private static $graphSpace = 'phrase';
 
+    /** @var Graph */
     private $graph;
+    /** @var Words */
     private $words;
+    /** @var Subjects */
+    private $subjects;
+    /** @var Predicates */
+    private $predicates;
+    /** @var Arguments */
+    private $arguments;
 
     public function __construct(
         Graph $graph,
@@ -15,6 +23,62 @@ class Phrases
     ) {
         $this->graph = $graph;
         $this->words = $words;
+    }
+    
+    public function destruct()
+    {
+        $this->graph = null;
+        
+        if (!is_null($this->words)) {
+            $words = $this->words;
+            $this->words = null;
+            $words->destruct();
+        }
+        
+        if (!is_null($this->subjects)) {
+            $subjects = $this->subjects;
+            $this->subjects = null;
+            $subjects->destruct();
+        }
+        
+        if (!is_null($this->predicates)) {
+            $predicates = $this->predicates;
+            $this->predicates = null;
+            $predicates->destruct();
+        }
+        
+        if (!is_null($this->arguments)) {
+            $arguments = $this->arguments;
+            $this->arguments = null;
+            $arguments->destruct();
+        }
+    }
+    
+    public function setSubjects(Subjects $subjects)
+    {
+        if (!is_null($this->subjects)) {
+            throw new ForbidCollectionRedefinition();
+        }
+        
+        $this->subjects = $subjects;
+    }
+    
+    public function setPredicates(Predicates $predicates)
+    {
+        if (!is_null($this->predicates)) {
+            throw new ForbidCollectionRedefinition();
+        }
+        
+        $this->predicates = $predicates;
+    }
+    
+    public function setArguments(Arguments $arguments)
+    {
+        if (!is_null($this->arguments)) {
+            throw new ForbidCollectionRedefinition();
+        }
+        
+        $this->arguments = $arguments;
     }
 
     public function fromWords(array $wordStrings): Phrase

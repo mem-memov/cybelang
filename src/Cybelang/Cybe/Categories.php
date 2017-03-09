@@ -2,12 +2,13 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
-class Categories
+class Categories implements Destructable
 {
     private static $graphSpace = 'category';
 
     private $graph;
     private $phrases;
+    private $arguments;
 
     public function __construct(
         Graph $graph,
@@ -15,6 +16,22 @@ class Categories
     ) {
         $this->graph = $graph;
         $this->phrases = $phrases;
+    }
+    
+    public function destruct()
+    {
+        $this->graph = null;
+        $this->phrases = null;
+        $this->arguments = null;
+    }
+    
+    public function setArguments(Arguments $arguments)
+    {
+        if (!is_null($this->arguments)) {
+            throw new ForbidCollectionRedefinition();
+        }
+        
+        $this->arguments = $arguments;
     }
 
     public function fromText(Parser\Category $categoryText): Category

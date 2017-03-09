@@ -2,15 +2,39 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
-class Words
+class Words implements Destructable
 {
     private static $graphSpace = 'word';
+    
+    /** @var Graph */
     private $graph;
+    /** @var Phrases */
+    private $phrases;
 
     public function __construct(
         Graph $graph
     ) {
         $this->graph = $graph;
+    }
+    
+    public function destruct()
+    {
+        $this->graph = null;
+        
+        if (!is_null($this->phrases)) {
+            $phrases = $this->phrases;
+            $this->phrases = null;
+            $phrases->destruct();
+        }
+    }
+    
+    public function setPhrases(Phrases $phrases)
+    {
+        if (!is_null($this->phrases)) {
+            throw new ForbidCollectionRedefinition();
+        }
+        
+        $this->phrases = $phrases;
     }
 
     public function fromLetters(string $letters): Word

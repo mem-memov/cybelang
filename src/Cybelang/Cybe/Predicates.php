@@ -2,13 +2,14 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
-class Predicates
+class Predicates implements Destructable
 {
     private static $graphSpace = 'predicate';
 
     private $graph;
     private $arguments;
     private $phrases;
+    private $clauses;
 
     public function __construct(
         Graph $graph,
@@ -18,6 +19,23 @@ class Predicates
         $this->graph = $graph;
         $this->arguments = $arguments;
         $this->phrases = $phrases;
+    }
+    
+    public function destruct()
+    {
+        $this->graph = null;
+        $this->arguments = null;
+        $this->phrases = null;
+        $this->clauses = null;
+    }
+    
+    public function setClauses(Clauses $clauses)
+    {
+        if (!is_null($this->clauses)) {
+            throw new ForbidCollectionRedefinition();
+        }
+        
+        $this->clauses = $clauses;
     }
 
     public function fromText(Parser\Predicate $predicateText): Predicate

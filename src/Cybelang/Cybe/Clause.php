@@ -28,11 +28,11 @@ class Clause
 
     public function predicate(): Predicate
     {
-        return $this->predicates->ofClause($this->graphNode);
+        return $this->predicates->ofClause($this);
     }
 
     public function arguments(): array
     {
-        return $this->arguments->ofClause($this->graphNode);
+        return $this->arguments->ofClause($this);
     }
 }
