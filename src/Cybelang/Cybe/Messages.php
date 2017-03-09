@@ -4,6 +4,8 @@ namespace MemMemov\Cybelang\Cybe;
 
 class Messages implements Destructable
 {
+    private static $graphSpace = 'message';
+    
     /** @var Graph */
     private $graph;
     /** @var Clauses */
@@ -81,11 +83,20 @@ class Messages implements Destructable
 
     public function fromText(Parser\Message $messageText): Message
     {
-        $clauses = [];
+        $clauseIds = [];
         foreach ($messageText->clauses() as $clauseText) {
-            $clauses[] = $this->clauses->fromText($clauseText);
+            $clause = $this->clauses->fromText($clauseText);
+            $clauseIds[] = $clause->id();
         }
+        
+        $messageNode = $this->graph->provideCommonNode(self::$graphSpace, $clauseIds);
 
-        return new Message($clauses);
+        return new Message(
+            $messageNode->id(),
+            $this->utterances,
+            $this->clauses,
+            $this->contexts,
+            $this->statements
+        );
     }
 }

@@ -21,6 +21,11 @@ class Clause
         $this->arguments = $arguments;
     }
 
+    public function id(): int
+    {
+        return $this->id;
+    }
+
     public function subject(): Subject
     {
         return $this->subjects->ofClause($this);
