@@ -6,23 +6,14 @@ use PHPUnit\Framework\TestCase;
 
 class SpaceGraphsTest extends TestCase
 {
-    /** @var Store|\PHPUnit_Framework_MockObject_MockObject */
-    protected $store;
-    /** @var string */
-    protected $rootName;
-    
-    protected function setUp()
-    {
-        $this->store = $this->createMock(Store::class);
-
-        $this->rootName = '__node_space_root__';
-    }
-    
     public function testItCreatesSpaceGraph()
     {
-        $spaceGraphs = new SpaceGraphs($this->store, $this->rootName);
+        $spaceGraphs = new SpaceGraphs();
         
-        $result = $spaceGraphs->create();
+        $store = $this->createMock(Store::class);
+        $rootName = '__node_space_root__';
+        
+        $result = $spaceGraphs->create($store, $rootName);
         
         $this->assertInstanceOf(SpaceGraph::class, $result);
     }

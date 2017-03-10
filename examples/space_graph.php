@@ -13,8 +13,8 @@ $stores = new MemMemov\Cybelang\GraphStore\GraphStores();
 $store = $stores->arrayStore($nodePath, $keyPath, $valuePath);
 
 $rootName = 'root';
-$graphs = new MemMemov\Cybelang\SpaceGraph\SpaceGraphs($store, $rootName);
-$graph = $graphs->create();
+$graphs = new MemMemov\Cybelang\SpaceGraph\SpaceGraphs();
+$graph = $graphs->create($store, $rootName);
 
 $node = $graph->provideValueNode('word', 'cat');
 $value = $graph->getNodeValue($node->id());
