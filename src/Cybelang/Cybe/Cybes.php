@@ -34,6 +34,9 @@ class Cybes
         $messages->setContexts($contexts);
         $messages->setStatements($statements);
         $messages->setUtterances($utterances);
+        $contexts->setStatements($statements);
+        $statements->setContexts($contexts);
+        $utterances->setAuthors($authors);
         
         return new Cybe($authors);
     }

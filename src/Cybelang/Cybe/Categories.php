@@ -6,8 +6,11 @@ class Categories implements Destructable
 {
     private static $graphSpace = 'category';
 
+    /** @var Graph */
     private $graph;
+    /** @var Phrases */
     private $phrases;
+    /** @var Arguments */
     private $arguments;
 
     public function __construct(
@@ -21,8 +24,18 @@ class Categories implements Destructable
     public function destruct()
     {
         $this->graph = null;
-        $this->phrases = null;
-        $this->arguments = null;
+        
+        if (!is_null($this->phrases)) {
+            $phrases = $this->phrases;
+            $this->phrases = null;
+            $phrases->destruct();
+        }
+        
+        if (!is_null($this->arguments)) {
+            $arguments = $this->arguments;
+            $this->arguments = null;
+            $arguments->destruct();
+        }
     }
     
     public function setArguments(Arguments $arguments)

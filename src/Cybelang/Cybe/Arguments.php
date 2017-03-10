@@ -6,9 +6,13 @@ class Arguments implements Destructable
 {
     private static $graphSpace = 'argument';
 
+    /** @var Graph */
     private $graph;
+    /** @var Categories */
     private $categories;
+    /** @var Compliments */
     private $compliments;
+    /** @var Clauses */
     private $clauses;
 
     public function __construct(
@@ -24,9 +28,24 @@ class Arguments implements Destructable
     public function destruct()
     {
         $this->graph = null;
-        $this->categories = null;
-        $this->compliments = null;
-        $this->clauses = null;
+        
+        if (!is_null($this->categories)) {
+            $categories = $this->categories;
+            $this->categories = null;
+            $categories->destruct();
+        }
+        
+        if (!is_null($this->compliments)) {
+            $compliments = $this->compliments;
+            $this->compliments = null;
+            $compliments->destruct();
+        }
+        
+        if (!is_null($this->clauses)) {
+            $clauses = $this->clauses;
+            $this->clauses = null;
+            $clauses->destruct();
+        }
     }
     
     public function setClauses(Clauses $clauses)

@@ -6,9 +6,13 @@ class Predicates implements Destructable
 {
     private static $graphSpace = 'predicate';
 
+    /** @var Graph */
     private $graph;
+    /** @var Arguments */
     private $arguments;
+    /** @var Phrases */
     private $phrases;
+    /** @var Clauses */
     private $clauses;
 
     public function __construct(
@@ -24,9 +28,24 @@ class Predicates implements Destructable
     public function destruct()
     {
         $this->graph = null;
-        $this->arguments = null;
-        $this->phrases = null;
-        $this->clauses = null;
+        
+        if (!is_null($this->arguments)) {
+            $arguments = $this->arguments;
+            $this->arguments = null;
+            $arguments->destruct();
+        }
+        
+        if (!is_null($this->phrases)) {
+            $phrases = $this->phrases;
+            $this->phrases = null;
+            $phrases->destruct();
+        }
+        
+        if (!is_null($this->clauses)) {
+            $clauses = $this->clauses;
+            $this->clauses = null;
+            $clauses->destruct();
+        }
     }
     
     public function setClauses(Clauses $clauses)
