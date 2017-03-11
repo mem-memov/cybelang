@@ -54,6 +54,22 @@ class GraphStoreTest extends TestCase
 
         $this->assertEquals($ids, $result);
     }
+    
+    public function testItChecksIfNodeExistsBeforeReading()
+    {
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        
+        $id = 765;
+        
+        $this->nodeStore->expects($this->once())
+            ->method('exists')
+            ->with($id)
+            ->willReturn(false);
+        
+        $this->expectException(NodeUnknown::class);
+        
+        $graphStore->readNode($id);
+    }
 
     public function testItConnectsNodes()
     {
@@ -76,6 +92,46 @@ class GraphStoreTest extends TestCase
             ->method('connect')
             ->with($fromId, $toId);
 
+        $graphStore->connectNodes($fromId, $toId);
+    }
+    
+    
+    public function testItChecksIfFromNodeExistsBeforeConnecting()
+    {
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        
+        $fromId = 754;
+        $toId = 5;
+        
+        $this->nodeStore->expects($this->at(0))
+            ->method('exists')
+            ->with($fromId)
+            ->willReturn(false);
+        
+        $this->expectException(NodeUnknown::class);
+        
+        $graphStore->connectNodes($fromId, $toId);
+    }
+
+    public function testItChecksIfToNodeExistsBeforeConnecting()
+    {
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        
+        $fromId = 754;
+        $toId = 5;
+        
+        $this->nodeStore->expects($this->at(0))
+            ->method('exists')
+            ->with($fromId)
+            ->willReturn(true);
+        
+        $this->nodeStore->expects($this->at(1))
+            ->method('exists')
+            ->with($toId)
+            ->willReturn(false);
+        
+        $this->expectException(NodeUnknown::class);
+        
         $graphStore->connectNodes($fromId, $toId);
     }
 
@@ -152,6 +208,22 @@ class GraphStoreTest extends TestCase
 
         $this->assertEquals($value, $result);
     }
+    
+    public function testItChecksIfNodeExistsBeforeReadingValue()
+    {
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+
+        $id = 765;
+        
+        $this->nodeStore->expects($this->once())
+            ->method('exists')
+            ->with($id)
+            ->willReturn(false);
+        
+        $this->expectException(NodeUnknown::class);
+        
+        $graphStore->readValue($id);
+    }
 
     public function testItDeniesReadingEmptyNode()
     {
@@ -194,5 +266,111 @@ class GraphStoreTest extends TestCase
         $result = $graphStore->commonNodes($ids);
 
         $this->assertEquals($commonSubIds, $result);
+    }
+    
+    public function testItChecksIfNodesExistBeforeFindingCommonNodes()
+    {
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+
+        $ids = [5];
+        
+        $this->nodeStore->expects($this->once())
+            ->method('exists')
+            ->with($ids[0])
+            ->willReturn(false);
+        
+        $this->expectException(NodeUnknown::class);
+        
+        $graphStore->commonNodes($ids);
+    }
+    
+    public function testItExchangesNodes()
+    {
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        
+        $id = 5;
+        $oldId = 8;
+        $newId = 43097;
+        
+        $this->nodeStore->expects($this->exactly(3))
+            ->method('exists')
+            ->withConsecutive([$id], [$oldId], [$newId])
+            ->will($this->onConsecutiveCalls(true, true, true));
+        
+        $this->nodeStore->expects($this->once())
+            ->method('contains')
+            ->with($id, $oldId)
+            ->willReturn(true);
+        
+        $graphStore->exchangeNodes($id, $oldId, $newId);
+    }
+    
+    public function testItChecksIfNodeExistsBeforeExchangingSubnodes()
+    {
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        
+        $id = 5;
+        $oldId = 8;
+        $newId = 43097;
+        
+        $this->nodeStore->expects($this->at(0))
+            ->method('exists')
+            ->with($id)
+            ->willReturn(false);
+        
+        $this->expectException(NodeUnknown::class);
+        
+        $graphStore->exchangeNodes($id, $oldId, $newId);
+    }
+    
+    public function testItChecksIfOldNodeExistsBeforeExchanging()
+    {
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        
+        $id = 5;
+        $oldId = 8;
+        $newId = 43097;
+        
+        $this->nodeStore->expects($this->at(0))
+            ->method('exists')
+            ->with($id)
+            ->willReturn(true);
+        
+        $this->nodeStore->expects($this->at(1))
+            ->method('exists')
+            ->with($oldId)
+            ->willReturn(false);
+        
+        $this->expectException(NodeUnknown::class);
+        
+        $graphStore->exchangeNodes($id, $oldId, $newId);
+    }
+    
+    public function testItChecksIfNewNodeExistsBeforeExchanging()
+    {
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        
+        $id = 5;
+        $oldId = 8;
+        $newId = 43097;
+        
+        $this->nodeStore->expects($this->at(0))
+            ->method('exists')
+            ->with($id)
+            ->willReturn(true);
+        
+        $this->nodeStore->expects($this->at(1))
+            ->method('exists')
+            ->with($oldId)
+            ->willReturn(true);
+        
+        $this->nodeStore->expects($this->at(2))
+            ->method('exists')
+            ->with($newId)
+            ->willReturn(false);
+        
+        $this->expectException(NodeUnknown::class);
+        
+        $graphStore->exchangeNodes($id, $oldId, $newId);
     }
 }

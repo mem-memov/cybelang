@@ -141,8 +141,8 @@ class GraphStore implements Store
             throw new NodeUnknown($oldId);
         }
         
-        if (!$this->nodeStore->exists($oldId)) {
-            throw new NodeUnknown($oldId);
+        if (!$this->nodeStore->exists($newId)) {
+            throw new NodeUnknown($newId);
         }
         
         if (!$this->nodeStore->contains($id, $oldId)) {
