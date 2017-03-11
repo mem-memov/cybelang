@@ -23,4 +23,6 @@ interface Store
      * @return int[]
      */
     public function commonNodes(array $ids): array;
+    
+    public function exchangeNodes(int $id, int $oldId, int $newId): void;
 }
