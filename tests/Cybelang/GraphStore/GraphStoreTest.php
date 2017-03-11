@@ -41,6 +41,11 @@ class GraphStoreTest extends TestCase
         $ids = [5, 7, 99];
 
         $this->nodeStore->expects($this->once())
+            ->method('exists')
+            ->with($id)
+            ->willReturn(true);
+        
+        $this->nodeStore->expects($this->once())
             ->method('read')
             ->with($id)
             ->willReturn($ids);
@@ -57,6 +62,16 @@ class GraphStoreTest extends TestCase
         $fromId = 754;
         $toId = 5;
 
+        $this->nodeStore->expects($this->at(0))
+            ->method('exists')
+            ->with($fromId)
+            ->willReturn(true);
+        
+        $this->nodeStore->expects($this->at(1))
+            ->method('exists')
+            ->with($toId)
+            ->willReturn(true);
+        
         $this->nodeStore->expects($this->once())
             ->method('connect')
             ->with($fromId, $toId);
@@ -117,6 +132,11 @@ class GraphStoreTest extends TestCase
 
         $id = 765;
         $value = 'some value';
+        
+        $this->nodeStore->expects($this->once())
+            ->method('exists')
+            ->with($id)
+            ->willReturn(true);
 
         $this->valueStore->expects($this->once())
             ->method('hasKey')
@@ -138,6 +158,11 @@ class GraphStoreTest extends TestCase
         $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
 
         $id = 765;
+        
+        $this->nodeStore->expects($this->once())
+            ->method('exists')
+            ->with($id)
+            ->willReturn(true);
 
         $this->valueStore->expects($this->once())
             ->method('hasKey')
@@ -155,6 +180,11 @@ class GraphStoreTest extends TestCase
 
         $ids = [5, 7, 99];
         $commonSubIds = [2, 78];
+        
+        $this->nodeStore->expects($this->exactly(3))
+            ->method('exists')
+            ->withConsecutive([$ids[0]], [$ids[1]], [$ids[2]])
+            ->will($this->onConsecutiveCalls(true, true, true));
 
         $this->nodeStore->expects($this->once())
             ->method('intersect')

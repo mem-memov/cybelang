@@ -74,4 +74,18 @@ class ArrayNodeStore implements NodeStoreInterface
 
         return call_user_func_array('array_intersect', $arguments);
     }
+    
+    public function exchange(int $id, int $oldId, int $newId): void
+    {
+        $index = array_search($oldId, $this->store[$id]);
+        
+        if (false !== $index) {
+            $this->store[$index] = $newId;
+        }
+    }
+
+    public function exists(int $id): bool
+    {
+        return array_key_exists($id, $this->store);
+    }
 }

@@ -13,4 +13,8 @@ interface NodeStore
     public function contains(int $fromId, int $toId): bool;
 
     public function intersect(array $ids): array;
+    
+    public function exchange(int $id, int $oldId, int $newId): void;
+    
+    public function exists(int $id): bool;
 }
