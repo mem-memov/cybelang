@@ -19,7 +19,9 @@ class SpaceGraphs
         $sequenceTrees = new SequenceTrees($nodes, $spaces);
         $sequences = new Sequences($nodes, $sequenceTrees);
         
-        $spaceNodes = new SpaceNodes($nodes, $spaces, $commonNodes, $sequences);
+        $rows = new Rows($nodes, $spaces);
+        
+        $spaceNodes = new SpaceNodes($nodes, $spaces, $commonNodes, $sequences, $rows);
         
         return new SpaceGraph($spaceNodes);
     }

@@ -54,7 +54,13 @@ class MessagesTest extends TestCase
             ->will($this->onConsecutiveCalls($clause_1, $clause_2));
         ;
 
-        $result = $messages->fromText($messageText);
+        $autor = $this->createMock(Author::class);
+        
+        $autor->expects($this->once())
+            ->method('id')
+            ->willReturn(120033005);
+        
+        $result = $messages->fromText($messageText, $autor);
 
         $this->assertInstanceOf(Message::class, $result);
     }

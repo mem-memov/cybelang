@@ -67,4 +67,9 @@ class Node
         $this->ids[] = $nodeId;
         $this->store->connectNodes($this->id, $nodeId);
     }
+    
+    public function exchange(Node $oldNode, Node $newNode): void
+    {
+        $this->store->exchangeNodes($this->id, $oldNode->id(), $newNode->id());
+    }
 }

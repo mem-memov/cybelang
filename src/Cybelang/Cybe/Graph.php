@@ -15,8 +15,14 @@ interface Graph
     public function provideSequenceNode(string $type, array $ids): GraphNode;
 
     /**
-     * @param int $id
      * @return GraphNode[]
      */
     public function readSequenceNodes(string $type, int $id): array;
+    
+    public function addNodeToRow(int $id, int $newId): void;
+    
+    /**
+     * @return GraphNode[]
+     */
+    public function readRow(string $type, int $id, int $limit): array;
 }

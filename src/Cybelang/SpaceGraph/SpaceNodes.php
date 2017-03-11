@@ -8,17 +8,21 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
     private $spaces;
     private $commonNodes;
     private $sequences;
+    private $rows;
+    
 
     public function __construct(
         Nodes $nodes,
         Spaces $spaces,
         CommonNodes $commonNodes,
-        Sequences $sequences
+        Sequences $sequences,
+        Rows $rows
     ) {
         $this->nodes = $nodes;
         $this->spaces = $spaces;
         $this->commonNodes = $commonNodes;
         $this->sequences = $sequences;
+        $this->rows = $rows;
     }
 
     public function readNode(int $id): SpaceNode
@@ -123,6 +127,34 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
     {
         $nodes = $this->sequences->readNodeSequence($spaceName, $id);
 
+        $spaceNodes = [];
+        foreach ($nodes as $node) {
+            $spaceNodes[] = new SpaceNode($node->id(), $this);
+        }
+
+        return $spaceNodes;
+    }
+    
+    public function addNodeToRow(int $id, int $newId): void
+    {
+        $headNode = $this->nodes->read($id);
+        $newTailNode = $this->nodes->read($newId);
+        $tailSpace = $this->spaces->spaceOfNode($newTailNode);
+        
+        $row = $this->rows->createUsingHead($id, $tailSpace->name());
+        
+        $row->grow($newTailNode);
+    }
+    
+    /**
+     * @return SpaceNode[]
+     */
+    public function readRow(string $tailSpaceName, int $id, int $limit): array
+    {
+        $row = $this->rows->createUsingHead($id, $tailSpaceName);
+        
+        $nodes = $row->show($limit);
+        
         $spaceNodes = [];
         foreach ($nodes as $node) {
             $spaceNodes[] = new SpaceNode($node->id(), $this);

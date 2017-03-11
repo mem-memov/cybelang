@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 
 class AuthorTest extends TestCase
 {
+    /** @var int */
+    protected $id;
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $parser;
     /** @var Messages|\PHPUnit_Framework_MockObject_MockObject */
@@ -13,13 +15,14 @@ class AuthorTest extends TestCase
 
     protected function setUp()
     {
+        $this->id = 43356802;
         $this->parser = $this->createMock(Parser\Messages::class);
         $this->messages = $this->createMock(Messages::class);
     }
 
     public function testItWritesMessage()
     {
-        $author = new Author($this->parser, $this->messages);
+        $author = new Author($this->id, $this->parser, $this->messages);
 
         $text = 'врач.ставить(что:диагноз,кому:больной,когда:сейчас)';
         $text .= 'врач.лечить(кого:больной,отчего:болезнь,когда:врач.ставить.после)';

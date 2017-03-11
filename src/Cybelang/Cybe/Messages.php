@@ -81,7 +81,7 @@ class Messages implements Destructable
         $this->utterances = $utterances;
     }
 
-    public function fromText(Parser\Message $messageText): Message
+    public function fromText(Parser\Message $messageText, Author $author): Message
     {
         $clauseIds = [];
         foreach ($messageText->clauses() as $clauseText) {
@@ -90,6 +90,8 @@ class Messages implements Destructable
         }
         
         $messageNode = $this->graph->provideCommonNode(self::$graphSpace, $clauseIds);
+        
+        $this->graph->addNodeToRow($author->id(), $messageNode->id());
 
         return new Message(
             $messageNode->id(),

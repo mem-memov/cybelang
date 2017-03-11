@@ -26,9 +26,14 @@ interface SpaceNodesInGraph
     public function provideSequenceNode(string $spaceName, array $ids): SpaceNode;
 
     /**
-     * @param string $spaceName
-     * @param int $id
      * @return SpaceNode[]
      */
     public function readNodeSequence(string $spaceName, int $id): array;
+    
+    public function addNodeToRow(int $id, int $newId): void;
+    
+    /**
+     * @return GraphNode[]
+     */
+    public function readRow(string $type, int $id, int $limit): array;
 }

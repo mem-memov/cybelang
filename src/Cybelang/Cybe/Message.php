@@ -23,4 +23,9 @@ class Message
         $this->contexts = $contexts;
         $this->statements = $statements;
     }
+
+    public function id(): int
+    {
+        return $this->id;
+    }
 }

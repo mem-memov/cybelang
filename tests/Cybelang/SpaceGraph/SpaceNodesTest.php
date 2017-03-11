@@ -14,6 +14,8 @@ class SpaceNodesTest extends TestCase
     protected $commonNodes;
     /** @var Sequences|\PHPUnit_Framework_MockObject_MockObject */
     protected $sequences;
+    /** @var Rows|\PHPUnit_Framework_MockObject_MockObject */
+    protected $rows;
 
     protected function setUp()
     {
@@ -21,11 +23,12 @@ class SpaceNodesTest extends TestCase
         $this->spaces = $this->createMock(Spaces::class);
         $this->commonNodes = $this->createMock(CommonNodes::class);
         $this->sequences = $this->createMock(Sequences::class);
+        $this->rows = $this->createMock(Rows::class);
     }
 
     public function testItReadsNodeWithId()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $id = 2;
 
@@ -43,7 +46,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItReadsCommonNode()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $spaceName = 'clause';
         $ids = [10];
@@ -74,7 +77,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItForbidsUsingNodeFromDifferentSpaceWhenReadingCommonNode()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $spaceName = 'clause';
         $ids = [10];
@@ -105,7 +108,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItCreatesCommonNode()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $spaceName = 'clause';
         $ids = [10];
@@ -147,7 +150,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItForbidsMultipleCommonNodes()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $spaceName = 'clause';
         $ids = [10];
@@ -174,7 +177,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItSuppliesOneNode()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $spaceName = 'clause';
         $id = 8;
@@ -211,7 +214,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItFindsSubnodesWithNamespace()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $spaceName = 'clause';
         $id = 8;
@@ -248,7 +251,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItProvidesNodeForValue()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $spaceName = 'word';
         $value = 'dog';
@@ -278,7 +281,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItSuppliesValueForNode()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $id = 598;
         $value = 'cat';
@@ -302,7 +305,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItProvidesSequenceNode()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $spaceName = 'clause';
         $ids = [10];
@@ -325,7 +328,7 @@ class SpaceNodesTest extends TestCase
 
     public function testItReadsNodeSequence()
     {
-        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences);
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
         $spaceName = 'clause';
         $id = 78;
