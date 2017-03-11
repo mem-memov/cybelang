@@ -80,7 +80,7 @@ class ArrayNodeStore implements NodeStoreInterface
         $index = array_search($oldId, $this->store[$id]);
         
         if (false !== $index) {
-            $this->store[$index] = $newId;
+            $this->store[$id][$index] = $newId;
         }
     }
 

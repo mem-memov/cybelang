@@ -141,4 +141,58 @@ class ArrayNodeStoreTest extends TestCase
 
         $this->assertEquals([$toId_3], $result);
     }
+    
+    public function testItExchangesNodes()
+    {
+        $store = new ArrayNodeStore($this->path);
+        
+        $id = $store->create();
+        $oldId = $store->create();
+        $newId = $store->create();
+        
+        $store->connect($id, $oldId);
+        
+        $idsBefore = $store->read($id);
+        $store->exchange($id, $oldId, $newId);
+        $idsAfter = $store->read($id);
+        
+        $this->assertEquals($idsBefore, [$oldId]);
+        $this->assertEquals($idsAfter, [$newId]);
+    }
+    
+    public function testItDoesNotExchangeMissingSubnode()
+    {
+        $store = new ArrayNodeStore($this->path);
+        
+        $id = $store->create();
+        $oldId = $store->create();
+        $newId = $store->create();
+
+        $idsBefore = $store->read($id);
+        $store->exchange($id, $oldId, $newId);
+        $idsAfter = $store->read($id);
+        
+        $this->assertEquals($idsBefore, []);
+        $this->assertEquals($idsAfter, []);
+    }
+    
+    public function testItChecksIfNodeExists()
+    {
+        $store = new ArrayNodeStore($this->path);
+        
+        $id = $store->create();
+        
+        $exsists = $store->exists($id);
+        
+        $this->assertTrue($exsists);
+    }
+    
+    public function testItChecksIfNodeDoesNotExist()
+    {
+        $store = new ArrayNodeStore($this->path);
+
+        $exsists = $store->exists(533667);
+        
+        $this->assertFalse($exsists);
+    }
 }
