@@ -1,6 +1,6 @@
 <?php
 
-namespace MemMemov\Cybelang\SpaceGraph;
+namespace MemMemov\Cybelang\SpaceGraph\CommonNode;
 
 /**
  * Class ForbidMultipleCommonNodes is an exception

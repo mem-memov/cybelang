@@ -2,6 +2,9 @@
 
 namespace MemMemov\Cybelang\SpaceGraph;
 
+use MemMemov\Cybelang\SpaceGraph\CommonNode\CommonNodes;
+use MemMemov\Cybelang\SpaceGraph\CommonNode\ForbidMultipleCommonNodes;
+
 class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
 {
     private $nodes;

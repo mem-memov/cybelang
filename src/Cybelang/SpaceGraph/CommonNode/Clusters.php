@@ -1,6 +1,8 @@
 <?php
 
-namespace MemMemov\Cybelang\SpaceGraph;
+namespace MemMemov\Cybelang\SpaceGraph\CommonNode;
+
+use MemMemov\Cybelang\SpaceGraph\Spaces;
 
 class Clusters
 {

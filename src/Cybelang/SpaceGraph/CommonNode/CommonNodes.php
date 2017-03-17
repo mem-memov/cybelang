@@ -1,6 +1,9 @@
 <?php
 
-namespace MemMemov\Cybelang\SpaceGraph;
+namespace MemMemov\Cybelang\SpaceGraph\CommonNode;
+
+use MemMemov\Cybelang\SpaceGraph\Nodes;
+use MemMemov\Cybelang\SpaceGraph\Space;
 
 class CommonNodes
 {

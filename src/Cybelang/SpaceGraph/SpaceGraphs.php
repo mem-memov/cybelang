@@ -2,6 +2,9 @@
 
 namespace MemMemov\Cybelang\SpaceGraph;
 
+use MemMemov\Cybelang\SpaceGraph\CommonNode\Clusters;
+use MemMemov\Cybelang\SpaceGraph\CommonNode\CommonNodes;
+
 class SpaceGraphs
 {
     public function create(Store $store, string $rootName): SpaceGraph
