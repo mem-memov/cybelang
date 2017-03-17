@@ -1,7 +1,9 @@
 <?php
 
-namespace MemMemov\Cybelang\SpaceGraph;
+namespace MemMemov\Cybelang\SpaceGraph\Sequence;
 
+use MemMemov\Cybelang\SpaceGraph\Node;
+use MemMemov\Cybelang\SpaceGraph\Nodes;
 use PHPUnit\Framework\TestCase;
 
 class SequencesTest extends TestCase

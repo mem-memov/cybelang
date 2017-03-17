@@ -1,6 +1,10 @@
 <?php
 
-namespace MemMemov\Cybelang\SpaceGraph;
+namespace MemMemov\Cybelang\SpaceGraph\Sequence;
+
+use MemMemov\Cybelang\SpaceGraph\Node;
+use MemMemov\Cybelang\SpaceGraph\Nodes;
+use MemMemov\Cybelang\SpaceGraph\Spaces;
 
 class SequenceTree
 {

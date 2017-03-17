@@ -5,6 +5,8 @@ namespace MemMemov\Cybelang\SpaceGraph;
 use MemMemov\Cybelang\SpaceGraph\CommonNode\Clusters;
 use MemMemov\Cybelang\SpaceGraph\CommonNode\CommonNodes;
 use MemMemov\Cybelang\SpaceGraph\Row\Rows;
+use MemMemov\Cybelang\SpaceGraph\Sequence\SequenceTrees;
+use MemMemov\Cybelang\SpaceGraph\Sequence\Sequences;
 
 class SpaceGraphs
 {
