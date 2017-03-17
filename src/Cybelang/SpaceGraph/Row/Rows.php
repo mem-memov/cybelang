@@ -1,6 +1,9 @@
 <?php
 
-namespace MemMemov\Cybelang\SpaceGraph;
+namespace MemMemov\Cybelang\SpaceGraph\Row;
+
+use MemMemov\Cybelang\SpaceGraph\Nodes;
+use MemMemov\Cybelang\SpaceGraph\Spaces;
 
 class Rows
 {

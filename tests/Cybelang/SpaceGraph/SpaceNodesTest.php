@@ -4,6 +4,8 @@ namespace MemMemov\Cybelang\SpaceGraph;
 
 use MemMemov\Cybelang\SpaceGraph\CommonNode\CommonNodes;
 use MemMemov\Cybelang\SpaceGraph\CommonNode\ForbidMultipleCommonNodes;
+use MemMemov\Cybelang\SpaceGraph\Row\Row;
+use MemMemov\Cybelang\SpaceGraph\Row\Rows;
 use PHPUnit\Framework\TestCase;
 
 class SpaceNodesTest extends TestCase

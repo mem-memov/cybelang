@@ -1,6 +1,6 @@
 <?php
 
-namespace MemMemov\Cybelang\SpaceGraph;
+namespace MemMemov\Cybelang\SpaceGraph\Row;
 
 class ForbidRowCycles extends \Exception
 {
