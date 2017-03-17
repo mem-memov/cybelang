@@ -3,7 +3,7 @@
 namespace MemMemov\Cybelang\SpaceGraph\Sequence;
 
 use MemMemov\Cybelang\SpaceGraph\Nodes;
-use MemMemov\Cybelang\SpaceGraph\Spaces;
+use MemMemov\Cybelang\SpaceGraph\Space\Spaces;
 
 class SequenceTrees
 {

@@ -3,7 +3,7 @@
 namespace MemMemov\Cybelang\SpaceGraph\Row;
 
 use MemMemov\Cybelang\SpaceGraph\Node;
-use MemMemov\Cybelang\SpaceGraph\Space;
+use MemMemov\Cybelang\SpaceGraph\Space\Space;
 use PHPUnit\Framework\TestCase;
 
 class RowTest extends TestCase

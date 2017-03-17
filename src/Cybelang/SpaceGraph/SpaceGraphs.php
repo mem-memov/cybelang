@@ -7,6 +7,9 @@ use MemMemov\Cybelang\SpaceGraph\CommonNode\CommonNodes;
 use MemMemov\Cybelang\SpaceGraph\Row\Rows;
 use MemMemov\Cybelang\SpaceGraph\Sequence\SequenceTrees;
 use MemMemov\Cybelang\SpaceGraph\Sequence\Sequences;
+use MemMemov\Cybelang\SpaceGraph\Space\SpaceCache;
+use MemMemov\Cybelang\SpaceGraph\Space\Spaces;
+use MemMemov\Cybelang\SpaceGraph\Space\SpaceRoot;
 
 class SpaceGraphs
 {

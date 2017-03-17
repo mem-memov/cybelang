@@ -4,8 +4,8 @@ namespace MemMemov\Cybelang\SpaceGraph\Sequence;
 
 use MemMemov\Cybelang\SpaceGraph\Node;
 use MemMemov\Cybelang\SpaceGraph\Nodes;
-use MemMemov\Cybelang\SpaceGraph\Space;
-use MemMemov\Cybelang\SpaceGraph\Spaces;
+use MemMemov\Cybelang\SpaceGraph\Space\Space;
+use MemMemov\Cybelang\SpaceGraph\Space\Spaces;
 use PHPUnit\Framework\TestCase;
 
 class SequenceTreesTest extends TestCase

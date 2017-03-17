@@ -1,6 +1,8 @@
 <?php
 
-namespace MemMemov\Cybelang\SpaceGraph;
+namespace MemMemov\Cybelang\SpaceGraph\Space;
+
+use MemMemov\Cybelang\SpaceGraph\Nodes;
 
 class SpaceRoot
 {

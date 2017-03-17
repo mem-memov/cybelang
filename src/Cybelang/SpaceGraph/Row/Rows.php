@@ -3,7 +3,7 @@
 namespace MemMemov\Cybelang\SpaceGraph\Row;
 
 use MemMemov\Cybelang\SpaceGraph\Nodes;
-use MemMemov\Cybelang\SpaceGraph\Spaces;
+use MemMemov\Cybelang\SpaceGraph\Space\Spaces;
 
 class Rows
 {

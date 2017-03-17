@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybelang\SpaceGraph\CommonNode;
 
-use MemMemov\Cybelang\SpaceGraph\Spaces;
+use MemMemov\Cybelang\SpaceGraph\Space\Spaces;
 
 class Clusters
 {
