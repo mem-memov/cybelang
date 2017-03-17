@@ -135,13 +135,12 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
         return $spaceNodes;
     }
     
-    public function addNodeToRow(int $id, int $newId): void
+    public function addNodeToRow(int $headId, int $newTailId): void
     {
-        $headNode = $this->nodes->read($id);
-        $newTailNode = $this->nodes->read($newId);
+        $newTailNode = $this->nodes->read($newTailId);
         $tailSpace = $this->spaces->spaceOfNode($newTailNode);
         
-        $row = $this->rows->createUsingHead($id, $tailSpace->name());
+        $row = $this->rows->createUsingHead($headId, $tailSpace->name());
         
         $row->grow($newTailNode);
     }
@@ -149,9 +148,9 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
     /**
      * @return SpaceNode[]
      */
-    public function readRow(string $tailSpaceName, int $id, int $limit): array
+    public function readRow(string $tailSpaceName, int $headId, int $limit): array
     {
-        $row = $this->rows->createUsingHead($id, $tailSpaceName);
+        $row = $this->rows->createUsingHead($headId, $tailSpaceName);
         
         $nodes = $row->show($limit);
         

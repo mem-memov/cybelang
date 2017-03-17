@@ -348,4 +348,75 @@ class SpaceNodesTest extends TestCase
 
         $this->assertContainsOnlyInstancesOf(SpaceNode::class, $result);
     }
+    
+    public function testItAddsTailNodeToRow()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
+
+        $headId = 33;
+        $newTailId = 203003;
+        $tailSpaceName = 'message';
+        
+        $newTailNode = $this->createMock(Node::class);
+        
+        $this->nodes->expects($this->once())
+            ->method('read')
+            ->with($newTailId)
+            ->willReturn($newTailNode);
+        
+        $tailSpace = $this->createMock(Space::class);
+        
+        $this->spaces->expects($this->once())
+            ->method('spaceOfNode')
+            ->with($newTailNode)
+            ->willReturn($tailSpace);
+        
+        $tailSpace->expects($this->once())
+            ->method('name')
+            ->willReturn($tailSpaceName);
+        
+        $row = $this->createMock(Row::class);
+        
+        $this->rows->expects($this->once())
+            ->method('createUsingHead')
+            ->with($headId, $tailSpaceName)
+            ->willReturn($row);
+        
+        $row->expects($this->once())
+            ->method('grow')
+            ->with($newTailNode);
+        
+        $spaceNodes->addNodeToRow($headId, $newTailId);
+    }
+    
+    public function testItReadsTailNodesFromRow()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
+        
+        $headId = 33;
+        $tailSpaceName = 'message';
+        $limit = 5;
+        
+        $row = $this->createMock(Row::class);
+        
+        $this->rows->expects($this->once())
+            ->method('createUsingHead')
+            ->with($headId, $tailSpaceName)
+            ->willReturn($row);
+        
+        $tailNode = $this->createMock(Node::class);
+        
+        $row->expects($this->once())
+            ->method('show')
+            ->with($limit)
+            ->willReturn([$tailNode]);
+        
+        $tailNode->expects($this->once())
+            ->method('id')
+            ->willReturn(429103218);
+        
+        $result = $spaceNodes->readRow($tailSpaceName, $headId, $limit);
+        
+        $this->assertContainsOnlyInstancesOf(SpaceNode::class, $result);
+    }
 }

@@ -125,4 +125,38 @@ class SpaceGraphTest extends TestCase
         
         $this->assertSame([$graphNode], $result);
     }
+    
+    public function testItAddsNodeToRow()
+    {
+        $spaceGraph = new SpaceGraph($this->spaceNodes);
+        
+        $headId = 10;
+        $newTailId = 4032;
+        
+        $this->spaceNodes->expects($this->once())
+            ->method('addNodeToRow')
+            ->with($headId, $newTailId);
+        
+        $spaceGraph->addNodeToRow($headId, $newTailId);
+    }
+    
+    public function testItReadsRow()
+    {
+        $spaceGraph = new SpaceGraph($this->spaceNodes);
+        
+        $tailSpaceName = 'message';
+        $headId = 75345;
+        $limit = 100;
+        
+        $tailNode = $this->createMock(SpaceNode::class);
+        
+        $this->spaceNodes->expects($this->once())
+            ->method('readRow')
+            ->with($tailSpaceName, $headId, $limit)
+            ->willReturn([$tailNode]);
+        
+        $result = $spaceGraph->readRow($tailSpaceName, $headId, $limit);
+        
+        $this->assertSame([$tailNode], $result);
+    }
 }

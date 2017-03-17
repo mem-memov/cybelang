@@ -60,6 +60,9 @@ class Row
         
         if (1 === $nodeCount) {
             $oldTailNode = $nodes[0];
+            if ($oldTailNode->id() > $newTailNode->id()) {
+                throw new ForbidRowCycles();
+            }
             $this->headNode->exchange($oldTailNode, $newTailNode);
             $newTailNode->add($oldTailNode);
             $newTailNode->add($this->headNode);

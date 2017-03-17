@@ -6,28 +6,29 @@ use PHPUnit\Framework\TestCase;
 
 class NodeTest extends TestCase
 {
+    /** @var int */
+    protected $id;
     /** @var Store|\PHPUnit_Framework_MockObject_MockObject */
     protected $store;
 
     protected function setUp()
     {
+        $this->id = 5;
         $this->store = $this->createMock(Store::class);
     }
 
     public function testItHasId()
     {
-        $id = 5;
-
-        $node = new Node($id, [], $this->store);
+        $node = new Node($this->id, [], $this->store);
 
         $result = $node->id();
 
-        $this->assertEquals($id, $result);
+        $this->assertEquals($this->id, $result);
     }
 
     public function testItChecksConnectionToAnotherNode()
     {
-        $node = new Node(5, [2], $this->store);
+        $node = new Node($this->id, [2], $this->store);
 
         $aNode = $this->createMock(Node::class);
 
@@ -42,7 +43,7 @@ class NodeTest extends TestCase
 
     public function testItChecksNoConnectionToAnotherNode()
     {
-        $node = new Node(5, [3], $this->store);
+        $node = new Node($this->id, [3], $this->store);
 
         $aNode = $this->createMock(Node::class);
 
@@ -57,13 +58,13 @@ class NodeTest extends TestCase
 
     public function testItChecksItIsInsideAGroupOfNodes()
     {
-        $node = new Node(5, [], $this->store);
+        $node = new Node($this->id, [], $this->store);
 
         $aNode = $this->createMock(Node::class);
 
         $aNode->expects($this->once())
             ->method('id')
-            ->willReturn(5);
+            ->willReturn($this->id);
 
         $result = $node->in([$aNode]);
 
@@ -72,7 +73,7 @@ class NodeTest extends TestCase
 
     public function testItChecksItIsNotInsideAGroupOfNodes()
     {
-        $node = new Node(5, [], $this->store);
+        $node = new Node($this->id, [], $this->store);
 
         $aNode = $this->createMock(Node::class);
 
@@ -87,7 +88,7 @@ class NodeTest extends TestCase
 
     public function testItGivesAccessToAllSubnodes()
     {
-        $node = new Node(5, [2], $this->store);
+        $node = new Node($this->id, [2], $this->store);
 
         $this->store->expects($this->once())
             ->method('readNode')
@@ -101,7 +102,7 @@ class NodeTest extends TestCase
 
     public function testItGetsConnectedToANode()
     {
-        $node = new Node(5, [], $this->store);
+        $node = new Node($this->id, [], $this->store);
 
         $aNode = $this->createMock(Node::class);
 
@@ -111,14 +112,14 @@ class NodeTest extends TestCase
 
         $this->store->expects($this->once())
             ->method('connectNodes')
-            ->with(5, 2);
+            ->with($this->id, 2);
 
         $node->add($aNode);
     }
 
     public function testItHasOnlyOneConnectionWithANode()
     {
-        $node = new Node(5, [], $this->store);
+        $node = new Node($this->id, [], $this->store);
 
         $aNode = $this->createMock(Node::class);
 
@@ -128,12 +129,37 @@ class NodeTest extends TestCase
 
         $this->store->expects($this->once())
             ->method('connectNodes')
-            ->with(5, 2);
+            ->with($this->id, 2);
 
         $node->add($aNode);
         $node->add($aNode);
         $node->add($aNode);
         $node->add($aNode);
         $node->add($aNode);
+    }
+    
+    public function testItExchangesSubnodes()
+    {
+        $node = new Node($this->id, [], $this->store);
+        
+        $oldNodeId = 23452;
+        $newNodeId = 5000004;
+        
+        $oldNode = $this->createMock(Node::class);
+        $newNode = $this->createMock(Node::class);
+        
+        $oldNode->expects($this->once())
+            ->method('id')
+            ->willReturn($oldNodeId);
+        
+        $newNode->expects($this->once())
+            ->method('id')
+            ->willReturn($newNodeId);
+        
+        $this->store->expects($this->once())
+            ->method('exchangeNodes')
+            ->with($this->id, $oldNodeId, $newNodeId);
+        
+        $node->exchange($oldNode, $newNode);
     }
 }

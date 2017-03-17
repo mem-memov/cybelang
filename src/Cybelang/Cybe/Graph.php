@@ -19,10 +19,10 @@ interface Graph
      */
     public function readSequenceNodes(string $type, int $id): array;
     
-    public function addNodeToRow(int $id, int $newId): void;
+    public function addNodeToRow(int $headId, int $newTailId): void;
     
     /**
      * @return GraphNode[]
      */
-    public function readRow(string $type, int $id, int $limit): array;
+    public function readRow(string $tailSpaceName, int $headId, int $limit): array;
 }

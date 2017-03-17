@@ -48,16 +48,16 @@ class SpaceGraph implements Graph
         return $this->spaceNodes->readNodeSequence($type, $id);
     }
     
-    public function addNodeToRow(int $id, int $newId): void
+    public function addNodeToRow(int $headId, int $newTailId): void
     {
-        $this->spaceNodes->addNodeToRow($id, $newId);
+        $this->spaceNodes->addNodeToRow($headId, $newTailId);
     }
     
     /**
      * @return GraphNode[]
      */
-    public function readRow(string $type, int $id, int $limit): array
+    public function readRow(string $tailSpaceName, int $headId, int $limit): array
     {
-        $this->spaceNodes->readRow($type, $id, $limit);
+        return $this->spaceNodes->readRow($tailSpaceName, $headId, $limit);
     }
 }
