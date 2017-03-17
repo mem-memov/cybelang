@@ -2,8 +2,7 @@
 
 namespace MemMemov\Cybelang\SpaceGraph\Sequence;
 
-use MemMemov\Cybelang\SpaceGraph\Node\Node;
-use MemMemov\Cybelang\SpaceGraph\Node\Nodes;
+use MemMemov\Cybelang\SpaceGraph\Node\{Node, Nodes};
 
 class Sequences
 {

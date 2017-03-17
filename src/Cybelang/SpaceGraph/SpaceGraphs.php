@@ -2,17 +2,11 @@
 
 namespace MemMemov\Cybelang\SpaceGraph;
 
-use MemMemov\Cybelang\SpaceGraph\CommonNode\Clusters;
-use MemMemov\Cybelang\SpaceGraph\CommonNode\CommonNodes;
-use MemMemov\Cybelang\SpaceGraph\Node\NodeCache;
-use MemMemov\Cybelang\SpaceGraph\Node\Nodes;
-use MemMemov\Cybelang\SpaceGraph\Node\Store;
+use MemMemov\Cybelang\SpaceGraph\CommonNode\{Clusters, CommonNodes};
+use MemMemov\Cybelang\SpaceGraph\Node\{NodeCache, Nodes, Store};
 use MemMemov\Cybelang\SpaceGraph\Row\Rows;
-use MemMemov\Cybelang\SpaceGraph\Sequence\SequenceTrees;
-use MemMemov\Cybelang\SpaceGraph\Sequence\Sequences;
-use MemMemov\Cybelang\SpaceGraph\Space\SpaceCache;
-use MemMemov\Cybelang\SpaceGraph\Space\Spaces;
-use MemMemov\Cybelang\SpaceGraph\Space\SpaceRoot;
+use MemMemov\Cybelang\SpaceGraph\Sequence\{SequenceTrees, Sequences};
+use MemMemov\Cybelang\SpaceGraph\Space\{SpaceCache, Spaces, SpaceRoot};
 
 class SpaceGraphs
 {

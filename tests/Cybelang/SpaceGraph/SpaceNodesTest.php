@@ -2,16 +2,11 @@
 
 namespace MemMemov\Cybelang\SpaceGraph;
 
-use MemMemov\Cybelang\SpaceGraph\CommonNode\CommonNodes;
-use MemMemov\Cybelang\SpaceGraph\CommonNode\ForbidMultipleCommonNodes;
-use MemMemov\Cybelang\SpaceGraph\Node\Node;
-use MemMemov\Cybelang\SpaceGraph\Node\Nodes;
-use MemMemov\Cybelang\SpaceGraph\Row\Row;
-use MemMemov\Cybelang\SpaceGraph\Row\Rows;
+use MemMemov\Cybelang\SpaceGraph\CommonNode\{CommonNodes, ForbidMultipleCommonNodes};
+use MemMemov\Cybelang\SpaceGraph\Node\{Node, Nodes};
+use MemMemov\Cybelang\SpaceGraph\Row\{Row, Rows};
 use MemMemov\Cybelang\SpaceGraph\Sequence\Sequences;
-use MemMemov\Cybelang\SpaceGraph\Space\NodeNotFoundInSpace;
-use MemMemov\Cybelang\SpaceGraph\Space\Space;
-use MemMemov\Cybelang\SpaceGraph\Space\Spaces;
+use MemMemov\Cybelang\SpaceGraph\Space\{NodeNotFoundInSpace, Space, Spaces};
 use PHPUnit\Framework\TestCase;
 
 class SpaceNodesTest extends TestCase
