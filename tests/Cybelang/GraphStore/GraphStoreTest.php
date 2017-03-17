@@ -373,4 +373,37 @@ class GraphStoreTest extends TestCase
         
         $graphStore->exchangeNodes($id, $oldId, $newId);
     }
+    
+    public function testItExchangesOnlyContainedSubnode()
+    {
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        
+        $id = 5;
+        $oldId = 8;
+        $newId = 43097;
+        
+        $this->nodeStore->expects($this->at(0))
+            ->method('exists')
+            ->with($id)
+            ->willReturn(true);
+        
+        $this->nodeStore->expects($this->at(1))
+            ->method('exists')
+            ->with($oldId)
+            ->willReturn(true);
+        
+        $this->nodeStore->expects($this->at(2))
+            ->method('exists')
+            ->with($newId)
+            ->willReturn(true);
+        
+        $this->nodeStore->expects($this->once())
+            ->method('contains')
+            ->with($id, $oldId)
+            ->willReturn(false);
+        
+        $this->expectException(NodeExchangesNodeItContains::class);
+        
+        $graphStore->exchangeNodes($id, $oldId, $newId);
+    }
 }
