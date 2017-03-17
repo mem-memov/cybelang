@@ -24,4 +24,9 @@ class Compliment
     {
         return $this->phrases->ofCompliment($this);
     }
+    
+    public function toText(): string
+    {
+        return $this->phrase()->toText();
+    }
 }

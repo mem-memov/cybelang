@@ -108,7 +108,6 @@ class ArrayValueStoreTest extends TestCase
     {
         $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
         $store->bind('1', 'some value');
-        unset($store);
 
         $store_2 = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
 
@@ -121,7 +120,6 @@ class ArrayValueStoreTest extends TestCase
     {
         $store = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
         $store->bind('1', 'some value');
-        unset($store);
 
         $store_2 = new ArrayValueStore($this->hash, $this->keyPath, $this->valuePath);
 

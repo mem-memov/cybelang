@@ -54,8 +54,6 @@ class ArrayNodeStoreTest extends TestCase
         $store->connect($fromId, $toId);
         $store->connect($fromId, $toId);
 
-        unset($store);
-
         $array = unserialize(file_get_contents($this->path));
 
         $this->assertEquals([
@@ -113,7 +111,6 @@ class ArrayNodeStoreTest extends TestCase
         $fromId = $store->create();
         $toId = $store->create();
         $store->connect($fromId, $toId);
-        unset($store);
 
         $store_1 = new ArrayNodeStore($this->path);
 

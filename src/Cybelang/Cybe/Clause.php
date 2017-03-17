@@ -40,4 +40,16 @@ class Clause
     {
         return $this->arguments->ofClause($this);
     }
+    
+    public function toText(): string
+    {
+        $argumentTexts = [];
+        foreach ($this->arguments() as $argument) {
+            $argumentTexts[] = $argument->toText();
+        }
+        
+        $text = $this->subject()->toText() . '.' . $this->predicate()->toText() . '(' . implode(', ', $argumentTexts) . ')';
+        
+        return $text;
+    }
 }

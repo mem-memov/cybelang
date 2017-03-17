@@ -101,4 +101,27 @@ class Messages implements Destructable
             $this->statements
         );
     }
+    
+    public function ofUtterance(Utterance $utterance): Message
+    {
+        $messageNodes = $this->graph->filterNode(self::$graphSpace, $utterance->id());
+       
+        if (count($messageNodes) > 1) {
+            throw new \Exception('An utterance must have only one message.');
+        }
+        
+        if (count($messageNodes) === 0) {
+            throw new \Exception('An utterance must have only one message.');
+        }
+        
+        $messageNode = array_pop($messageNodes);
+        
+        return new Message(
+            $messageNode->id(),
+            $this->utterances,
+            $this->clauses,
+            $this->contexts,
+            $this->statements
+        );
+    }
 }

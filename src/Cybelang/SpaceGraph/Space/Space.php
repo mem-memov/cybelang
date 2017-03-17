@@ -30,10 +30,19 @@ class Space
         return $this->name;
     }
     
-    public function createNode(): Node
+    /**
+     * 
+     * @param Node[] $nodes
+     * @return Node
+     */
+    public function createNode(array $nodes): Node
     {
         $node = $this->nodes->create();
         $node->add($this->node);
+        
+        foreach ($nodes as $subnode) {
+            $node->add($subnode);
+        }
 
         return $node;
     }

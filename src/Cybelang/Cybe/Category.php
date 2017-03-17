@@ -24,4 +24,9 @@ class Category
     {
         return $this->phrases->ofCategory($this);
     }
+    
+    public function toText(): string
+    {
+        return $this->phrase()->toText();
+    }
 }

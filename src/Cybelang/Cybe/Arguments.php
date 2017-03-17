@@ -72,22 +72,23 @@ class Arguments implements Destructable
     }
 
     /**
-     * @param Predicate $predicate
+     * @param Clause $clause
      * @return Argument[]
      */
-    public function ofPredicate(Predicate $predicate): array
+    public function ofClause(Clause $clause): array
     {
-        $predicateNode = $this->graph->readNode($predicate->id());
+        $clauseNode = $this->graph->readNode($clause->id());
 
         $arguments = [];
-
-        $predicateNode->all(self::$graphSpace, function(GraphNode $argumentNode) use ($arguments) {
+        $argumentNodes = $clauseNode->all(self::$graphSpace);
+        
+        foreach ($argumentNodes as $argumentNode) {
             $arguments[] = new Argument(
                 $argumentNode->id(),
                 $this->categories,
                 $this->compliments
             );
-        });
+        }
 
         return $arguments;
     }

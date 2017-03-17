@@ -24,4 +24,9 @@ class Subject
     {
         return $this->phrases->ofSubject($this);
     }
+    
+    public function toText(): string
+    {
+        return $this->phrase()->toText();
+    }
 }

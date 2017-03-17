@@ -35,18 +35,15 @@ class ArrayValueStore implements ValueStore
         };
     }
 
-    public function __destruct()
-    {
-        file_put_contents($this->keyPath, serialize($this->keyValue));
-        file_put_contents($this->valuePath, serialize($this->valueKey));
-    }
-
     public function bind(string $key, string $value)
     {
         $this->keyValue[$key] = $value;
 
         $hash = $this->hash->create($value);
         $this->valueKey[$hash] = $key;
+        
+        file_put_contents($this->keyPath, serialize($this->keyValue));
+        file_put_contents($this->valuePath, serialize($this->valueKey));
     }
 
     public function value(string $key): string

@@ -32,4 +32,9 @@ class Argument
     {
         return $this->compliments->ofArgument($this);
     }
+
+    public function toText(): string
+    {
+        return $this->category()->toText() . '.' . $this->compliment()->toText();
+    }
 }

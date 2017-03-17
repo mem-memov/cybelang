@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\SpaceGraph;
 
 interface SpaceNodesInGraph
 {
-    public function createNode(string $type): SpaceNode;
+    public function createNode(string $spaceName, array $ids): SpaceNode;
     
     /**
      * @param string $spaceName
@@ -19,6 +19,11 @@ interface SpaceNodesInGraph
     public function valueOfNode(int $id): string;
 
     public function readNode(int $id): SpaceNode;
+    
+    /**
+     * @return SpaceNode[]
+     */
+    public function filterNode(string $spaceName, int $id): array;
 
     /**
      * @param string $spaceName

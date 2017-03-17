@@ -17,4 +17,14 @@ class Utterance
         $this->authors = $authors;
         $this->messages = $messages;
     }
+
+    public function id(): int
+    {
+        return $this->id;
+    }
+    
+    public function message(): Message
+    {
+        return $this->messages->ofUtterance($this);
+    }
 }

@@ -28,4 +28,16 @@ class Message
     {
         return $this->id;
     }
+    
+    public function toText(): string
+    {
+        $clauses = $this->clauses->ofMessage($this);
+        
+        $text = '';
+        foreach ($clauses as $clause) {
+            $text .= $clause->toText();
+        }
+        
+        return $text;
+    }
 }

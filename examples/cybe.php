@@ -22,10 +22,18 @@ $cybes = new MemMemov\Cybelang\Cybe\Cybes();
 $cybe = $cybes->create($graph, $parser->messages());
 
 $author = $cybe->createAuthor();
-$message = 'птица.летит(куда:гнездо)';
+$message = 'птица.лететь(куда:гнездо)';
+$message .= 'гнездо.расположить(где:дерево)';
+$author->write($message);
+$message = 'птица1.лететь1(куда1:гнездо1)';
+$message .= 'гнездо1.расположить1(где1:дерево1)';
 $author->write($message);
 
-var_export(unserialize(file_get_contents($nodePath)));
-var_export(unserialize(file_get_contents($keyPath)));
-var_export(unserialize(file_get_contents($valuePath)));
+$message = $author->recall(3);
+
+var_export($message);
+
+//var_export(unserialize(file_get_contents($nodePath)));
+//var_export(unserialize(file_get_contents($keyPath)));
+//var_export(unserialize(file_get_contents($valuePath)));
 

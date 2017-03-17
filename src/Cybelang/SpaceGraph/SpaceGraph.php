@@ -15,9 +15,9 @@ class SpaceGraph implements Graph
         $this->spaceNodes = $spaceNodes;
     }
     
-    public function createNode(string $type): GraphNode
+    public function createNode(string $type, array $ids): GraphNode
     {
-        return $this->spaceNodes->createNode($type);
+        return $this->spaceNodes->createNode($type, $ids);
     }
 
     public function provideCommonNode(string $type, array $ids): GraphNode
@@ -38,6 +38,11 @@ class SpaceGraph implements Graph
     public function readNode(int $id): GraphNode
     {
         return $this->spaceNodes->readNode($id);
+    }
+    
+    public function filterNode(string $type, int $id): array
+    {
+        return $this->spaceNodes->filterNode($type, $id);
     }
 
     public function provideSequenceNode(string $type, array $ids): GraphNode

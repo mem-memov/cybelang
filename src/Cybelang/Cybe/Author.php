@@ -34,4 +34,17 @@ class Author
         
         $this->utterances->create($message, $this);
     }
+    
+    public function recall(int $limit): string
+    {
+        $utterances = $this->utterances->ofAuthor($this, $limit);
+       
+        $text = '';
+        foreach ($utterances as $utterance) {
+            $message = $utterance->message();
+            $text .= $message->toText();
+        }
+        
+        return $text;
+    }
 }

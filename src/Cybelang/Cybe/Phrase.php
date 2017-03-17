@@ -20,9 +20,18 @@ class Phrase
         return $this->id;
     }
 
-    public function words(callable $use): array
+    public function words(): array
     {
-        $words = $this->words->ofPhrase($this);
-        return array_map($use, $words);
+        return $this->words->ofPhrase($this);
+    }
+
+    public function toText(): string
+    {
+        $wordTexts = [];
+        foreach ($this->words() as $word) {
+            $wordTexts[] = $word->content();
+        }
+        
+        return implode(' ', $wordTexts);
     }
 }

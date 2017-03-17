@@ -38,11 +38,30 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
         return new SpaceNode($id, $this);
     }
     
-    public function createNode(string $spaceName): SpaceNode
+    public function filterNode(string $spaceName, int $id): array
     {
         $space = $this->spaces->provideSpace($spaceName);
-        $node = $space->createNode();
+        $containerNode = $this->nodes->read($id);
+        $nodes = $space->findNodes($containerNode);
         
+        $spaceNodes = [];
+        foreach ($nodes as $node) {
+            $spaceNodes[] = new SpaceNode($node->id(), $this);
+        }
+
+        return $spaceNodes;
+    }
+    
+    public function createNode(string $spaceName, array $ids): SpaceNode
+    {
+        $nodes = [];
+        foreach ($ids as $id) {
+            $nodes[] = $this->nodes->read($id);
+        }
+        
+        $space = $this->spaces->provideSpace($spaceName);
+        $node = $space->createNode($nodes);
+
         return new SpaceNode($node->id(), $this);
     }
 

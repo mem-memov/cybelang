@@ -24,4 +24,9 @@ class Predicate
     {
         return $this->phrases->ofPredicate($this);
     }
+    
+    public function toText(): string
+    {
+        return $this->phrase()->toText();
+    }
 }

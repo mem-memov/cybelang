@@ -22,16 +22,12 @@ class ArrayNodeStore implements NodeStoreInterface
         }
     }
 
-    public function __destruct()
-    {
-        file_put_contents($this->path, serialize($this->store));
-    }
-
     public function create(): int
     {
         $id = count($this->store) + 1;
 
         $this->store[$id] = [];
+        file_put_contents($this->path, serialize($this->store));
 
         return $id;
     }
@@ -52,6 +48,7 @@ class ArrayNodeStore implements NodeStoreInterface
         }
 
         $this->store[$fromId][] = $toId;
+        file_put_contents($this->path, serialize($this->store));
     }
 
     public function contains(int $fromId, int $toId): bool
@@ -81,6 +78,7 @@ class ArrayNodeStore implements NodeStoreInterface
         
         if (false !== $index) {
             $this->store[$id][$index] = $newId;
+            file_put_contents($this->path, serialize($this->store));
         }
     }
 

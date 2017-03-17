@@ -82,4 +82,21 @@ class Clauses implements Destructable
             $this->arguments
         );
     }
+    
+    public function ofMessage(Message $message): array
+    {
+        $closeNodes = $this->graph->filterNode(self::$graphSpace, $message->id());
+        
+        $clauses = [];
+        foreach ($closeNodes as $clauseNode) {
+            $clauses[] = new Clause(
+                $clauseNode->id(),
+                $this->subjects,
+                $this->predicates,
+                $this->arguments
+            );
+        }
+        
+        return $clauses;
+    }
 }
