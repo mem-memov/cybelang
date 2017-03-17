@@ -59,8 +59,8 @@ class Predicates implements Destructable
 
     public function fromText(Parser\Predicate $predicateText): Predicate
     {
-        $phrase = $this->phrases->fromWords($predicateText->getWords());
-        $predicateNode = $this->graph->сreateNode(self::$graphSpace, [$phrase->id()]);
+        $phrase = $this->phrases->fromWords($predicateText->words());
+        $predicateNode = $this->graph->provideCommonNode(self::$graphSpace, [$phrase->id()]);
 
         return new Predicate(
             $predicateNode->id(),

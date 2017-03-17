@@ -59,7 +59,7 @@ class SequenceTree
 
         $treeSpace = $this->spaces->spaceOfNode($this->treeNode);
         $previousTreeNodes = $treeSpace->findNodes($this->treeNode);
-        $previousTreeNode = $previousTreeNodes[0];
+        $previousTreeNode = array_pop($previousTreeNodes);
 
         $sequenceSpace = $this->spaces->spaceOfNode($this->sequenceNode);
         $sequenceNode = $sequenceSpace->getOneNode($previousTreeNode);

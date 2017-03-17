@@ -53,7 +53,7 @@ class Spaces // implements SpaceGraph
                 return $space->has($node);
             }
         );
-
+        
         $nodeSpaceCount = count($nodeSpaces);
 
         if (0 === $nodeSpaceCount) {
@@ -64,7 +64,7 @@ class Spaces // implements SpaceGraph
             throw new ForbidOneNodeInManySpaces(sprintf('Node %d more than one space', $node->id()));
         }
 
-        return $nodeSpaces[0];
+        return array_pop($nodeSpaces);
     }
 
     /**

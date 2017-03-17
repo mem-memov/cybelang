@@ -5,17 +5,20 @@ namespace MemMemov\Cybelang\Cybe;
 class Author
 {
     private $id;
-    private $parser;
     private $messages;
+    private $utterances;
+    private $parser;
 
     public function __construct(
         int $id,
-        Parser\Messages $parser,
-        Messages $messages
+        Messages $messages,
+        Utterances $utterances,
+        Parser\Messages $parser
     ) {
         $this->id = $id;
-        $this->parser = $parser;
         $this->messages = $messages;
+        $this->utterances = $utterances;
+        $this->parser = $parser;
     }
 
     public function id(): int
@@ -28,5 +31,7 @@ class Author
         $messageText = $this->parser->create($text);
 
         $message = $this->messages->fromText($messageText, $this);
+        
+        $this->utterances->create($message, $this);
     }
 }

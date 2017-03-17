@@ -40,7 +40,7 @@ class Row
                 throw new ForbidRowForking();
             }
             
-            $node = $nodes[0];
+            $node = array_pop($nodes);
             $tailNodes[] = $node;
         }
         
@@ -62,7 +62,7 @@ class Row
         }
         
         if (1 === $nodeCount) {
-            $oldTailNode = $nodes[0];
+            $oldTailNode = array_pop($nodes);
             if ($oldTailNode->id() > $newTailNode->id()) {
                 throw new ForbidRowCycles();
             }

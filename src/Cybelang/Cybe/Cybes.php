@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 class Cybes
 {
-    public function create(Graph $graph): Cybe
+    public function create(Graph $graph, Parser\Messages $parser): Cybe
     {
         $words = new Words($graph);
         $phrases = new Phrases($graph, $words);
@@ -18,10 +18,9 @@ class Cybes
         $contexts = new Contexts($graph, $messages);
         $statements = new Statements($graph, $messages);
         $utterances = new Utterances($graph, $messages);
-        $authors = new Authors($graph, $utterances);
+        $authors = new Authors($graph, $messages, $utterances, $parser);
         
-        $utterances->setAuthors($authors);
-        $words->setPrases($phrases);
+        $words->setPhrases($phrases);
         $phrases->setSubjects($subjects);
         $phrases->setPredicates($predicates);
         $phrases->setArguments($arguments);

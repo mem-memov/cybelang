@@ -16,4 +16,14 @@ class Cybe implements Destructable
         $this->authors->destruct();
         $this->authors = null;
     }
+    
+    public function createAuthor(): Author
+    {
+        return $this->authors->createAuthor();
+    }
+    
+    public function getAuthor(): Author
+    {
+        
+    }
 }

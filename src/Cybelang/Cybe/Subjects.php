@@ -49,8 +49,8 @@ class Subjects implements Destructable
 
     public function fromText(Parser\Subject $subjectText): Subject
     {
-        $phrase = $this->phrases->fromWords($subjectText->getWords());
-        $subjectNode = $this->graph->сreateNode(self::$graphSpace, [$phrase->id()]);
+        $phrase = $this->phrases->fromWords($subjectText->words());
+        $subjectNode = $this->graph->provideCommonNode(self::$graphSpace, [$phrase->id()]);
 
         return new Subject(
             $subjectNode->id(),

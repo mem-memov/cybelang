@@ -50,7 +50,7 @@ class Categories implements Destructable
     public function fromText(Parser\Category $categoryText): Category
     {
         $phrase = $this->phrases->fromWords($categoryText->words());
-        $categoryNode = $this->graph->сreateNode(self::$graphSpace, [$phrase->id()]);
+        $categoryNode = $this->graph->provideCommonNode(self::$graphSpace, [$phrase->id()]);
 
         return new Category(
             $categoryNode->id(),

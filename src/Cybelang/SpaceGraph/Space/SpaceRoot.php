@@ -20,6 +20,9 @@ class SpaceRoot
         $spaceNodes = $rootNode->all();
 
         foreach ($spaceNodes as $spaceNode) {
+            if ($spaceCache->hasSpaceWithId($spaceNode->id())) {
+                continue;
+            }
             $spaceName = $nodes->valueForNode($spaceNode);
             $space = new Space($spaceName, $spaceNode, $nodes);
             $spaceCache->set($space);

@@ -4,6 +4,8 @@ namespace MemMemov\Cybelang\Cybe;
 
 class Utterances implements Destructable
 {
+    private static $graphSpace = 'utterance';
+    
     /** @var Graph */
     private $graph;
     /** @var Messages */
@@ -17,6 +19,7 @@ class Utterances implements Destructable
     ) {
         $this->graph = $graph;
         $this->messages = $messages;
+        $this->authors = null;
     }
     
     public function destruct()
@@ -43,5 +46,10 @@ class Utterances implements Destructable
         }
         
         $this->authors = $authors;
+    }
+    
+    public function create(Message $message, Author $author)
+    {
+        
     }
 }

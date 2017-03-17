@@ -50,7 +50,7 @@ class Compliments implements Destructable
     public function fromText(Parser\Compliment $complimentText): Compliment
     {
         $phrase = $this->phrases->fromWords($complimentText->words());
-        $complimentNode = $this->graph->сreateNode(self::$graphSpace, [$phrase->id()]);
+        $complimentNode = $this->graph->provideCommonNode(self::$graphSpace, [$phrase->id()]);
 
         return new Compliment(
             $complimentNode->id(),

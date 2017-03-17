@@ -37,6 +37,14 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
 
         return new SpaceNode($id, $this);
     }
+    
+    public function createNode(string $spaceName): SpaceNode
+    {
+        $space = $this->spaces->provideSpace($spaceName);
+        $node = $space->createNode();
+        
+        return new SpaceNode($node->id(), $this);
+    }
 
     /**
      * @param string $spaceName
@@ -53,7 +61,7 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
         $matchingCommonNodeCount = count($matchingCommonNodes);
 
         if (1 === $matchingCommonNodeCount) {
-            $commonNode = $matchingCommonNodes[0];
+            $commonNode = array_pop($matchingCommonNodes);
             if (!$space->has($commonNode)) {
                 throw new NodeNotFoundInSpace($commonNode->id());
             }

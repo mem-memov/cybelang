@@ -29,6 +29,14 @@ class Space
     {
         return $this->name;
     }
+    
+    public function createNode(): Node
+    {
+        $node = $this->nodes->create();
+        $node->add($this->node);
+
+        return $node;
+    }
 
     /**
      * @param Node[] $nodes
@@ -58,7 +66,7 @@ class Space
             throw new RequireOneNode(sprintf('%d nodes of type %s found in node %d instead of one', count($selectedNodes), $this->name, $node->id()));
         }
 
-        return $selectedNodes[0];
+        return array_pop($selectedNodes);
     }
 
     /**
