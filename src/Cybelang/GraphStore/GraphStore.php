@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybelang\GraphStore;
 
-use MemMemov\Cybelang\SpaceGraph\Store;
+use MemMemov\Cybelang\SpaceGraph\Node\Store;
 
 class GraphStore implements Store
 {

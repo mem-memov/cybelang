@@ -2,8 +2,8 @@
 
 namespace MemMemov\Cybelang\SpaceGraph\CommonNode;
 
-use MemMemov\Cybelang\SpaceGraph\Node;
-use MemMemov\Cybelang\SpaceGraph\Nodes;
+use MemMemov\Cybelang\SpaceGraph\Node\Node;
+use MemMemov\Cybelang\SpaceGraph\Node\Nodes;
 use MemMemov\Cybelang\SpaceGraph\Space\Space;
 use PHPUnit\Framework\TestCase;
 

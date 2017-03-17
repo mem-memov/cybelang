@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybelang\SpaceGraph\Space;
 
-use MemMemov\Cybelang\SpaceGraph\Nodes;
+use MemMemov\Cybelang\SpaceGraph\Node\Nodes;
 
 class SpaceRoot
 {

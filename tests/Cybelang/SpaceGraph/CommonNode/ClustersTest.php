@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybelang\SpaceGraph\CommonNode;
 
-use MemMemov\Cybelang\SpaceGraph\Node;
+use MemMemov\Cybelang\SpaceGraph\Node\Node;
 use MemMemov\Cybelang\SpaceGraph\Space\Space;
 use MemMemov\Cybelang\SpaceGraph\Space\Spaces;
 use PHPUnit\Framework\TestCase;

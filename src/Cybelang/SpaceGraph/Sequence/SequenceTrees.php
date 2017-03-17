@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybelang\SpaceGraph\Sequence;
 
-use MemMemov\Cybelang\SpaceGraph\Nodes;
+use MemMemov\Cybelang\SpaceGraph\Node\Nodes;
 use MemMemov\Cybelang\SpaceGraph\Space\Spaces;
 
 class SequenceTrees

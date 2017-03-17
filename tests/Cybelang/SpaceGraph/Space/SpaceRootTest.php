@@ -2,8 +2,8 @@
 
 namespace MemMemov\Cybelang\SpaceGraph\Space;
 
-use MemMemov\Cybelang\SpaceGraph\Node;
-use MemMemov\Cybelang\SpaceGraph\Nodes;
+use MemMemov\Cybelang\SpaceGraph\Node\Node;
+use MemMemov\Cybelang\SpaceGraph\Node\Nodes;
 use PHPUnit\Framework\TestCase;
 
 class SpaceRootTest extends TestCase

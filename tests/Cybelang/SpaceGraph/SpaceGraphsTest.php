@@ -2,6 +2,7 @@
 
 namespace MemMemov\Cybelang\SpaceGraph;
 
+use MemMemov\Cybelang\SpaceGraph\Node\Store;
 use PHPUnit\Framework\TestCase;
 
 class SpaceGraphsTest extends TestCase

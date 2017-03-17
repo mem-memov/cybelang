@@ -4,6 +4,7 @@ namespace MemMemov\Cybelang\SpaceGraph;
 
 use MemMemov\Cybelang\SpaceGraph\CommonNode\CommonNodes;
 use MemMemov\Cybelang\SpaceGraph\CommonNode\ForbidMultipleCommonNodes;
+use MemMemov\Cybelang\SpaceGraph\Node\Nodes;
 use MemMemov\Cybelang\SpaceGraph\Row\Rows;
 use MemMemov\Cybelang\SpaceGraph\Sequence\Sequences;
 use MemMemov\Cybelang\SpaceGraph\Space\NodeNotFoundInSpace;

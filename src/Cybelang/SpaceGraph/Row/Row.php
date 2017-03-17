@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybelang\SpaceGraph\Row;
 
-use MemMemov\Cybelang\SpaceGraph\Node;
+use MemMemov\Cybelang\SpaceGraph\Node\Node;
 use MemMemov\Cybelang\SpaceGraph\Space\Space;
 
 class Row
