@@ -12,6 +12,11 @@ class PlainTextPredicate implements Predicate
     {
         $this->string = $string;
     }
+    
+    public function text(): string
+    {
+        return $this->string;
+    }
 
     /**
      * @return string[]

@@ -2,6 +2,8 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
+use Psr\Log\LoggerInterface;
+
 class Predicates implements Destructable
 {
     private static $graphSpace = 'predicate';
@@ -14,15 +16,20 @@ class Predicates implements Destructable
     private $phrases;
     /** @var Clauses */
     private $clauses;
+    /** @var LoggerInterface */
+    private $logger;
 
     public function __construct(
         Graph $graph,
         Arguments $arguments,
-        Phrases $phrases
+        Phrases $phrases,
+        LoggerInterface $logger
     ) {
         $this->graph = $graph;
         $this->arguments = $arguments;
         $this->phrases = $phrases;
+        $this->clauses = null;
+        $this->logger = $logger;
     }
     
     public function destruct()
@@ -61,6 +68,8 @@ class Predicates implements Destructable
     {
         $phrase = $this->phrases->fromWords($predicateText->words());
         $predicateNode = $this->graph->provideCommonNode(self::$graphSpace, [$phrase->id()]);
+        
+        $this->logger->info('predicate provided', [$predicateNode->id(), $predicateText->text()]);
 
         return new Predicate(
             $predicateNode->id(),

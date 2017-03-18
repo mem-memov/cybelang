@@ -13,6 +13,11 @@ class PlainTextSubject implements Subject
     ) {
         $this->string = $string;
     }
+    
+    public function text(): string
+    {
+        return $this->string;
+    }
 
     /**
      * @return string[]

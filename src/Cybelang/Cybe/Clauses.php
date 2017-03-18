@@ -2,6 +2,8 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
+use Psr\Log\LoggerInterface;
+
 class Clauses implements Destructable
 {
     private static $graphSpace = 'clause';
@@ -16,17 +18,22 @@ class Clauses implements Destructable
     private $arguments;
     /** @var Messages */
     private $messages;
+    /** @var LoggerInterface */
+    private $logger;
 
     public function __construct(
         Graph $graph,
         Subjects $subjects,
         Predicates $predicates,
-        Arguments $arguments
+        Arguments $arguments,
+        LoggerInterface $logger
     ) {
         $this->graph = $graph;
         $this->subjects = $subjects;
         $this->predicates = $predicates;
         $this->arguments = $arguments;
+        $this->messages = null;
+        $this->logger = $logger;
     }
     
     public function destruct()
@@ -49,6 +56,12 @@ class Clauses implements Destructable
             $arguments = $this->arguments;
             $this->arguments = null;
             $arguments->destruct();
+        }
+        
+        if (!is_null($this->messages)) {
+            $messages = $this->messages;
+            $this->messages = null;
+            $messages->destruct();
         }
     }
     
@@ -74,6 +87,8 @@ class Clauses implements Destructable
         $memberIds = array_merge([$subject->id(), $predicate->id()], $argumentIds);
 
         $clauseNode = $this->graph->provideCommonNode(self::$graphSpace, $memberIds);
+        
+        $this->logger->info('argument provided', [$clauseNode->id(), $clauseText->text()]);
 
         return new Clause(
             $clauseNode->id(),

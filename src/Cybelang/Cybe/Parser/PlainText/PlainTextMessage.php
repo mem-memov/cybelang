@@ -16,6 +16,11 @@ class PlainTextMessage implements Message
         $this->clauses = $clauses;
         $this->string = $string;
     }
+    
+    public function text(): string
+    {
+        return $this->string;
+    }
 
     public function clauses(): array
     {

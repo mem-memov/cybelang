@@ -2,23 +2,25 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
+use Psr\Log\LoggerInterface;
+
 class Cybes
 {
-    public function create(Graph $graph, Parser\Messages $parser): Cybe
+    public function create(Graph $graph, Parser\Messages $parser, LoggerInterface $logger): Cybe
     {
-        $words = new Words($graph);
-        $phrases = new Phrases($graph, $words);
-        $subjects = new Subjects($graph, $phrases);
-        $categories = new Categories($graph, $phrases);
-        $compliments = new Compliments($graph, $phrases);
-        $arguments = new Arguments($graph, $categories, $compliments);
-        $predicates = new Predicates($graph, $arguments, $phrases);
-        $clauses = new Clauses($graph, $subjects, $predicates, $arguments);
-        $messages = new Messages($graph, $clauses);
-        $contexts = new Contexts($graph, $messages);
-        $statements = new Statements($graph, $messages);
-        $utterances = new Utterances($graph, $messages);
-        $authors = new Authors($graph, $messages, $utterances, $parser);
+        $words = new Words($graph, $logger);
+        $phrases = new Phrases($graph, $words, $logger);
+        $subjects = new Subjects($graph, $phrases, $logger);
+        $categories = new Categories($graph, $phrases, $logger);
+        $compliments = new Compliments($graph, $phrases, $logger);
+        $arguments = new Arguments($graph, $categories, $compliments, $logger);
+        $predicates = new Predicates($graph, $arguments, $phrases, $logger);
+        $clauses = new Clauses($graph, $subjects, $predicates, $arguments, $logger);
+        $messages = new Messages($graph, $clauses, $logger);
+        $contexts = new Contexts($graph, $messages, $logger);
+        $statements = new Statements($graph, $messages, $logger);
+        $utterances = new Utterances($graph, $messages, $logger);
+        $authors = new Authors($graph, $messages, $utterances, $parser, $logger);
         
         $words->setPhrases($phrases);
         $phrases->setSubjects($subjects);

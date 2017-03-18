@@ -24,6 +24,11 @@ class PlainTextClause implements Clause
         $this->arguments = $arguments;
         $this->string = $string;
     }
+    
+    public function text(): string
+    {
+        return $this->string;
+    }
 
     public function predicate(): Predicate
     {

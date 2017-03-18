@@ -23,6 +23,11 @@ class PlainTextArgument implements Argument
         $this->compliments = $compliments;
         $this->string = $string;
     }
+    
+    public function text(): string
+    {
+        return $this->string;
+    }
 
     public function category(): Category
     {

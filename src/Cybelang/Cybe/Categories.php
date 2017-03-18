@@ -2,6 +2,8 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
+use Psr\Log\LoggerInterface;
+
 class Categories implements Destructable
 {
     private static $graphSpace = 'category';
@@ -12,13 +14,18 @@ class Categories implements Destructable
     private $phrases;
     /** @var Arguments */
     private $arguments;
+    /** @var LoggerInterface */
+    private $logger;
 
     public function __construct(
         Graph $graph,
-        Phrases $phrases
+        Phrases $phrases,
+        LoggerInterface $logger
     ) {
         $this->graph = $graph;
         $this->phrases = $phrases;
+        $this->arguments = null;
+        $this->logger = $logger;
     }
     
     public function destruct()
@@ -51,6 +58,8 @@ class Categories implements Destructable
     {
         $phrase = $this->phrases->fromWords($categoryText->words());
         $categoryNode = $this->graph->provideCommonNode(self::$graphSpace, [$phrase->id()]);
+        
+        $this->logger->info('category provided', [$categoryNode->id(), $categoryText->text()]);
 
         return new Category(
             $categoryNode->id(),

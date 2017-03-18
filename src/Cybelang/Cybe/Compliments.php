@@ -2,6 +2,8 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
+use Psr\Log\LoggerInterface;
+
 class Compliments implements Destructable
 {
     private static $graphSpace = 'compliment';
@@ -12,13 +14,18 @@ class Compliments implements Destructable
     private $phrases;
     /** @var Arguments */
     private $arguments;
+    /** @var LoggerInterface */
+    private $logger;
 
     public function __construct(
         Graph $graph,
-        Phrases $phrases
+        Phrases $phrases,
+        LoggerInterface $logger
     ) {
         $this->graph = $graph;
         $this->phrases = $phrases;
+        $this->arguments = null;
+        $this->logger = $logger;
     }
     
     public function destruct()
@@ -51,6 +58,8 @@ class Compliments implements Destructable
     {
         $phrase = $this->phrases->fromWords($complimentText->words());
         $complimentNode = $this->graph->provideCommonNode(self::$graphSpace, [$phrase->id()]);
+        
+        $this->logger->info('compliment provided', [$complimentNode->id(), $complimentText->text()]);
 
         return new Compliment(
             $complimentNode->id(),

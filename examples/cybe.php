@@ -18,8 +18,11 @@ $graph = $graphs->create($store, $rootName);
 
 $parser = new MemMemov\Cybelang\Cybe\Parser\PlainText\PlainText();
 
+$logger = new Monolog\Logger('cybe');
+$logger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::INFO));
+
 $cybes = new MemMemov\Cybelang\Cybe\Cybes();
-$cybe = $cybes->create($graph, $parser->messages());
+$cybe = $cybes->create($graph, $parser->messages(), $logger);
 
 $author = $cybe->createAuthor();
 $message = 'птица.лететь(куда:гнездо)';

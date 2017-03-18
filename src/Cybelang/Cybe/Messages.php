@@ -2,6 +2,8 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
+use Psr\Log\LoggerInterface;
+
 class Messages implements Destructable
 {
     private static $graphSpace = 'message';
@@ -16,13 +18,20 @@ class Messages implements Destructable
     private $statements;
     /** @var Utterances */
     private $utterances;
+    /** @var LoggerInterface */
+    private $logger;
 
     public function __construct(
         Graph $graph,
-        Clauses $clauses
+        Clauses $clauses,
+        LoggerInterface $logger
     ) {
         $this->graph = $graph;
         $this->clauses = $clauses;
+        $this->contexts = null;
+        $this->statements = null;
+        $this->utterances = null;
+        $this->logger = $logger;
     }
     
     public function destruct()
@@ -92,6 +101,8 @@ class Messages implements Destructable
         $messageNode = $this->graph->provideCommonNode(self::$graphSpace, $clauseIds);
         
         $this->graph->addNodeToRow($author->id(), $messageNode->id());
+        
+        $this->logger->info('message provided', ['id' => $messageNode->id(), 'author' => $author->id(), $messageText->text()]);
 
         return new Message(
             $messageNode->id(),

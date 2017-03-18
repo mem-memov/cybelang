@@ -2,6 +2,8 @@
 
 namespace MemMemov\Cybelang\Cybe;
 
+use Psr\Log\LoggerInterface;
+
 class Statements implements Destructable
 {
     /** @var Graph */
@@ -10,13 +12,18 @@ class Statements implements Destructable
     private $messages;
     /** @var Contexts */
     private $contexts;
+    /** @var LoggerInterface */
+    private $logger;
     
     public function __construct(
         Graph $graph,
-        Messages $messages
+        Messages $messages,
+        LoggerInterface $logger
     ) {
         $this->graph = $graph;
         $this->messages = $messages;
+        $this->contexts = null;
+        $this->logger = $logger;
     }
     
     public function destruct()

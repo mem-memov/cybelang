@@ -12,6 +12,11 @@ class PlainTextCategory implements Category
     {
         $this->string = $string;
     }
+    
+    public function text(): string
+    {
+        return $this->string;
+    }
 
     /**
      * @return string[]
