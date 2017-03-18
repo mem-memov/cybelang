@@ -35,13 +35,17 @@ class Space
      * @param Node[] $nodes
      * @return Node
      */
-    public function createNode(array $nodes): Node
+    public function createNode(array $toNodes, array $fromNodes): Node
     {
         $node = $this->nodes->create();
         $node->add($this->node);
         
-        foreach ($nodes as $subnode) {
-            $node->add($subnode);
+        foreach ($toNodes as $toNode) {
+            $node->add($toNode);
+        }
+
+        foreach ($fromNodes as $fromNode) {
+            $fromNode->add($node);
         }
 
         return $node;

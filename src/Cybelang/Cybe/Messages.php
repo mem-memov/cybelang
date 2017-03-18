@@ -98,10 +98,8 @@ class Messages implements Destructable
             $clauseIds[] = $clause->id();
         }
         
-        $messageNode = $this->graph->provideCommonNode(self::$graphSpace, $clauseIds);
-        
-        $this->graph->addNodeToRow($author->id(), $messageNode->id());
-        
+        $messageNode = $this->graph->createNode(self::$graphSpace, $clauseIds, $clauseIds);
+
         $this->logger->info('message provided', ['id' => $messageNode->id(), 'author' => $author->id(), $messageText->text()]);
 
         return new Message(

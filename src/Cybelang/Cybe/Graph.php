@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 interface Graph
 {
-    public function createNode(string $type, array $ids): GraphNode;
+    public function createNode(string $type, array $toIds, array $fromIds): GraphNode;
     
     public function provideCommonNode(string $type, array $ids): GraphNode;
 

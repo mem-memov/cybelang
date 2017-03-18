@@ -46,7 +46,7 @@ class Authors implements Destructable
     
     public function createAuthor(): Author
     {
-        $authorNode = $this->graph->createNode(self::$graphSpace, []);
+        $authorNode = $this->graph->createNode(self::$graphSpace, [], []);
         
         $this->logger->info('author(' . $authorNode->id() . ') created');
         

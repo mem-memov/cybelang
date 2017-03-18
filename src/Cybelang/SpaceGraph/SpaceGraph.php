@@ -15,9 +15,9 @@ class SpaceGraph implements Graph
         $this->spaceNodes = $spaceNodes;
     }
     
-    public function createNode(string $type, array $ids): GraphNode
+    public function createNode(string $type, array $toIds, array $fromIds): GraphNode
     {
-        return $this->spaceNodes->createNode($type, $ids);
+        return $this->spaceNodes->createNode($type, $toIds, $fromIds);
     }
 
     public function provideCommonNode(string $type, array $ids): GraphNode

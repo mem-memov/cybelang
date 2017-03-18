@@ -56,7 +56,7 @@ class Utterances implements Destructable
     
     public function create(Message $message, Author $author)
     {
-        $utteranceNode = $this->graph->createNode(self::$graphSpace, [$message->id()]);
+        $utteranceNode = $this->graph->createNode(self::$graphSpace, [$message->id()], []);
 
         $this->graph->addNodeToRow($author->id(), $utteranceNode->id());
         
