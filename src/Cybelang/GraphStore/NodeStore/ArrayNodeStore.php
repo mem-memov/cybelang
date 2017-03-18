@@ -3,14 +3,16 @@
 namespace MemMemov\Cybelang\GraphStore\NodeStore;
 
 use MemMemov\Cybelang\GraphStore\NodeStore as NodeStoreInterface;
+use Psr\Log\LoggerInterface;
 
 class ArrayNodeStore implements NodeStoreInterface
 {
     private $path;
     private $store;
 
-    public function __construct(string $path)
-    {
+    public function __construct(
+        string $path
+    ) {
         $this->path = $path;
 
         $this->store = [];

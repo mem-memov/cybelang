@@ -3,6 +3,7 @@
 namespace MemMemov\Cybelang\GraphStore;
 
 use MemMemov\Cybelang\SpaceGraph\Node\Store;
+use Psr\Log\LoggerInterface;
 
 class GraphStore implements Store
 {
@@ -10,6 +11,8 @@ class GraphStore implements Store
     private $nodeStore;
     /** @var ValueStore */
     private $valueStore;
+    /** @var LoggerInterface */
+    private $logger;
 
     /**
      * 
@@ -18,10 +21,12 @@ class GraphStore implements Store
      */
     public function __construct(
         NodeStore $nodeStore,
-        ValueStore $valueStore
+        ValueStore $valueStore,
+        LoggerInterface $logger
     ) {
         $this->nodeStore = $nodeStore;
         $this->valueStore = $valueStore;
+        $this->logger = $logger;
     }
 
     /**
@@ -30,7 +35,11 @@ class GraphStore implements Store
      */
     public function createNode(): int
     {
-        return $this->nodeStore->create();
+        $id = $this->nodeStore->create();
+        
+        $this->logger->info('node created', [$id]);
+        
+        return $id;
     }
 
     /**
@@ -45,7 +54,11 @@ class GraphStore implements Store
             throw new NodeUnknown($id);
         }
         
-        return $this->nodeStore->read($id);
+        $ids = $this->nodeStore->read($id);
+        
+        $this->logger->info('node read', [$id, $ids]);
+        
+        return $ids;
     }
 
     /**
@@ -65,6 +78,8 @@ class GraphStore implements Store
         }
         
         $this->nodeStore->connect($fromId, $toId);
+        
+        $this->logger->info('nodes connected', [$fromId, '->', $toId]);
     }
 
     /**
@@ -80,6 +95,8 @@ class GraphStore implements Store
             $id = $this->nodeStore->create();
             $this->valueStore->bind((string)$id, $value);
         }
+        
+        $this->logger->info('node provided for value', [$id, $value]);
 
         return $id;
     }
@@ -102,8 +119,12 @@ class GraphStore implements Store
         if (!$this->valueStore->hasKey($key)) {
             throw new SomeNodesHaveNoValue(sprintf('No value for key %s', $key));
         }
+        
+        $value = $this->valueStore->value($key);
+        
+        $this->logger->info('value read for node', [$id, $value]);
 
-        return $this->valueStore->value($key);
+        return $value;
     }
 
     /**
@@ -120,7 +141,11 @@ class GraphStore implements Store
             }
         }
         
-        return $this->nodeStore->intersect($ids);
+        $commonIds = $this->nodeStore->intersect($ids);
+        
+        $this->logger->info('common ids found', [$ids, '->', $commonIds]);
+        
+        return $commonIds;
     }
     
     /**
@@ -150,5 +175,7 @@ class GraphStore implements Store
         }
         
         $this->nodeStore->exchange($id, $oldId, $newId);
+        
+        $this->logger->info('subnodes exchanged', [$id, 'x>', $oldId, '->', $newId]);
     }
 }

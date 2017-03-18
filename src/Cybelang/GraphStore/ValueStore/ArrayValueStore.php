@@ -12,8 +12,11 @@ class ArrayValueStore implements ValueStore
     private $keyValue;
     private $valueKey;
 
-    public function __construct(Hash $hash, string $keyPath, string $valuePath)
-    {
+    public function __construct(
+        Hash $hash, 
+        string $keyPath, 
+        string $valuePath
+    ) {
         $this->hash = $hash;
         $this->keyPath = $keyPath;
         $this->valuePath = $valuePath;
