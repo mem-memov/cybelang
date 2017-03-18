@@ -45,7 +45,12 @@ class SequenceTree
         }
 
         if (1 === $previousTreeNodeCount) {
-            return true;
+            $previousTreeNode = array_pop($previousTreeNodes);
+            if ($previousTreeNode->id() > $this->treeNode->id()) {
+                return false;
+            } else {
+                return true;
+            }
         }
 
         throw new ForbidSequenceTreeToHaveManySubtrees();
