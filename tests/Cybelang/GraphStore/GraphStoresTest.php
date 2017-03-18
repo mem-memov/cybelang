@@ -2,6 +2,7 @@
 
 namespace MemMemov\Cybelang\GraphStore;
 
+use Psr\Log\LoggerInterface;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +22,9 @@ class GraphStoresTest  extends TestCase
         $keyPath = vfsStream::url('rootDirectory/key_store.txt');
         $valuePath = vfsStream::url('rootDirectory/value_store.txt');
         
-        $result = $graphStores->arrayStore($nodePath, $keyPath, $valuePath);
+        $logger = $this->createMock(LoggerInterface::class);
+                
+        $result = $graphStores->arrayStore($nodePath, $keyPath, $valuePath, $logger);
         
         $this->assertInstanceOf(GraphStore::class, $result);
     }

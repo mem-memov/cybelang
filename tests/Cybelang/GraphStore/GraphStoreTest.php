@@ -2,6 +2,7 @@
 
 namespace MemMemov\Cybelang\GraphStore;
 
+use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
 
 class GraphStoreTest extends TestCase
@@ -10,17 +11,20 @@ class GraphStoreTest extends TestCase
     protected $nodeStore;
     /** @var ValueStore|\PHPUnit_Framework_MockObject_MockObject */
     protected $valueStore;
+    /** @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject */
+    protected $logger;
 
 
     protected function setUp()
     {
         $this->nodeStore = $this->createMock(NodeStore::class);
         $this->valueStore = $this->createMock(ValueStore::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
     }
 
     public function testItCreatesNode()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
 
         $id = 765;
 
@@ -35,7 +39,7 @@ class GraphStoreTest extends TestCase
 
     public function testItReadsNode()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
 
         $id = 765;
         $ids = [5, 7, 99];
@@ -57,7 +61,7 @@ class GraphStoreTest extends TestCase
     
     public function testItChecksIfNodeExistsBeforeReading()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
         
         $id = 765;
         
@@ -73,7 +77,7 @@ class GraphStoreTest extends TestCase
 
     public function testItConnectsNodes()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
 
         $fromId = 754;
         $toId = 5;
@@ -98,7 +102,7 @@ class GraphStoreTest extends TestCase
     
     public function testItChecksIfFromNodeExistsBeforeConnecting()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
         
         $fromId = 754;
         $toId = 5;
@@ -115,7 +119,7 @@ class GraphStoreTest extends TestCase
 
     public function testItChecksIfToNodeExistsBeforeConnecting()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
         
         $fromId = 754;
         $toId = 5;
@@ -137,7 +141,7 @@ class GraphStoreTest extends TestCase
 
     public function testItReadsExistingNodeForValue()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
 
         $id = 765;
         $value = 'some value';
@@ -159,7 +163,7 @@ class GraphStoreTest extends TestCase
 
     public function testItCreatesNewNodeForValue()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
 
         $id = 765;
         $value = 'some value';
@@ -184,7 +188,7 @@ class GraphStoreTest extends TestCase
 
     public function testItReadsValueOfNode()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
 
         $id = 765;
         $value = 'some value';
@@ -211,7 +215,7 @@ class GraphStoreTest extends TestCase
     
     public function testItChecksIfNodeExistsBeforeReadingValue()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
 
         $id = 765;
         
@@ -227,7 +231,7 @@ class GraphStoreTest extends TestCase
 
     public function testItDeniesReadingEmptyNode()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
 
         $id = 765;
         
@@ -248,7 +252,7 @@ class GraphStoreTest extends TestCase
 
     public function testItFindsCommonSubnodes()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
 
         $ids = [5, 7, 99];
         $commonSubIds = [2, 78];
@@ -270,7 +274,7 @@ class GraphStoreTest extends TestCase
     
     public function testItChecksIfNodesExistBeforeFindingCommonNodes()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
 
         $ids = [5];
         
@@ -286,7 +290,7 @@ class GraphStoreTest extends TestCase
     
     public function testItExchangesNodes()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
         
         $id = 5;
         $oldId = 8;
@@ -307,7 +311,7 @@ class GraphStoreTest extends TestCase
     
     public function testItChecksIfNodeExistsBeforeExchangingSubnodes()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
         
         $id = 5;
         $oldId = 8;
@@ -325,7 +329,7 @@ class GraphStoreTest extends TestCase
     
     public function testItChecksIfOldNodeExistsBeforeExchanging()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
         
         $id = 5;
         $oldId = 8;
@@ -348,7 +352,7 @@ class GraphStoreTest extends TestCase
     
     public function testItChecksIfNewNodeExistsBeforeExchanging()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
         
         $id = 5;
         $oldId = 8;
@@ -376,7 +380,7 @@ class GraphStoreTest extends TestCase
     
     public function testItExchangesOnlyContainedSubnode()
     {
-        $graphStore = new GraphStore($this->nodeStore, $this->valueStore);
+        $graphStore = new GraphStore($this->nodeStore, $this->valueStore, $this->logger);
         
         $id = 5;
         $oldId = 8;

@@ -28,9 +28,11 @@ $author = $cybe->createAuthor();
 $message = 'птица.лететь(куда:гнездо)';
 $message .= 'гнездо.расположить(где:дерево)';
 $author->write($message);
+/*
 $message = 'птица1.лететь1(куда1:гнездо1)';
 $message .= 'гнездо1.расположить1(где1:дерево1)';
 $author->write($message);
+ */
 
 $message = $author->recall(3);
 
