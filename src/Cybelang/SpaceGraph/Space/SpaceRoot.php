@@ -2,7 +2,7 @@
 
 namespace MemMemov\Cybelang\SpaceGraph\Space;
 
-use MemMemov\Cybelang\SpaceGraph\Node\Nodes;
+use MemMemov\Cybelang\SpaceGraph\Node\{Node, Nodes};
 
 class SpaceRoot
 {
@@ -36,5 +36,12 @@ class SpaceRoot
         $rootNode->add($spaceNode);
         $space = new Space($spaceName, $spaceNode, $nodes);
         $spaceCache->set($space);
+    }
+    
+    public function isSpaceNode(Node $node, Nodes $nodes): bool
+    {
+        $rootNode = $nodes->nodeForValue($this->rootName);
+        
+        return $rootNode->has($node);
     }
 }

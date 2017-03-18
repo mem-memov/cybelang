@@ -33,12 +33,27 @@ class SequenceTrees
         
         /** @var Node $sequenceNode */
         foreach ($sequenceNodes as $index => $sequenceNode) {
-            if (0 === $index) {
-                $treeNode = $treeSpace->createCommonNode([$sequenceNode]);
-            } else {
-                $previousTree = $sequenceTrees[$index - 1];
-                $treeNode = $treeSpace->createCommonNode([$previousTree->getTreeNode(), $sequenceNode]);
+            
+            $treeNodes = $treeSpace->findNodes($sequenceNode);
+            $treeNodeCount = count($treeNodes);
+            
+            if (1 === $treeNodeCount) { // read
+                $treeNode = array_pop($treeNodes);
             }
+            
+            if (0 === $treeNodeCount) { // create
+                if (0 === $index) {
+                    $treeNode = $treeSpace->createCommonNode([$sequenceNode]);
+                } else {
+                    $previousTree = $sequenceTrees[$index - 1];
+                    $treeNode = $treeSpace->createCommonNode([$previousTree->getTreeNode(), $sequenceNode]);
+                }
+            }
+            
+            if (1 < $treeNodeCount) {
+                throw new \Exception();
+            }
+
             $sequenceTrees[] = new SequenceTree($treeNode, $sequenceNode, $this->nodes, $this->spaces);
         }
         

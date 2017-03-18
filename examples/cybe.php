@@ -8,12 +8,15 @@ if (!file_exists(__DIR__.'/tmp')) {
 $nodePath = __DIR__.'/tmp/node_store.txt';
 $keyPath = __DIR__.'/tmp/key_store.txt';
 $valuePath = __DIR__.'/tmp/value_store.txt';
+
+$fakeLogger = new Monolog\Logger('fake');
+$fakeLogger->pushHandler(new Monolog\Handler\NullHandler(Monolog\Logger::INFO));
     
 $logger = new Monolog\Logger('cybe');
 $logger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::INFO));
 
 $stores = new MemMemov\Cybelang\GraphStore\GraphStores();
-$store = $stores->arrayStore($nodePath, $keyPath, $valuePath, $logger);
+$store = $stores->arrayStore($nodePath, $keyPath, $valuePath, $fakeLogger);
 
 $rootName = 'root';
 $graphs = new MemMemov\Cybelang\SpaceGraph\SpaceGraphs();
@@ -28,11 +31,11 @@ $author = $cybe->createAuthor();
 $message = 'птица.лететь(куда:гнездо)';
 $message .= 'гнездо.расположить(где:дерево)';
 $author->write($message);
-/*
+
 $message = 'птица1.лететь1(куда1:гнездо1)';
 $message .= 'гнездо1.расположить1(где1:дерево1)';
 $author->write($message);
- */
+ 
 
 $message = $author->recall(3);
 
