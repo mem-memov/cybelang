@@ -64,12 +64,23 @@ class Node
             return;
         }
 
-        $this->ids[] = $nodeId;
         $this->store->connectNodes($this->id, $nodeId);
+        
+        $this->ids[] = $nodeId;
     }
     
     public function exchange(Node $oldNode, Node $newNode): void
     {
-        $this->store->exchangeNodes($this->id, $oldNode->id(), $newNode->id());
+        $oldNodeId = $oldNode->id();
+        $newNodeId = $newNode->id();
+        
+        $index = array_search($oldNodeId, $this->ids);
+        
+        if (false === $index) {
+            throw new \Exception();
+        }
+        
+        $this->store->exchangeNodes($this->id, $oldNodeId, $newNodeId);
+        $this->ids[$index] = $newNodeId;
     }
 }

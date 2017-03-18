@@ -140,11 +140,11 @@ class NodeTest extends TestCase
     
     public function testItExchangesSubnodes()
     {
-        $node = new Node($this->id, [], $this->store);
-        
         $oldNodeId = 23452;
         $newNodeId = 5000004;
         
+        $node = new Node($this->id, [$oldNodeId], $this->store);
+
         $oldNode = $this->createMock(Node::class);
         $newNode = $this->createMock(Node::class);
         

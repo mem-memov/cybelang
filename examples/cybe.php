@@ -41,7 +41,7 @@ $utteranceId = $author->write($message);
 
 $message = 'птица.нести(что:еда,кому:птенцы)';
 $message .= 'птенцы.хотеть есть(как:сильно)';
-$utteranceId_1 = $author->writeInContext($message, [$utteranceId]);
+$utteranceId_1 = $author->write($message);
  
 $text = $author->recall(3);
 
