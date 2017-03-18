@@ -18,4 +18,8 @@ class Statement
         $this->messages = $messages;
     }
 
+    public function id(): int
+    {
+        return $this->id;
+    }
 }

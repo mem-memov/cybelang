@@ -191,7 +191,7 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
         $row = $this->rows->createUsingHead($headId, $tailSpaceName);
         
         $nodes = $row->show($limit);
-        
+ 
         $spaceNodes = [];
         foreach ($nodes as $node) {
             $spaceNodes[] = new SpaceNode($node->id(), $this);

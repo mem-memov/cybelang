@@ -17,4 +17,9 @@ class Context
         $this->statements = $statements;
         $this->messages = $messages;
     }
+
+    public function id(): int
+    {
+        return $this->id;
+    }
 }

@@ -90,7 +90,7 @@ class Messages implements Destructable
         $this->utterances = $utterances;
     }
 
-    public function fromText(Parser\Message $messageText, Author $author): Message
+    public function fromText(Parser\Message $messageText): Message
     {
         $clauseIds = [];
         foreach ($messageText->clauses() as $clauseText) {
@@ -100,10 +100,43 @@ class Messages implements Destructable
         
         $messageNode = $this->graph->createNode(self::$graphSpace, $clauseIds, $clauseIds);
 
-        $this->logger->info('message provided', ['id' => $messageNode->id(), 'author' => $author->id(), $messageText->text()]);
+        $this->logger->info('message created', [$messageNode->id(), $messageText->text()]);
 
         return new Message(
             $messageNode->id(),
+            $this->utterances,
+            $this->clauses,
+            $this->contexts,
+            $this->statements
+        );
+    }
+    
+    /**
+     * 
+     * @param Parser\Message $messageText
+     * @param Message[] $contexrMessages
+     * @return Message
+     */
+    public function fromTextInContext(Parser\Message $messageText, array $contextMessages): Message
+    {
+        $clauseIds = [];
+        foreach ($messageText->clauses() as $clauseText) {
+            $clause = $this->clauses->fromText($clauseText);
+            $clauseIds[] = $clause->id();
+        }
+        
+        $context = $this->contexts->create($contextMessages);
+        $statement = $this->statements->create($context);
+        $statementId = $statement->id();
+        
+        $connections = array_merge($clauseIds, [$statementId]);
+        $messageNode = $this->graph->createNode(self::$graphSpace, $connections, $connections);
+        $messageNodeId = $messageNode->id();
+
+        $this->logger->info('message created in context', ['id' => $messageNodeId, 'context' => $context->id(), 'statement' => $statementId, 'text' => $messageText->text()]);
+
+        return new Message(
+            $messageNodeId,
             $this->utterances,
             $this->clauses,
             $this->contexts,

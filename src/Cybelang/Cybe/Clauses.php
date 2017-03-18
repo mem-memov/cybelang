@@ -88,7 +88,7 @@ class Clauses implements Destructable
 
         $clauseNode = $this->graph->provideCommonNode(self::$graphSpace, $memberIds);
         
-        $this->logger->info('argument provided', [$clauseNode->id(), $clauseText->text()]);
+        $this->logger->info('clause provided', [$clauseNode->id(), $clauseText->text()]);
 
         return new Clause(
             $clauseNode->id(),

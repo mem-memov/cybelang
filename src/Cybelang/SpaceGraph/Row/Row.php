@@ -31,7 +31,7 @@ class Row
         for ($i = 0; $i < $limit; $i++) {
             $nodes = $this->tailSpace->findNodes($node);
             $nodeCount = count($nodes);
-            
+
             if (0 === $nodeCount) {
                 break;
             }
@@ -40,8 +40,10 @@ class Row
                 throw new ForbidRowForking();
             }
             
-            $node = array_pop($nodes);
-            $tailNodes[] = $node;
+            if (1 === $nodeCount) {
+                $node = array_pop($nodes);
+                $tailNodes[] = $node;
+            }
         }
         
         return $tailNodes;

@@ -54,13 +54,51 @@ class Utterances implements Destructable
         $this->authors = $authors;
     }
     
-    public function create(Message $message, Author $author)
+    public function fromText(Parser\Message $messageText, Author $author)
     {
-        $utteranceNode = $this->graph->createNode(self::$graphSpace, [$message->id()], []);
+        $message = $this->messages->fromText($messageText);
+        $messageId = $message->id();
+        
+        $utteranceNode = $this->graph->createNode(self::$graphSpace, [$messageId], [$messageId]);
 
         $this->graph->addNodeToRow($author->id(), $utteranceNode->id());
         
         $this->logger->info('utterance created', ['id' => $utteranceNode->id(), 'message' => $message->id(), 'author' => $author->id()]);
+    
+        return new Utterance(
+            $utteranceNode->id(),
+            $this->authors,
+            $this->messages
+        );
+    }
+    
+    public function fromTextInContext(Parser\Message $messageText, Author $author, array $utteranceIds)
+    {
+        $contextMessages = [];
+        foreach ($utteranceIds as $utteranceId) {
+            $contextUtterance = new Utterance(
+                $utteranceId,
+                $this->authors,
+                $this->messages
+            );
+            $contextMessage = $this->messages->ofUtterance($contextUtterance);
+            $contextMessages[] = $contextMessage;
+        }
+        
+        $message = $this->messages->fromTextInContext($messageText, $contextMessages);
+        $messageId = $message->id();
+        
+        $utteranceNode = $this->graph->createNode(self::$graphSpace, [$messageId], [$messageId]);
+
+        $this->graph->addNodeToRow($author->id(), $utteranceNode->id());
+        
+        $this->logger->info('utterance created', ['id' => $utteranceNode->id(), 'message' => $message->id(), 'author' => $author->id()]);
+    
+        return new Utterance(
+            $utteranceNode->id(),
+            $this->authors,
+            $this->messages
+        );
     }
     
     public function ofAuthor(Author $author, int $limit): array

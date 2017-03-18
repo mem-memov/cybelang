@@ -6,6 +6,8 @@ use Psr\Log\LoggerInterface;
 
 class Statements implements Destructable
 {
+    private static $graphSpace = 'statement';
+    
     /** @var Graph */
     private $graph;
     /** @var Messages */
@@ -49,6 +51,22 @@ class Statements implements Destructable
             throw new ForbidCollectionRedefinition();
         }
         
-        $this->contexts = $clauses;
+        $this->contexts = $contexts;
+    }
+    
+    public function create(Context $context): Statement
+    {
+        $contextId = $context->id();
+        
+        $statementNode = $this->graph->createNode(self::$graphSpace, [$contextId], [$contextId]);
+        $statementNodeId = $statementNode->id();
+        
+        $this->logger->info('statement created', ['id' => $statementNodeId, 'context' => $contextId]);
+        
+        return new Statement(
+            $statementNodeId,
+            $this->contexts,
+            $this->messages
+        );
     }
 }

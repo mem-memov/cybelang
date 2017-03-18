@@ -77,7 +77,7 @@ class ArrayNodeStore implements NodeStoreInterface
     public function exchange(int $id, int $oldId, int $newId): void
     {
         $index = array_search($oldId, $this->store[$id]);
-        
+      
         if (false !== $index) {
             $this->store[$id][$index] = $newId;
             file_put_contents($this->path, serialize($this->store));

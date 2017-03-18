@@ -7,10 +7,11 @@ use MemMemov\Cybelang\SpaceGraph\Node\{NodeCache, Nodes, Store};
 use MemMemov\Cybelang\SpaceGraph\Row\Rows;
 use MemMemov\Cybelang\SpaceGraph\Sequence\{SequenceTrees, Sequences};
 use MemMemov\Cybelang\SpaceGraph\Space\{SpaceCache, Spaces, SpaceRoot};
+use Psr\Log\LoggerInterface;
 
 class SpaceGraphs
 {
-    public function create(Store $store, string $rootName): SpaceGraph
+    public function create(Store $store, string $rootName, LoggerInterface $logger): SpaceGraph
     {
         $nodeCache = new NodeCache();
         $nodes = new Nodes($store, $nodeCache);
@@ -29,6 +30,6 @@ class SpaceGraphs
         
         $spaceNodes = new SpaceNodes($nodes, $spaces, $commonNodes, $sequences, $rows);
         
-        return new SpaceGraph($spaceNodes);
+        return new SpaceGraph($spaceNodes, $logger);
     }
 }

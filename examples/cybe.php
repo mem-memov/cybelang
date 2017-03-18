@@ -12,34 +12,40 @@ $valuePath = __DIR__.'/tmp/value_store.txt';
 $fakeLogger = new Monolog\Logger('fake');
 $fakeLogger->pushHandler(new Monolog\Handler\NullHandler(Monolog\Logger::INFO));
     
-$logger = new Monolog\Logger('cybe');
-$logger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::INFO));
+$cybeLogger = new Monolog\Logger('cybe');
+$cybeLogger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::INFO));
+
+$spacelogger = new Monolog\Logger('space');
+$spacelogger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::INFO));
+
+$storelogger = new Monolog\Logger('store');
+$storelogger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::INFO));
 
 $stores = new MemMemov\Cybelang\GraphStore\GraphStores();
-$store = $stores->arrayStore($nodePath, $keyPath, $valuePath, $fakeLogger);
+$store = $stores->arrayStore($nodePath, $keyPath, $valuePath, $storelogger);
 
 $rootName = 'root';
 $graphs = new MemMemov\Cybelang\SpaceGraph\SpaceGraphs();
-$graph = $graphs->create($store, $rootName);
+$graph = $graphs->create($store, $rootName, $spacelogger);
 
 $parser = new MemMemov\Cybelang\Cybe\Parser\PlainText\PlainText();
 
 $cybes = new MemMemov\Cybelang\Cybe\Cybes();
-$cybe = $cybes->create($graph, $parser->messages(), $logger);
+$cybe = $cybes->create($graph, $parser->messages(), $cybeLogger);
 
 $author = $cybe->createAuthor();
+
 $message = 'птица.лететь(куда:гнездо)';
 $message .= 'гнездо.расположить(где:дерево)';
-$author->write($message);
+$utteranceId = $author->write($message);
 
-$message = 'птица1.лететь1(куда1:гнездо1)';
-$message .= 'гнездо1.расположить1(где1:дерево1)';
-$author->write($message);
+$message = 'птица.нести(что:еда,кому:птенцы)';
+$message .= 'птенцы.хотеть есть(как:сильно)';
+$utteranceId_1 = $author->writeInContext($message, [$utteranceId]);
  
+$text = $author->recall(3);
 
-$message = $author->recall(3);
-
-var_export($message . "\n");
+var_export($text . "\n");
 
 //var_export(unserialize(file_get_contents($nodePath)));
 //var_export(unserialize(file_get_contents($keyPath)));

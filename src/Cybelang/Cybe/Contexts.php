@@ -6,6 +6,8 @@ use Psr\Log\LoggerInterface;
 
 class Contexts implements Destructable
 {
+    private static $graphSpace = 'context';
+    
     /** @var Graph */
     private $graph;
     /** @var Messages */
@@ -50,5 +52,29 @@ class Contexts implements Destructable
         }
         
         $this->statements = $statements;
+    }
+    
+    /**
+     * 
+     * @param Message[] $messages
+     * @return Context
+     */
+    public function create(array $messages): Context
+    {
+        $messageIds = [];
+        foreach ($messages as $message) {
+            $messageIds[] = $message->id();
+        }
+        
+        $contextNode = $this->graph->provideCommonNode(self::$graphSpace, $messageIds);
+        $contextNodeId = $contextNode->id();
+        
+        $this->logger->info('context provided', ['id' => $contextNodeId, 'messages' => $messageIds]);
+        
+        return new Context(
+            $contextNodeId,
+            $this->statements,
+            $this->messages
+        );
     }
 }
