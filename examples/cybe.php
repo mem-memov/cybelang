@@ -12,13 +12,13 @@ $valuePath = __DIR__.'/tmp/value_store.txt';
 $fakeLogger = new Monolog\Logger('fake');
 $fakeLogger->pushHandler(new Monolog\Handler\NullHandler(Monolog\Logger::INFO));
     
-$cybeLogger = new Monolog\Logger('cybe');
+$cybeLogger = new Monolog\Logger('-cybe');
 $cybeLogger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::INFO));
 
-$spacelogger = new Monolog\Logger('space');
+$spacelogger = new Monolog\Logger('--space');
 $spacelogger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::INFO));
 
-$storelogger = new Monolog\Logger('store');
+$storelogger = new Monolog\Logger('---store');
 $storelogger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::INFO));
 
 $stores = new MemMemov\Cybelang\GraphStore\GraphStores();
