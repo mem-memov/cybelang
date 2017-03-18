@@ -48,7 +48,7 @@ class Clause
             $argumentTexts[] = $argument->toText();
         }
         
-        $text = $this->subject()->toText() . '.' . $this->predicate()->toText() . '(' . implode(', ', $argumentTexts) . ')';
+        $text = $this->subject()->toText() . '.' . $this->predicate()->toText() . '(' . implode(',', $argumentTexts) . ')';
         
         return $text;
     }
