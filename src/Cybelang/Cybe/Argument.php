@@ -35,6 +35,6 @@ class Argument
 
     public function toText(): string
     {
-        return $this->category()->toText() . '.' . $this->compliment()->toText();
+        return $this->category()->toText() . ':' . $this->compliment()->toText();
     }
 }
