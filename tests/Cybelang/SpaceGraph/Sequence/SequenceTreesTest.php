@@ -45,6 +45,11 @@ class SequenceTreesTest extends TestCase
             ->with($treeSpaceName)
             ->willReturn($treeSpace);
         
+        $treeSpace->expects($this->once())
+            ->method('findNodes')
+            ->with($sequenceNode)
+            ->willReturn([]);
+        
         $treeNode = $this->createMock(Node::class);
         
         $treeSpace->expects($this->once())
@@ -104,6 +109,61 @@ class SequenceTreesTest extends TestCase
         $result = $sequenceTrees->create($treeSpaceName, [$sequenceNode_1, $sequenceNode_2]);
         
         $this->assertInstanceOf(SequenceTree::class, $result);
+    }
+    
+    public function testItReadsExistingTree()
+    {
+        $sequenceTrees = new SequenceTrees($this->nodes, $this->spaces);
+        
+        $treeSpaceName = 'phrase';
+        
+        $sequenceNode = $this->createMock(Node::class);
+        
+        $treeSpace = $this->createMock(Space::class);
+        
+        $this->spaces->expects($this->once())
+            ->method('provideSpace')
+            ->with($treeSpaceName)
+            ->willReturn($treeSpace);
+        
+        $treeNode = $this->createMock(Node::class);
+        
+        $treeSpace->expects($this->once())
+            ->method('findNodes')
+            ->with($sequenceNode)
+            ->willReturn([$treeNode]);
+
+        $result = $sequenceTrees->create($treeSpaceName, [$sequenceNode]);
+        
+        $this->assertInstanceOf(SequenceTree::class, $result);
+    }
+    
+        public function testItForbidsSequenceTreeToHaveManySubtrees()
+    {
+        $sequenceTrees = new SequenceTrees($this->nodes, $this->spaces);
+        
+        $treeSpaceName = 'phrase';
+        
+        $sequenceNode = $this->createMock(Node::class);
+        
+        $treeSpace = $this->createMock(Space::class);
+        
+        $this->spaces->expects($this->once())
+            ->method('provideSpace')
+            ->with($treeSpaceName)
+            ->willReturn($treeSpace);
+        
+        $treeNode_1 = $this->createMock(Node::class);
+        $treeNode_2 = $this->createMock(Node::class);
+        
+        $treeSpace->expects($this->once())
+            ->method('findNodes')
+            ->with($sequenceNode)
+            ->willReturn([$treeNode_1, $treeNode_2]);
+        
+        $this->expectException(ForbidSequenceTreeToHaveManySubtrees::class);
+        
+        $sequenceTrees->create($treeSpaceName, [$sequenceNode]);
     }
     
     public function testItSuppliesSequenceTree()

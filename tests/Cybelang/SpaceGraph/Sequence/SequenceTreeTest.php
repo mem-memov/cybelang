@@ -46,7 +46,7 @@ class SequenceTreeTest extends TestCase
         $this->assertSame($result, $this->sequenceNode);
     }
     
-    public function testItChecksItHasPreviousItem()
+    public function testItChecksItHasPreviousItemWithASmallerId()
     {
         $sequenceTree = new SequenceTree($this->treeNode, $this->sequenceNode, $this->nodes, $this->spaces);
         
@@ -64,12 +64,20 @@ class SequenceTreeTest extends TestCase
                 ->with($this->treeNode)
                 ->willReturn([$previousTreeNode]);
         
+        $previousTreeNode->expects($this->once())
+                ->method('id')
+                ->willReturn(100);
+        
+        $this->treeNode->expects($this->once())
+                ->method('id')
+                ->willReturn(200);
+        
         $result = $sequenceTree->hasPreviousTree();
         
         $this->assertTrue($result);
     }
     
-    public function testItChecksItHasNoPreviousItem()
+    public function testItChecksItHasNoPreviousItemAtAll()
     {
         $sequenceTree = new SequenceTree($this->treeNode, $this->sequenceNode, $this->nodes, $this->spaces);
         
@@ -84,6 +92,37 @@ class SequenceTreeTest extends TestCase
                 ->method('findNodes')
                 ->with($this->treeNode)
                 ->willReturn([]);
+        
+        $result = $sequenceTree->hasPreviousTree();
+        
+        $this->assertFalse($result);
+    }
+    
+    public function testItChecksItHasNoPreviousItemWithASmallerId()
+    {
+        $sequenceTree = new SequenceTree($this->treeNode, $this->sequenceNode, $this->nodes, $this->spaces);
+        
+        $treeSpace = $this->createMock(Space::class);
+        
+        $this->spaces->expects($this->once())
+                ->method('spaceOfNode')
+                ->with($this->treeNode)
+                ->willReturn($treeSpace);
+        
+        $previousTreeNode = $this->createMock(Node::class);
+        
+        $treeSpace->expects($this->once())
+                ->method('findNodes')
+                ->with($this->treeNode)
+                ->willReturn([$previousTreeNode]);
+        
+        $previousTreeNode->expects($this->once())
+                ->method('id')
+                ->willReturn(300);
+        
+        $this->treeNode->expects($this->once())
+                ->method('id')
+                ->willReturn(100);
         
         $result = $sequenceTree->hasPreviousTree();
         
@@ -113,7 +152,7 @@ class SequenceTreeTest extends TestCase
         
         $sequenceTree->hasPreviousTree();
     }
-    
+
     public function testItForbidsMissingSequenceSubtree()
     {
         $sequenceTree = $this->getMockBuilder(SequenceTree::class)

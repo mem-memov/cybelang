@@ -51,7 +51,7 @@ class SequenceTrees
             }
             
             if (1 < $treeNodeCount) {
-                throw new \Exception();
+                throw new ForbidSequenceTreeToHaveManySubtrees();
             }
 
             $sequenceTrees[] = new SequenceTree($treeNode, $sequenceNode, $this->nodes, $this->spaces);
