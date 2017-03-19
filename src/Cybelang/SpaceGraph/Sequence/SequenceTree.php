@@ -46,7 +46,7 @@ class SequenceTree
 
         if (1 === $previousTreeNodeCount) {
             $previousTreeNode = array_pop($previousTreeNodes);
-            if ($previousTreeNode->id() > $this->treeNode->id()) {
+            if ($previousTreeNode->id() > $this->treeNode->id()) { // prevent cycling between siblings
                 return false;
             } else {
                 return true;
