@@ -19,6 +19,7 @@ class SpaceRootTest extends TestCase
     {
         $spaceRoot = new SpaceRoot($this->rootName);
 
+        $spaceCache = $this->createMock(SpaceCache::class);
         $nodes = $this->createMock(Nodes::class);
 
         $rootNode = $this->createMock(Node::class);
@@ -33,6 +34,17 @@ class SpaceRootTest extends TestCase
         $rootNode->expects($this->once())
             ->method('all')
             ->willReturn([$spaceNode]);
+        
+        $spaceNodeId = 7654321;
+        
+        $spaceNode->expects($this->once())
+            ->method('id')
+            ->willReturn($spaceNodeId);
+        
+        $spaceCache->expects($this->at(0))
+            ->method('hasSpaceWithId')
+            ->with($spaceNodeId)
+            ->willReturn(false);
 
         $spaceName = 'clause';
 
@@ -41,12 +53,47 @@ class SpaceRootTest extends TestCase
             ->with($spaceNode)
             ->willReturn($spaceName);
 
-        $spaceCache = $this->createMock(SpaceCache::class);
-
-        $spaceCache->expects($this->once())
+        $spaceCache->expects($this->at(1))
             ->method('set')
             ->with($this->isInstanceOf(Space::class));
 
+        $spaceRoot->loadSpacesIntoCache($spaceCache, $nodes);
+    }
+    
+    public function tesiItSkipsNodesThatAreAlreadyInCacheWhenLoadingSpacesIntoCache()
+    {
+        $spaceRoot = new SpaceRoot($this->rootName);
+
+        $spaceCache = $this->createMock(SpaceCache::class);
+        $nodes = $this->createMock(Nodes::class);
+
+        $rootNode = $this->createMock(Node::class);
+
+        $nodes->expects($this->once())
+            ->method('nodeForValue')
+            ->with($this->rootName)
+            ->willReturn($rootNode);
+
+        $spaceNode = $this->createMock(Node::class);
+
+        $rootNode->expects($this->once())
+            ->method('all')
+            ->willReturn([$spaceNode]);
+        
+        $spaceNodeId = 7654321;
+        
+        $spaceNode->expects($this->once())
+            ->method('id')
+            ->willReturn($spaceNodeId);
+        
+        $spaceCache->expects($this->at(0))
+            ->method('hasSpaceWithId')
+            ->with($spaceNodeId)
+            ->willReturn(true);
+        
+        $spaceCache->expects($this->never())
+            ->method('set');
+        
         $spaceRoot->loadSpacesIntoCache($spaceCache, $nodes);
     }
 
@@ -77,5 +124,53 @@ class SpaceRootTest extends TestCase
             ->with($this->isInstanceOf(Space::class));
 
         $spaceRoot->addNewSpace($spaceCache, $nodes, $spaceName);
+    }
+    
+    public function testItChecksIfANodeIsASpaceOfThisRoot()
+    {
+        $spaceRoot = new SpaceRoot($this->rootName);
+        
+        $node = $this->createMock(Node::class);
+        $nodes = $this->createMock(Nodes::class);
+
+        $rootNode = $this->createMock(Node::class);
+        
+        $nodes->expects($this->once())
+            ->method('nodeForValue')
+            ->with($this->rootName)
+            ->willReturn($rootNode);
+        
+        $rootNode->expects($this->once())
+            ->method('has')
+            ->with($node)
+            ->willReturn(true);
+        
+        $result = $spaceRoot->isSpaceNode($node, $nodes);
+        
+        $this->assertTrue($result);
+    }
+    
+    public function testItChecksIfANodeIsNotASpaceOfThisRoot()
+    {
+        $spaceRoot = new SpaceRoot($this->rootName);
+        
+        $node = $this->createMock(Node::class);
+        $nodes = $this->createMock(Nodes::class);
+
+        $rootNode = $this->createMock(Node::class);
+        
+        $nodes->expects($this->once())
+            ->method('nodeForValue')
+            ->with($this->rootName)
+            ->willReturn($rootNode);
+        
+        $rootNode->expects($this->once())
+            ->method('has')
+            ->with($node)
+            ->willReturn(false);
+        
+        $result = $spaceRoot->isSpaceNode($node, $nodes);
+        
+        $this->assertFalse($result);
     }
 }

@@ -76,11 +76,10 @@ class Spaces // implements SpaceGraph
         $uniqueSpaces = [];
 
         foreach ($nodes as $node) {
-            if ($this->spaceRoot->isSpaceNode($node, $this->nodes)) {
-                continue;
+            if (!$this->spaceRoot->isSpaceNode($node, $this->nodes)) {
+                $space = $this->spaceOfNode($node);
+                $uniqueSpaces[$space->id()] = $space;
             }
-            $space = $this->spaceOfNode($node);
-            $uniqueSpaces[$space->id()] = $space;
         }
 
         return array_values($uniqueSpaces);

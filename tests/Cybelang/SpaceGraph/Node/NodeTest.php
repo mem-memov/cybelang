@@ -162,4 +162,19 @@ class NodeTest extends TestCase
         
         $node->exchange($oldNode, $newNode);
     }
+    
+    public function testItForbidsExchangingMissingNode()
+    {
+        $oldNodeId = 23452;
+        $newNodeId = 5000004;
+        
+        $node = new Node($this->id, [], $this->store);
+
+        $oldNode = $this->createMock(Node::class);
+        $newNode = $this->createMock(Node::class);
+        
+        $this->expectException(ForbidExchangingMissingNode::class);
+        
+        $node->exchange($oldNode, $newNode);
+    }
 }

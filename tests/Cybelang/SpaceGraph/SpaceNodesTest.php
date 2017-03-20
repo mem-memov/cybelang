@@ -48,6 +48,88 @@ class SpaceNodesTest extends TestCase
 
         $this->assertInstanceOf(SpaceNode::class, $result);
     }
+    
+    public function testItFiltersNode()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
+        
+        $spaceName = 'clause';
+        $id = 10;
+        
+        $space = $this->createMock(Space::class);
+        
+        $this->spaces->expects($this->once())
+            ->method('provideSpace')
+            ->with($spaceName)
+            ->willReturn($space);
+        
+        $containerNode = $this->createMock(Node::class);
+        
+        $this->nodes->expects($this->once())
+            ->method('read')
+            ->with($id)
+            ->willReturn($containerNode);
+        
+        $selectedNode = $this->createMock(Node::class);
+        
+        $space->expects($this->once())
+            ->method('findNodes')
+            ->with($containerNode)
+            ->willReturn([$selectedNode]);
+        
+        $selectedNode->expects($this->once())
+            ->method('id')
+            ->willReturn(2201);
+        
+        $result = $spaceNodes->filterNode($spaceName, $id);
+        
+        $this->assertContainsOnlyInstancesOf(SpaceNode::class, $result);
+    }
+    
+    public function testItCreatesNode()
+    {
+        $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
+        
+        $spaceName = 'message';
+        $toId = 600076;
+        $fromId = 300;
+        
+        $toNode = $this->createMock(Node::class);
+        
+        $this->nodes->expects($this->at(0))
+            ->method('read')
+            ->with($toId)
+            ->willReturn($toNode);
+        
+        $fromNode = $this->createMock(Node::class);
+        
+        $this->nodes->expects($this->at(1))
+            ->method('read')
+            ->with($fromId)
+            ->willReturn($fromNode);
+        
+        $space = $this->createMock(Space::class);
+        
+        $this->spaces->expects($this->once())
+            ->method('provideSpace')
+            ->with($spaceName)
+            ->willReturn($space);
+        
+        $node = $this->createMock(Node::class);
+        
+        $space->expects($this->once())
+            ->method('createNode')
+            ->with([$toNode], [$fromNode])
+            ->willReturn($node);
+        
+        $node->expects($this->once())
+            ->method('id')
+            ->willReturn(33211);
+        
+        $result = $spaceNodes->createNode($spaceName, [$toId], [$fromId]);
+        
+        $this->assertInstanceOf(SpaceNode::class, $result);
+    }
 
     public function testItReadsCommonNode()
     {

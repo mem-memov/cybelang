@@ -77,7 +77,7 @@ class Node
         $index = array_search($oldNodeId, $this->ids);
         
         if (false === $index) {
-            throw new \Exception();
+            throw new ForbidExchangingMissingNode();
         }
         
         $this->store->exchangeNodes($this->id, $oldNodeId, $newNodeId);

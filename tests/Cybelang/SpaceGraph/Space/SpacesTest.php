@@ -218,20 +218,48 @@ class SpacesTest extends TestCase
         $node_1 = $this->createMock(Node::class);
         $node_2 = $this->createMock(Node::class);
 
+        $this->spaceRoot->expects($this->exactly(2))
+            ->method('isSpaceNode')
+            ->withConsecutive([$node_1], [$node_2])
+            ->will($this->onConsecutiveCalls(false, false));
+        
         $space = $this->createMock(Space::class);
-
-        $space->expects($this->exactly(2))
-            ->method('id')
-            ->willReturn(7);
 
         $spaces->expects($this->exactly(2))
             ->method('spaceOfNode')
             ->withConsecutive([$node_1], [$node_2])
             ->will($this->onConsecutiveCalls($space, $space));
+        
+        $space->expects($this->exactly(2))
+            ->method('id')
+            ->willReturn(7);
 
         $result = $spaces->uniqueSpacesOfNodes([$node_1, $node_2]);
 
         $this->assertSame([$space], $result);
+    }
+    
+    public function testItSkipsSpaceNodesWhenFindingUniqueSpacesOfNodes()
+    {
+        /** @var Spaces|\PHPUnit_Framework_MockObject_MockObject $spaces */
+        $spaces = $this->getMockBuilder(Spaces::class)
+            ->setConstructorArgs([$this->nodes, $this->spaceCache, $this->spaceRoot])
+            ->setMethods(['spaceOfNode'])
+            ->getMock();
+
+        $node = $this->createMock(Node::class);
+
+        $this->spaceRoot->expects($this->once())
+            ->method('isSpaceNode')
+            ->withConsecutive($node)
+            ->willReturn(true);
+
+        $spaces->expects($this->never())
+            ->method('spaceOfNode');
+
+        $result = $spaces->uniqueSpacesOfNodes([$node]);
+
+        $this->assertSame([], $result);
     }
 
     public function testItChecksIfAllNodesAreInSameSpace()

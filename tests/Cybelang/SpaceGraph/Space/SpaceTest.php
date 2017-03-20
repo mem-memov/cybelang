@@ -36,13 +36,82 @@ class SpaceTest extends TestCase
         $this->assertEquals($id, $result);
     }
 
-    public function testItHasName()
+    public function testItSuppliesName()
     {
         $space = new Space($this->name, $this->node, $this->nodes);
 
         $result = $space->name();
 
         $this->assertEquals($this->name, $result);
+    }
+    
+    public function testItCreatesNodeInSpace()
+    {
+        $space = new Space($this->name, $this->node, $this->nodes);
+        
+        $node = $this->createMock(Node::class);
+        
+        $this->nodes->expects($this->once())
+            ->method('create')
+            ->willReturn($node);
+        
+        $node->expects($this->once())
+            ->method('add')
+            ->with($this->node);
+
+        $result = $space->createNode([], []);
+        
+        $this->assertSame($node, $result);
+    }
+    
+    public function testItCreatesNodeInSpaceAndConnectsItToOtherNodes()
+    {
+        $space = new Space($this->name, $this->node, $this->nodes);
+        
+        $toNode = $this->createMock(Node::class);
+        
+        $node = $this->createMock(Node::class);
+        
+        $this->nodes->expects($this->once())
+            ->method('create')
+            ->willReturn($node);
+        
+        $node->expects($this->at(0))
+            ->method('add')
+            ->with($this->node);
+        
+        $node->expects($this->at(1))
+            ->method('add')
+            ->with($toNode);
+
+        $result = $space->createNode([$toNode], []);
+        
+        $this->assertSame($node, $result);
+    }
+
+    public function testItCreatesNodeInSpaceAndConnectsOtherNodesToIt()
+    {
+        $space = new Space($this->name, $this->node, $this->nodes);
+        
+        $fromNode = $this->createMock(Node::class);
+        
+        $node = $this->createMock(Node::class);
+        
+        $this->nodes->expects($this->once())
+            ->method('create')
+            ->willReturn($node);
+        
+        $node->expects($this->once())
+            ->method('add')
+            ->with($this->node);
+        
+        $fromNode->expects($this->once())
+            ->method('add')
+            ->with($node);
+
+        $result = $space->createNode([], [$fromNode]);
+        
+        $this->assertSame($node, $result);
     }
 
     public function testItCreatesCommonNode()

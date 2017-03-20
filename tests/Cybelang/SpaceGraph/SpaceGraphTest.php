@@ -19,6 +19,26 @@ class SpaceGraphTest extends TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
     }
     
+    public function testItCreatesNode()
+    {
+        $spaceGraph = new SpaceGraph($this->spaceNodes, $this->logger);
+        
+        $type = 'message';
+        $toIds = [600076, 2451];
+        $fromIds = [300, 11];
+        
+        $graphNode = $this->createMock(SpaceNode::class);
+        
+        $this->spaceNodes->expects($this->once())
+            ->method('createNode')
+            ->with($type, $toIds, $fromIds)
+            ->willReturn($graphNode);
+        
+        $result = $spaceGraph->createNode($type, $toIds, $fromIds);
+        
+        $this->assertSame($graphNode, $result);
+    }
+    
     public function testItProvidesCommonNode()
     {
         $spaceGraph = new SpaceGraph($this->spaceNodes, $this->logger);
@@ -74,7 +94,7 @@ class SpaceGraphTest extends TestCase
         $this->assertSame($value, $result);
     }
     
-    public function testItreadsNode()
+    public function testItReadsNode()
     {
         $spaceGraph = new SpaceGraph($this->spaceNodes, $this->logger);
         
@@ -90,6 +110,25 @@ class SpaceGraphTest extends TestCase
         $result = $spaceGraph->readNode($id);
         
         $this->assertSame($graphNode, $result);
+    }
+    
+    public function testItFiltersNode()
+    {
+        $spaceGraph = new SpaceGraph($this->spaceNodes, $this->logger);
+        
+        $type = 'clause';
+        $id = 4099;
+        
+        $graphNode = $this->createMock(SpaceNode::class);
+        
+        $this->spaceNodes->expects($this->once())
+            ->method('filterNode')
+            ->with($type, $id)
+            ->willReturn([$graphNode]);
+        
+        $result = $spaceGraph->filterNode($type, $id);
+        
+        $this->assertSame([$graphNode], $result);
     }
     
     public function testItProvidesSequenceNode()
