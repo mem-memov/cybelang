@@ -22,8 +22,8 @@ class Cybe implements Destructable
         return $this->authors->createAuthor();
     }
     
-    public function getAuthor(): Author
+    public function getAuthor(int $id): Author
     {
-        
+        return $this->authors->getAuthor($id);
     }
 }
