@@ -5,15 +5,18 @@ namespace MemMemov\Cybelang\Cybe;
 class Author
 {
     private $id;
+    private $messages;
     private $utterances;
     private $parser;
 
     public function __construct(
         int $id,
+        Messages $messages,
         Utterances $utterances,
         Parser\Messages $parser
     ) {
         $this->id = $id;
+        $this->messages = $messages;
         $this->utterances = $utterances;
         $this->parser = $parser;
     }
@@ -23,20 +26,19 @@ class Author
         return $this->id;
     }
 
-    public function write(string $text): int
+    public function write(string $text, array $utteranceIds): int
     {
         $messageText = $this->parser->create($text);
-
-        $utterance = $this->utterances->fromText($messageText, $this);
         
-        return $utterance->id();
-    }
-    
-    public function writeInContext(string $text, array $utteranceIds)
-    {
-        $messageText = $this->parser->create($text);
+        $contextMessages = [];
+        foreach ($utteranceIds as $utteranceId) {
+            $utterance = $this->utterances->getUtterance($utteranceId);
+            $contextMessages[] = $utterance->message();
+        }
+        
+        $message = $this->messages->fromText($messageText, $contextMessages);
 
-        $utterance = $this->utterances->fromTextInContext($messageText, $this, $utteranceIds);
+        $utterance = $this->utterances->create($message, $this);
         
         return $utterance->id();
     }
@@ -52,5 +54,17 @@ class Author
         }
         
         return $text;
+    }    
+    
+    /**
+     * 
+     * @param string $query
+     * @return Uttering[]
+     */
+    public function search(string $query): array
+    {
+        $messageText = $this->parser->create($text);
+        
+        
     }
 }

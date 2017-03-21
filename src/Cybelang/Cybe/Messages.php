@@ -95,34 +95,13 @@ class Messages implements Destructable, Spaced
         return self::$graphSpace;
     }
 
-    public function fromText(Parser\Message $messageText): Message
-    {
-        $clauseIds = [];
-        foreach ($messageText->clauses() as $clauseText) {
-            $clause = $this->clauses->fromText($clauseText);
-            $clauseIds[] = $clause->id();
-        }
-        
-        $messageNode = $this->graph->createNode(self::$graphSpace, $clauseIds, $clauseIds);
-
-        $this->logger->info('message created', [$messageNode->id(), $messageText->text()]);
-
-        return new Message(
-            $messageNode->id(),
-            $this->utterances,
-            $this->clauses,
-            $this->contexts,
-            $this->statements
-        );
-    }
-    
     /**
      * 
      * @param Parser\Message $messageText
      * @param Message[] $contexrMessages
      * @return Message
      */
-    public function fromTextInContext(Parser\Message $messageText, array $contextMessages): Message
+    public function fromText(Parser\Message $messageText, array $contextMessages): Message
     {
         $clauseIds = [];
         foreach ($messageText->clauses() as $clauseText) {
@@ -130,15 +109,19 @@ class Messages implements Destructable, Spaced
             $clauseIds[] = $clause->id();
         }
         
-        $context = $this->contexts->create($contextMessages);
-        $statement = $this->statements->create($context);
-        $statementId = $statement->id();
-        
-        $connections = array_merge($clauseIds, [$statementId]);
-        $messageNode = $this->graph->createNode(self::$graphSpace, $connections, $connections);
-        $messageNodeId = $messageNode->id();
+        if (0 !== count($contextMessages)) {
+            $context = $this->contexts->create($contextMessages);
+            $statement = $this->statements->create($context);
+            $statementId = $statement->id();
+            $connections = array_merge($clauseIds, [$statementId]);
+            $messageNode = $this->graph->createNode(self::$graphSpace, $connections, $connections);
+            $this->logger->info('message created in context', ['id' => $messageNodeId, 'context' => $context->id(), 'statement' => $statementId, 'text' => $messageText->text()]);
+        } else {
+            $messageNode = $this->graph->createNode(self::$graphSpace, $clauseIds, $clauseIds);
+            $this->logger->info('message created', ['id' => $messageNodeId, 'text' => $messageText->text()]);
+        }
 
-        $this->logger->info('message created in context', ['id' => $messageNodeId, 'context' => $context->id(), 'statement' => $statementId, 'text' => $messageText->text()]);
+        $messageNodeId = $messageNode->id();
 
         return new Message(
             $messageNodeId,
@@ -170,5 +153,12 @@ class Messages implements Destructable, Spaced
             $this->contexts,
             $this->statements
         );
+    }
+    
+    public function search(Parser\Message $messageText): array
+    {
+        foreach ($messageText->clauses() as $clauseText) {
+            $this->clauses->search($clauseText);
+        }
     }
 }

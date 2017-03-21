@@ -119,4 +119,15 @@ class Clauses implements Destructable, Spaced
         
         return $clauses;
     }
+    
+    public function search(Parser\Clause $clauseText): array
+    {
+        $subjects = $this->subjects->search($clauseText->subject());
+        $predicates = $this->predicates->search($clauseText->predicate());
+        
+        $arguments = [];
+        foreach ($clauseText->arguments() as $argumentText) {
+            $arguments[] = $this->arguments->search($argumentText);
+        }
+    }
 }

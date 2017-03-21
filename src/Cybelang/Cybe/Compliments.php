@@ -82,4 +82,9 @@ class Compliments implements Destructable, Spaced
             $this->phrases
         );
     }
+    
+    public function search(Parser\Compliment $complimentText): array
+    {
+        return $this->phrases->search($complimentText->words());
+    }
 }

@@ -106,4 +106,10 @@ class Arguments implements Destructable, Spaced
 
         return $arguments;
     }
+    
+    public function search(Parser\Argument $argumentText): array
+    {
+        $categories = $this->categories->search($argumentText->category());
+        $compliments = $this->compliments->search($argumentText->compliment());
+    }
 }

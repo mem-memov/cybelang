@@ -59,46 +59,29 @@ class Utterances implements Destructable, Spaced
         return self::$graphSpace;
     }
     
-    public function fromText(Parser\Message $messageText, Author $author)
+    public function create(Message $message, Author $author)
     {
-        $message = $this->messages->fromText($messageText);
         $messageId = $message->id();
+        $authorId = $author->id();
         
         $utteranceNode = $this->graph->createNode(self::$graphSpace, [$messageId], [$messageId]);
+        $utteranceId = $utteranceNode->id();
 
-        $this->graph->addNodeToRow($author->id(), $utteranceNode->id());
+        $this->graph->addNodeToRow($authorId, $utteranceId);
         
-        $this->logger->info('utterance created', ['id' => $utteranceNode->id(), 'message' => $message->id(), 'author' => $author->id()]);
+        $this->logger->info('utterance created', ['id' => $utteranceId, 'message' => $messageId, 'author' => $authorId]);
     
         return new Utterance(
-            $utteranceNode->id(),
+            $utteranceId,
             $this->authors,
             $this->messages
         );
     }
     
-    public function fromTextInContext(Parser\Message $messageText, Author $author, array $utteranceIds)
+    public function getUtterance(int $id): Utterance
     {
-        $contextMessages = [];
-        foreach ($utteranceIds as $utteranceId) {
-            $contextUtterance = new Utterance(
-                $utteranceId,
-                $this->authors,
-                $this->messages
-            );
-            $contextMessage = $this->messages->ofUtterance($contextUtterance);
-            $contextMessages[] = $contextMessage;
-        }
+        $utteranceNode = $this->graph->readNode(self::$graphSpace, $id);
         
-        $message = $this->messages->fromTextInContext($messageText, $contextMessages);
-        $messageId = $message->id();
-        
-        $utteranceNode = $this->graph->createNode(self::$graphSpace, [$messageId], [$messageId]);
-
-        $this->graph->addNodeToRow($author->id(), $utteranceNode->id());
-        
-        $this->logger->info('utterance created', ['id' => $utteranceNode->id(), 'message' => $message->id(), 'author' => $author->id()]);
-    
         return new Utterance(
             $utteranceNode->id(),
             $this->authors,

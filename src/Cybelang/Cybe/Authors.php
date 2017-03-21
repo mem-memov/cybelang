@@ -10,6 +10,8 @@ class Authors implements Destructable, Spaced
 
     /** @var Graph */
     private $graph;
+    /** @var Messages */
+    private $messages;
     /** @var Utterances */
     private $utterances;
     /** @var Parser\Messages */
@@ -19,11 +21,13 @@ class Authors implements Destructable, Spaced
 
     public function __construct(
         Graph $graph,
+        Messages $messages,
         Utterances $utterances,
         Parser\Messages $parser,
         LoggerInterface $logger
     ) {
         $this->graph = $graph;
+        $this->messages = $messages;
         $this->utterances = $utterances;
         $this->parser = $parser;
         $this->logger = $logger;
@@ -53,6 +57,7 @@ class Authors implements Destructable, Spaced
         
         return new Author(
             $authorNode->id(),
+            $this->messages,
             $this->utterances,
             $this->parser
         );
@@ -64,6 +69,7 @@ class Authors implements Destructable, Spaced
         
         return new Author(
             $authorNode->id(),
+            $this->messages,
             $this->utterances,
             $this->parser
         );

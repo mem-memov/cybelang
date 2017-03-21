@@ -82,4 +82,9 @@ class Categories implements Destructable, Spaced
             $this->phrases
         );
     }
+    
+    public function search(Parser\Category $categoryText): array
+    {
+        return $this->phrases->search($categoryText->words());
+    }
 }

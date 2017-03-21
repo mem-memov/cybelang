@@ -82,4 +82,9 @@ class Subjects implements Destructable, Spaced
             $this->phrases
         );
     }
+    
+    public function search(Parser\Subject $subjectText): array
+    {
+        return $this->phrases->search($subjectText->words());
+    }
 }

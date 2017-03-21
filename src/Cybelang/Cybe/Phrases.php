@@ -172,4 +172,9 @@ class Phrases implements Destructable, Spaced
             $this->words
         );
     }
+    
+    public function search(array $wordStrings): array
+    {
+        return $this->words->search();
+    }
 }

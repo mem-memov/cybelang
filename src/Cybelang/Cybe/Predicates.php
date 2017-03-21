@@ -92,4 +92,9 @@ class Predicates implements Destructable, Spaced
             $this->phrases
         );
     }
+    
+    public function search(Parser\Predicate $predicateText): array
+    {
+        return $this->phrases->search($predicateText->words());
+    }
 }

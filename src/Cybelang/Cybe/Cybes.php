@@ -20,7 +20,7 @@ class Cybes
         $contexts = new Contexts($graph, $messages, $logger);
         $statements = new Statements($graph, $messages, $logger);
         $utterances = new Utterances($graph, $messages, $logger);
-        $authors = new Authors($graph, $utterances, $parser, $logger);
+        $authors = new Authors($graph, $messages, $utterances, $parser, $logger);
         
         $words->setPhrases($phrases);
         $phrases->setSubjects($subjects);
