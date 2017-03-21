@@ -164,7 +164,7 @@ class Phrases implements Destructable, Spaced
 
     public function ofCompliment(Compliment $compliment): Phrase
     {
-        $complimentNode = $this->graph->readNode($this->compliments()->graphSpace(), $compliment->id());
+        $complimentNode = $this->graph->readNode($this->compliments->graphSpace(), $compliment->id());
         $phraseNode = $complimentNode->one(self::$graphSpace);
 
         return new Phrase(
