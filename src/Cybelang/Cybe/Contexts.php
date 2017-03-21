@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 use Psr\Log\LoggerInterface;
 
-class Contexts implements Destructable
+class Contexts implements Destructable, Spaced
 {
     private static $graphSpace = 'context';
     
@@ -52,6 +52,11 @@ class Contexts implements Destructable
         }
         
         $this->statements = $statements;
+    }
+    
+    public function graphSpace(): string
+    {
+        return self::$graphSpace;
     }
     
     /**

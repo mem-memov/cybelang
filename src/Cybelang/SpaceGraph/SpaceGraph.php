@@ -56,11 +56,11 @@ class SpaceGraph implements Graph
         return $value;
     }
 
-    public function readNode(int $id): GraphNode
+    public function readNode(string $type, int $id): GraphNode
     {
-        $spaceNode = $this->spaceNodes->readNode($id);
+        $spaceNode = $this->spaceNodes->readNode($type, $id);
         
-        $this->logger->info('node read', ['id' => $id]);
+        $this->logger->info('node read', ['id' => $id, 'space' => $type]);
         
         return $spaceNode;
     }

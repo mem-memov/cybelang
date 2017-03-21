@@ -18,7 +18,7 @@ interface SpaceNodesInGraph
 
     public function valueOfNode(int $id): string;
 
-    public function readNode(int $id): SpaceNode;
+    public function readNode(string $spaceName, int $id): SpaceNode;
     
     /**
      * @return SpaceNode[]

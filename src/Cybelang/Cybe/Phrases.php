@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 use Psr\Log\LoggerInterface;
 
-class Phrases implements Destructable
+class Phrases implements Destructable, Spaced
 {
     private static $graphSpace = 'phrase';
 
@@ -16,8 +16,10 @@ class Phrases implements Destructable
     private $subjects;
     /** @var Predicates */
     private $predicates;
-    /** @var Arguments */
-    private $arguments;
+    /** @var Categories */
+    private $categories;
+    /** @var Compliments */
+    private $compliments;
     /** @var LoggerInterface */
     private $logger;
 
@@ -30,7 +32,8 @@ class Phrases implements Destructable
         $this->words = $words;
         $this->subjects = null;
         $this->predicates = null;
-        $this->arguments = null;
+        $this->categories = null;
+        $this->compliments = null;
         $this->logger = $logger;
     }
     
@@ -56,9 +59,15 @@ class Phrases implements Destructable
             $predicates->destruct();
         }
         
-        if (!is_null($this->arguments)) {
-            $arguments = $this->arguments;
-            $this->arguments = null;
+        if (!is_null($this->categories)) {
+            $categories = $this->categories;
+            $this->categories = null;
+            $categories->destruct();
+        }
+        
+        if (!is_null($this->compliments)) {
+            $arguments = $this->compliments;
+            $this->compliments = null;
             $arguments->destruct();
         }
     }
@@ -81,13 +90,27 @@ class Phrases implements Destructable
         $this->predicates = $predicates;
     }
     
-    public function setArguments(Arguments $arguments)
+    public function setCategories(Categories $categories)
     {
-        if (!is_null($this->arguments)) {
+        if (!is_null($this->categories)) {
             throw new ForbidCollectionRedefinition();
         }
         
-        $this->arguments = $arguments;
+        $this->categories = $categories;
+    }
+    
+    public function setCompliments(Compliments $compliments)
+    {
+        if (!is_null($this->compliments)) {
+            throw new ForbidCollectionRedefinition();
+        }
+        
+        $this->compliments = $compliments;
+    }
+    
+    public function graphSpace(): string
+    {
+        return self::$graphSpace;
     }
 
     public function fromWords(array $wordStrings): Phrase
@@ -108,7 +131,7 @@ class Phrases implements Destructable
 
     public function ofSubject(Subject $subject): Phrase
     {
-        $subjectNode = $this->graph->readNode($subject->id());
+        $subjectNode = $this->graph->readNode($this->subjects->graphSpace(), $subject->id());
         $phraseNode = $subjectNode->one(self::$graphSpace);
 
         return new Phrase(
@@ -119,7 +142,7 @@ class Phrases implements Destructable
 
     public function ofPredicate(Predicate $predicate): Phrase
     {
-        $predicateNode = $this->graph->readNode($predicate->id());
+        $predicateNode = $this->graph->readNode($this->predicates->graphSpace(), $predicate->id());
         $phraseNode = $predicateNode->one(self::$graphSpace);
 
         return new Phrase(
@@ -130,7 +153,7 @@ class Phrases implements Destructable
 
     public function ofCategory(Category $category): Phrase
     {
-        $categoryNode = $this->graph->readNode($category->id());
+        $categoryNode = $this->graph->readNode($this->categories->graphSpace(), $category->id());
         $phraseNode = $categoryNode->one(self::$graphSpace);
 
         return new Phrase(
@@ -141,7 +164,7 @@ class Phrases implements Destructable
 
     public function ofCompliment(Compliment $compliment): Phrase
     {
-        $complimentNode = $this->graph->readNode($compliment->id());
+        $complimentNode = $this->graph->readNode($this->compliments()->graphSpace(), $compliment->id());
         $phraseNode = $complimentNode->one(self::$graphSpace);
 
         return new Phrase(

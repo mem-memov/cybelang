@@ -98,16 +98,17 @@ class SpaceGraphTest extends TestCase
     {
         $spaceGraph = new SpaceGraph($this->spaceNodes, $this->logger);
         
+        $type = 'clause';
         $id = 4099;
 
         $graphNode = $this->createMock(SpaceNode::class);
 
         $this->spaceNodes->expects($this->once())
             ->method('readNode')
-            ->with($id)
+            ->with($type, $id)
             ->willReturn($graphNode);
         
-        $result = $spaceGraph->readNode($id);
+        $result = $spaceGraph->readNode($type, $id);
         
         $this->assertSame($graphNode, $result);
     }

@@ -12,7 +12,7 @@ interface Graph
 
     public function getNodeValue(int $id): string;
 
-    public function readNode(int $id): GraphNode;
+    public function readNode(string $type, int $id): GraphNode;
 
     /**
      * @return GraphNode[]

@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 use Psr\Log\LoggerInterface;
 
-class Categories implements Destructable
+class Categories implements Destructable, Spaced
 {
     private static $graphSpace = 'category';
 
@@ -53,6 +53,11 @@ class Categories implements Destructable
         
         $this->arguments = $arguments;
     }
+    
+    public function graphSpace(): string
+    {
+        return self::$graphSpace;
+    }
 
     public function fromText(Parser\Category $categoryText): Category
     {
@@ -69,7 +74,7 @@ class Categories implements Destructable
 
     public function ofArgument(Argument $argument): Category
     {
-        $argumentNode = $this->graph->readNode($argument->id());
+        $argumentNode = $this->graph->readNode($this->arguments->graphSpace(), $argument->id());
         $categoryNode = $argumentNode->one(self::$graphSpace);
 
         return new Category(

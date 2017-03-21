@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 use Psr\Log\LoggerInterface;
 
-class Authors implements Destructable
+class Authors implements Destructable, Spaced
 {
     private static $graphSpace = 'author';
 
@@ -40,11 +40,27 @@ class Authors implements Destructable
         }
     }
     
+    public function graphSpace(): string
+    {
+        return self::$graphSpace;
+    }
+    
     public function createAuthor(): Author
     {
         $authorNode = $this->graph->createNode(self::$graphSpace, [], []);
         
         $this->logger->info('author(' . $authorNode->id() . ') created');
+        
+        return new Author(
+            $authorNode->id(),
+            $this->utterances,
+            $this->parser
+        );
+    }
+    
+    public function getAuthor(int $id): Author
+    {
+        $authorNode = $this->graph->readNode(self::$graphSpace, $id);
         
         return new Author(
             $authorNode->id(),

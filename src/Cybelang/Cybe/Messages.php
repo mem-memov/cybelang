@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 use Psr\Log\LoggerInterface;
 
-class Messages implements Destructable
+class Messages implements Destructable, Spaced
 {
     private static $graphSpace = 'message';
     
@@ -88,6 +88,11 @@ class Messages implements Destructable
         }
         
         $this->utterances = $utterances;
+    }
+    
+    public function graphSpace(): string
+    {
+        return self::$graphSpace;
     }
 
     public function fromText(Parser\Message $messageText): Message

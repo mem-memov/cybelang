@@ -25,7 +25,8 @@ class Cybes
         $words->setPhrases($phrases);
         $phrases->setSubjects($subjects);
         $phrases->setPredicates($predicates);
-        $phrases->setArguments($arguments);
+        $phrases->setCategories($categories);
+        $phrases->setCompliments($compliments);
         $subjects->setClauses($clauses);
         $predicates->setClauses($clauses);
         $arguments->setClauses($clauses);

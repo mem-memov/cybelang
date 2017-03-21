@@ -31,11 +31,12 @@ class SpaceNodes implements SpaceNodesInNode, SpaceNodesInGraph
         $this->rows = $rows;
     }
 
-    public function readNode(int $id): SpaceNode
+    public function readNode(string $spaceName, int $id): SpaceNode
     {
-        $node = $this->nodes->read($id); // checking it exsits and loading to cache
+        $space = $this->spaces->provideSpace($spaceName);
+        $node = $space->readNode($id);
 
-        return new SpaceNode($id, $this);
+        return new SpaceNode($node->id(), $this);
     }
     
     public function filterNode(string $spaceName, int $id): array

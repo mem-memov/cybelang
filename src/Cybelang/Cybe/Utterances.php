@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 use Psr\Log\LoggerInterface;
 
-class Utterances implements Destructable
+class Utterances implements Destructable, Spaced
 {
     private static $graphSpace = 'utterance';
     
@@ -52,6 +52,11 @@ class Utterances implements Destructable
         }
         
         $this->authors = $authors;
+    }
+    
+    public function graphSpace(): string
+    {
+        return self::$graphSpace;
     }
     
     public function fromText(Parser\Message $messageText, Author $author)

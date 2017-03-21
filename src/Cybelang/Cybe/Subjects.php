@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 use Psr\Log\LoggerInterface;
 
-class Subjects implements Destructable
+class Subjects implements Destructable, Spaced
 {
     private static $graphSpace = 'subject';
 
@@ -53,6 +53,11 @@ class Subjects implements Destructable
         
         $this->clauses = $clauses;
     }
+    
+    public function graphSpace(): string
+    {
+        return self::$graphSpace;
+    }
 
     public function fromText(Parser\Subject $subjectText): Subject
     {
@@ -69,7 +74,7 @@ class Subjects implements Destructable
 
     public function ofClause(Clause $clause): Subject
     {
-        $clauseNode = $this->graph->readNode($clause->id());
+        $clauseNode = $this->graph->readNode($this->clauses->graphSpace(), $clause->id());
         $subjectNode = $clauseNode->one(self::$graphSpace);
 
         return new Subject(

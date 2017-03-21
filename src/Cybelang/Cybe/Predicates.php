@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 use Psr\Log\LoggerInterface;
 
-class Predicates implements Destructable
+class Predicates implements Destructable, Spaced
 {
     private static $graphSpace = 'predicate';
 
@@ -63,6 +63,11 @@ class Predicates implements Destructable
         
         $this->clauses = $clauses;
     }
+    
+    public function graphSpace(): string
+    {
+        return self::$graphSpace;
+    }
 
     public function fromText(Parser\Predicate $predicateText): Predicate
     {
@@ -79,7 +84,7 @@ class Predicates implements Destructable
 
     public function ofClause(Clause $clause): Predicate
     {
-        $clauseNode = $this->graph->readNode($clause->id());
+        $clauseNode = $this->graph->readNode($this->clauses->graphSpace(), $clause->id());
         $predicateNode = $clauseNode->one(self::$graphSpace);
 
         return new Predicate(

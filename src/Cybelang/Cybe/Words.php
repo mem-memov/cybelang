@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 use Psr\Log\LoggerInterface;
 
-class Words implements Destructable
+class Words implements Destructable, Spaced
 {
     private static $graphSpace = 'word';
     
@@ -42,6 +42,11 @@ class Words implements Destructable
         }
         
         $this->phrases = $phrases;
+    }
+    
+    public function graphSpace(): string
+    {
+        return self::$graphSpace;
     }
 
     public function fromLetters(string $letters): Word

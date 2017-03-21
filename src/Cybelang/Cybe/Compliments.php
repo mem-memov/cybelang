@@ -4,7 +4,7 @@ namespace MemMemov\Cybelang\Cybe;
 
 use Psr\Log\LoggerInterface;
 
-class Compliments implements Destructable
+class Compliments implements Destructable, Spaced
 {
     private static $graphSpace = 'compliment';
 
@@ -53,6 +53,11 @@ class Compliments implements Destructable
         
         $this->arguments = $arguments;
     }
+    
+    public function graphSpace(): string
+    {
+        return self::$graphSpace;
+    }
 
     public function fromText(Parser\Compliment $complimentText): Compliment
     {
@@ -69,7 +74,7 @@ class Compliments implements Destructable
 
     public function ofArgument(Argument $argument): Compliment
     {
-        $argumentNode = $this->graph->readNode($argument->id());
+        $argumentNode = $this->graph->readNode($this->arguments->graphSpace(), $argument->id());
         $complimentNode = $argumentNode->one(self::$graphSpace);
 
         return new Compliment(

@@ -29,7 +29,7 @@ class Space
     {
         return $this->name;
     }
-    
+
     /**
      * 
      * @param Node[] $nodes

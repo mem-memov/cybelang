@@ -35,16 +35,24 @@ class SpaceNodesTest extends TestCase
     {
         $spaceNodes = new SpaceNodes($this->nodes, $this->spaces, $this->commonNodes, $this->sequences, $this->rows);
 
+        $spaceName = 'clause';
         $id = 2;
+        
+        $space = $this->createMock(Space::class);
+
+        $this->spaces->expects($this->once())
+            ->method('provideSpace')
+            ->with($spaceName)
+            ->willReturn($space);
 
         $node = $this->createMock(Node::class);
-
-        $this->nodes->expects($this->once())
-            ->method('read')
+        
+        $space->expects($this->once())
+            ->method('readNode')
             ->with($id)
             ->willReturn($node);
-
-        $result = $spaceNodes->readNode($id);
+        
+        $result = $spaceNodes->readNode($spaceName, $id);
 
         $this->assertInstanceOf(SpaceNode::class, $result);
     }
