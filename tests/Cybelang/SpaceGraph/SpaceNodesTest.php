@@ -51,7 +51,7 @@ class SpaceNodesTest extends TestCase
             ->method('readNode')
             ->with($id)
             ->willReturn($node);
-        
+       
         $result = $spaceNodes->readNode($spaceName, $id);
 
         $this->assertInstanceOf(SpaceNode::class, $result);
