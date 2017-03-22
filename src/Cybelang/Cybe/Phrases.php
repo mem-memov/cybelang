@@ -173,8 +173,19 @@ class Phrases implements Destructable, Spaced
         );
     }
     
-    public function search(array $wordStrings): array
+    /**
+     * 
+     * @param array $wordStrings
+     * @return Phrase[]
+     */
+    public function ofWords(array $wordStrings): array
     {
-        return $this->words->search();
+        $wordIds = array_map(function (string $letters) {
+            return $this->words->fromLetters($letters)->id();
+        }, $wordStrings);
+
+        
+        //$nodes = $this->graph->searchSequenceNodes(self::$graphSpace, $wordIds);
+
     }
 }
